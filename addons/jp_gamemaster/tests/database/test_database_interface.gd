@@ -178,7 +178,6 @@ func test_database_create_bulk_is_working() -> void:
 	assert_not_same(database.read(KEY_VALUE_C), VALUE_3, "database read(KEY_VALUE_C) must not return VALUE_3")
 
 
-
 func test_database_update_bulk_is_working() -> void:
 	var database := jpDatabase.new()
 	assert_eq(database.size(), 0, "database must begin empty")
@@ -208,6 +207,22 @@ func test_database_update_bulk_is_working() -> void:
 	assert_not_same(database.read(KEY_VALUE_A), VALUE_1, "database read(KEY_VALUE_A) must not return VALUE_1")
 	assert_not_same(database.read(KEY_VALUE_B), VALUE_2, "database read(KEY_VALUE_B) must not return VALUE_2")
 	assert_not_same(database.read(KEY_VALUE_C), VALUE_3, "database read(KEY_VALUE_C) must not return VALUE_3")
+
+
+func test_database_read_bulk_is_working() -> void:
+	var database := jpDatabase.new()
+	assert_eq(database.size(), 0, "database must begin empty")
+	
+	database.create_bulk(BULK_PAYLOAD)
+	assert_eq(database.size(), BULK_PAYLOAD.size(), "database must have payload size")
+	
+	var PAYLOAD_KEYS: Array[StringName]
+	PAYLOAD_KEYS.assign(BULK_PAYLOAD.keys())
+	var entries: Array = database.read_bulk(PAYLOAD_KEYS)
+	assert_eq(entries.size(), BULK_PAYLOAD.size(), "entries must have payload size")
+	assert_true(VALUE_1 in entries, "entries must have VALUE_1")
+	assert_true(VALUE_2 in entries, "entries must have VALUE_2")
+	assert_true(VALUE_3 in entries, "entries must have VALUE_3")
 
 
 func test_database_delete_bulk_is_working() -> void:

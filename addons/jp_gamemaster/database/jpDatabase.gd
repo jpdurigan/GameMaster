@@ -46,6 +46,13 @@ func read(key: StringName) -> Variant:
 		value = _data[key]
 	return value
 
+## Read entries from an Array.
+func read_bulk(keys: Array[StringName]) -> Array:
+	var entries: Array = []
+	for key in keys:
+		entries.append(read(key))
+	return entries
+
 ## Updates an entry. Asserts that key exists in the database.
 func update(key: StringName, value) -> void:
 	if not has(key):
@@ -152,6 +159,12 @@ func load_from_json_string(json_string: String) -> void:
 func ignore_warnings(should_ignore: bool = true) -> void:
 	if _ignore_warnings == should_ignore: return
 	_ignore_warnings = should_ignore
+	emit_changed()
+
+## Sets database configuration.
+func ignore_errors(should_ignore: bool = true) -> void:
+	if _ignore_errors == should_ignore: return
+	_ignore_errors = should_ignore
 	emit_changed()
 
 ## Sets database configuration.
