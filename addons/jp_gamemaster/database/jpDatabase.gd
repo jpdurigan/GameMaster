@@ -184,7 +184,7 @@ func _serialize_value(value: Variant) -> String:
 	var serialized: String
 	if is_instance_valid(value):
 		var dict: Dictionary = inst_to_dict(value)
-		for key in value.keys():
+		for key in dict.keys():
 			dict[key] = _serialize_value(dict[key])
 		serialized = var_to_str(dict)
 	else:
@@ -195,7 +195,8 @@ func _deserialize_value(serialized: String) -> Variant:
 	var value: Variant = str_to_var(serialized)
 	if typeof(value) == TYPE_DICTIONARY:
 		for key in value.keys():
-			value[key] = _deserialize_value(value[key])
+			if typeof(value[key]) == TYPE_STRING:
+				value[key] = _deserialize_value(value[key])
 		if value.has("@path"):
 			var object = dict_to_inst(value)
 			if is_instance_valid(object):
