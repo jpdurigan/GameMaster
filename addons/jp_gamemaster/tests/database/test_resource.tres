@@ -7,3 +7,4 @@ script = ExtResource("1_x608c")
 name = "i have a path!"
 number = -5
 color = Color(0.403922, 0.635294, 0.811765, 1)
+_data = []

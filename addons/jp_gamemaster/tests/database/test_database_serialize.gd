@@ -1,6 +1,7 @@
 extends GutTest
 
 const SAVE_DESERIALIZED_TO = "res://.godot/game_master/debug_serialized.json"
+const SAVE_TO_JSON_PATH = "res://.godot/game_master/debug_serialized.json"
 
 const CustomResource = preload("res://addons/jp_gamemaster/tests/database/custom_resource.gd")
 const CustomObject = preload("res://addons/jp_gamemaster/tests/database/custom_object.gd")
@@ -81,6 +82,65 @@ var VALUE_DICTIONARY_VARIANT = {
 	"resource external": VALUE_EXTERNAL_RESOURCE,
 	"custom resource external": VALUE_CUSTOM_EXTERNAL_RESOURCE,
 }
+var VALUE_RECURSIVE_OBJECT = CustomObject.new(
+	"recursive object",
+	42,
+	Color.GREEN_YELLOW,
+	[ 
+		CustomObject.new("object1"),
+		CustomObject.new("object2"),
+		CustomObject.new("object3"),
+	]
+)
+var VALUE_RECURSIVE_SUBCLASS = CustomObject.SubClass.new(
+	"recursive subclass",
+	42,
+	Color.GREEN_YELLOW,
+	[
+		CustomObject.SubClass.new("subclass1"),
+		CustomObject.SubClass.new("subclass2"),
+		CustomObject.SubClass.new("subclass3"),
+	]
+)
+var VALUE_RECURSIVE_RESOURCE = CustomResource.new(
+	"recursive resource",
+	42,
+	Color.GREEN_YELLOW,
+	[
+		CustomResource.new("resource1"),
+		CustomResource.new("resource2"),
+		CustomResource.new("resource3"),
+	]
+)
+var VALUE_RECURSIVE_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/database/test_resource_recursive.tres")
+
+
+var VALUE_SAVE_TO_JSON: Dictionary = {
+	&"VALUE_BOOL": VALUE_BOOL,
+	&"VALUE_INT": VALUE_INT,
+	&"VALUE_FLOAT": VALUE_FLOAT,
+	&"VALUE_VECTOR2": VALUE_VECTOR2,
+	&"VALUE_COLOR": VALUE_COLOR,
+	&"VALUE_STRING_NAME": VALUE_STRING_NAME,
+	&"VALUE_ARRAY": VALUE_ARRAY,
+	&"VALUE_DICTIONARY": VALUE_DICTIONARY,
+	&"VALUE_PACKED_INT64_ARRAY": VALUE_PACKED_INT64_ARRAY,
+	&"VALUE_PACKED_STRING_ARRAY": VALUE_PACKED_STRING_ARRAY,
+	&"VALUE_PACKED_COLOR_ARRAY": VALUE_PACKED_COLOR_ARRAY,
+	&"VALUE_CUSTOM_OBJECT": VALUE_CUSTOM_OBJECT,
+	&"VALUE_CUSTOM_RESOURCE": VALUE_CUSTOM_RESOURCE,
+	&"VALUE_CUSTOM_SUBCLASS": VALUE_CUSTOM_SUBCLASS,
+	&"VALUE_EXTERNAL_RESOURCE": VALUE_EXTERNAL_RESOURCE,
+	&"VALUE_CUSTOM_EXTERNAL_RESOURCE": VALUE_CUSTOM_EXTERNAL_RESOURCE,
+	&"VALUE_ARRAY_OBJECT": VALUE_ARRAY_OBJECT,
+	&"VALUE_ARRAY_RESOURCE": VALUE_ARRAY_RESOURCE,
+	&"VALUE_ARRAY_SUBCLASS": VALUE_ARRAY_SUBCLASS,
+	&"VALUE_RECURSIVE_OBJECT": VALUE_RECURSIVE_OBJECT,
+	&"VALUE_RECURSIVE_SUBCLASS": VALUE_RECURSIVE_SUBCLASS,
+	&"VALUE_RECURSIVE_RESOURCE": VALUE_RECURSIVE_RESOURCE,
+	&"VALUE_RECURSIVE_EXTERNAL_RESOURCE": VALUE_RECURSIVE_EXTERNAL_RESOURCE,
+}
+
 
 var _debug_data: Dictionary = {}
 
@@ -160,8 +220,24 @@ func test_serialize_array_subclasses() -> void:
 func test_serialize_array_variant() -> void:
 	_test_serialize_value(VALUE_ARRAY_VARIANT, "Array[Variant]")
 
-func test_serialize_dictionary_variante() -> void:
+func test_serialize_dictionary_variant() -> void:
 	_test_serialize_value(VALUE_DICTIONARY_VARIANT, "Dictionary<Variant, Variant>")
+
+func test_serialize_recursive_object() -> void:
+	_test_serialize_value(VALUE_RECURSIVE_OBJECT, "Object recursive")
+
+func test_serialize_recursive_subclass() -> void:
+	_test_serialize_value(VALUE_RECURSIVE_SUBCLASS, "Subclass recursive")
+
+func test_serialize_recursive_resource() -> void:
+	_test_serialize_value(VALUE_RECURSIVE_RESOURCE, "Resource recursive")
+
+func test_serialize_recursive_external_resource() -> void:
+	_test_serialize_value(VALUE_RECURSIVE_EXTERNAL_RESOURCE, "Resource recursive external")
+
+
+func test_save_to_json_serialized() -> void:
+	pending()
 
 
 func _test_serialize_value(value: Variant, type: String = "") -> void:
@@ -281,6 +357,7 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 			)
 		return is_equal
 	
+	printt(value.get_property_list(), compare.get_property_list())
 	var value_str: String = var_to_str(value)
 	var compare_str: String = var_to_str(compare)
 	is_equal = value_str == compare_str
