@@ -1,4 +1,4 @@
-extends RefCounted
+extends Object
 
 var name: String
 var number: int

@@ -182,7 +182,12 @@ func serialize_data_on_json(should_serialize: bool = true) -> void:
 
 func _serialize_value(value: Variant) -> String:
 	var serialized: String
-	if is_instance_valid(value):
+	var should_use_inst_to_dict: bool = (
+		is_instance_valid(value)
+		and value.get_script() != null
+		and (value.resource_path.is_empty() if value is Resource else true)
+	)
+	if should_use_inst_to_dict:
 		var dict: Dictionary = inst_to_dict(value)
 		for key in dict.keys():
 			dict[key] = _serialize_value(dict[key])
