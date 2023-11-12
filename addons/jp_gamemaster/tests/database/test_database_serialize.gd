@@ -14,7 +14,7 @@ const VALUE_VECTOR2 = Vector2.ONE
 const VALUE_VECTOR2I = Vector2i.ONE
 const VALUE_RECT2 = Rect2(Vector2.ZERO, Vector2(100, 100))
 const VALUE_RECT2I = Rect2i(Vector2i.ZERO, Vector2i(100, 100))
-const VALUE_COLOR = Color.AQUA
+const VALUE_COLOR = Color.AQUAMARINE
 const VALUE_STRING_NAME = &"StringName"
 const VALUE_DICTIONARY = { "dictionary": true }
 const VALUE_ARRAY = [ 0, true, "a", Vector2.DOWN, { "key": "value" } ]
@@ -261,6 +261,13 @@ func _test_serialize_value(value: Variant, type: String = "") -> void:
 #		breakpoint
 
 
+## Assert that two variables are equal for their value.[br]
+## That means comparings Objects through their methods and properties, not by
+## reference. When loading serialized data, jpDatabase will always creates new
+## instances of Objects.[br]
+## There is one exception, though: Resources with a valid resource path.
+## If something is saved as an external file, jpDatabase should load that
+## from disk.
 func _assert_equal_by_value(value: Variant, compare: Variant) -> void:
 	if _is_equal_by_value(value, compare):
 		pass_test("%s and %s are equal by value" % [value, compare])
@@ -357,15 +364,92 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 			)
 		return is_equal
 	
-	printt(value.get_property_list(), compare.get_property_list())
-	var value_str: String = var_to_str(value)
-	var compare_str: String = var_to_str(compare)
-	is_equal = value_str == compare_str
+	# same class
+	is_equal = _is_equal_by_value(value.get_class(), compare.get_class())
 	if not is_equal:
 		fail_test(
-			"Expected same serialization %s and %s"
-			% [value_str, compare_str]
+			"%s and %s should be same Class"
+			% [value, compare]
 		)
+		return is_equal
+	
+	# same script
+	is_equal = _is_equal_by_value(value.get_script(), compare.get_script())
+	if not is_equal:
+		fail_test(
+			"%s and %s should have same Script"
+			% [value, compare]
+		)
+		return is_equal
+	
+	# same method list
+	is_equal = _is_equal_by_value(value.get_method_list(), compare.get_method_list())
+	if not is_equal:
+		fail_test(
+			"%s and %s should have same method list"
+			% [value, compare]
+		)
+		return is_equal
+	
+	# same signal list
+	is_equal = _is_equal_by_value(value.get_signal_list(), compare.get_signal_list())
+	if not is_equal:
+		fail_test(
+			"%s and %s should have same signal list"
+			% [value, compare]
+		)
+		return is_equal
+	
+	# same property list
+	is_equal = _is_equal_by_value(value.get_property_list(), compare.get_property_list())
+	if not is_equal:
+		fail_test(
+			"%s and %s should have same property list"
+			% [value, compare]
+		)
+		return is_equal
+	
+	# same properties values
+	for property_dict in value.get_property_list():
+		var property_name := StringName(property_dict.name)
+#		is_equal = is_equal and _is_equal_by_value(value.get(property_name), compare.get(property_name))
+		if not _is_equal_by_value(value.get(property_name), compare.get(property_name)):
+			is_equal = false
+			fail_test(
+				"expected property %s to be equal. [%s] != [%s]"
+				% [property_name, value.get(property_name), compare.get(property_name)]
+			)
+	
+	if not is_equal:
+		return is_equal
+	
+	# same meta list
+	is_equal = _is_equal_by_value(value.get_meta_list(), compare.get_meta_list())
+	if not is_equal:
+		fail_test(
+			"%s and %s should have same meta list"
+			% [value, compare]
+		)
+		return is_equal
+	
+#	# same meta values
+#	is_equal = _is_equal_by_value(value.get_method_list(), compare.get_method_list())
+#	if not is_equal:
+#		fail_test(
+#			"%s and %s should have same method list"
+#			% [value, compare]
+#		)
+#		return is_equal
+	
+#	printt(value.get_property_list(), compare.get_property_list())
+#	var value_str: String = var_to_str(value)
+#	var compare_str: String = var_to_str(compare)
+#	is_equal = value_str == compare_str
+#	if not is_equal:
+#		fail_test(
+#			"Expected same serialization %s and %s"
+#			% [value_str, compare_str]
+#		)
 	return is_equal
 
 
