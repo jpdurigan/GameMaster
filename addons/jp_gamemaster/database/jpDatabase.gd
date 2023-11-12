@@ -192,6 +192,9 @@ func _serialize_value(value: Variant) -> String:
 		for key in dict.keys():
 			dict[key] = _serialize_value(dict[key])
 		serialized = var_to_str(dict)
+	elif typeof(value) == TYPE_FLOAT:
+		# check https://github.com/godotengine/godot/issues/78204
+		serialized = JSON.stringify(value, "", true, true)
 	else:
 		serialized = var_to_str(value)
 	return serialized
