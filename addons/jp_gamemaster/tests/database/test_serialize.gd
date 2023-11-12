@@ -243,13 +243,12 @@ func test_save_to_json_serialized() -> void:
 func _test_serialize_value(value: Variant, type: String = "") -> void:
 	if type.is_empty():
 		type = jpConsole.pretty_typeof(value)
-	var database := jpDatabase.new()
-	var serialized = database._serialize_value(value)
+	var serialized = jpSerialize.to_str(value)
 	_handle_debug_data(type, value, serialized)
 	assert_not_null(serialized, "%s serialized should be not null" % [type])
 	assert_typeof(serialized, TYPE_STRING, "%s serialized should be string" % [type])
 	
-	var deserialized = database._deserialize_value(serialized)
+	var deserialized = jpSerialize.to_var(serialized)
 	assert_not_null(deserialized, "%s deserialized should be not null" % [type])
 	assert_typeof(deserialized, typeof(value), "%s deserialized should be type %s" % [type])
 #	assert_eq(value, deserialized)
@@ -263,10 +262,10 @@ func _test_serialize_value(value: Variant, type: String = "") -> void:
 
 ## Assert that two variables are equal for their value.[br]
 ## That means comparings Objects through their methods and properties, not by
-## reference. When loading serialized data, jpDatabase will always creates new
+## reference. When loading serialized data, jpSerialize will always creates new
 ## instances of Objects.[br]
 ## There is one exception, though: Resources with a valid resource path.
-## If something is saved as an external file, jpDatabase should load that
+## If something is saved as an external file, jpSerialize should load that
 ## from disk.
 func _assert_equal_by_value(value: Variant, compare: Variant) -> void:
 	if _is_equal_by_value(value, compare):
