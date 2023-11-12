@@ -251,13 +251,7 @@ func _test_serialize_value(value: Variant, type: String = "") -> void:
 	var deserialized = jpSerialize.to_var(serialized)
 	assert_not_null(deserialized, "%s deserialized should be not null" % [type])
 	assert_typeof(deserialized, typeof(value), "%s deserialized should be type %s" % [type])
-#	assert_eq(value, deserialized)
-#	assert_same(value, deserialized)
-#	assert_eq_deep(value, deserialized)
 	_assert_equal_by_value(value, deserialized)
-#	var result = compare_deep(value, deserialized)
-#	if value is Array and value.front() is Object:
-#		breakpoint
 
 
 ## Assert that two variables are equal for their value.[br]
