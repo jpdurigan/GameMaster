@@ -123,26 +123,34 @@ static func to_str(value: Variant) -> String:
 
 static func to_var(string: String) -> Variant:
 	var value: Variant = str_to_var(string)
-	if typeof(value) == TYPE_DICTIONARY:
-		var dict: Dictionary = {}
-		for key_str in value.keys():
-			var key: Variant = to_var(key_str)
-			dict[key] = to_var(value[key_str])
-		
-		if dict.has(ID_INST_TO_DICT):
-			value = dict_to_inst(dict)
-		elif dict.has(ID_SERIALIZE):
-			match dict[ID_SERIALIZE]:
-				ID_VECTOR2:
-					value = dict_to_vec2(dict)
-				ID_VECTOR3:
-					value = dict_to_vec3(dict)
-				ID_VECTOR4:
-					value = dict_to_vec4(dict)
-				ID_COLOR:
-					value = dict_to_color(dict)
-		else:
-			value = dict
+	match typeof(value):
+		TYPE_DICTIONARY:
+			var dict: Dictionary = {}
+			for key_str in value.keys():
+				var key: Variant = to_var(key_str)
+				dict[key] = to_var(value[key_str])
+			
+			if dict.has(ID_INST_TO_DICT):
+				value = dict_to_inst(dict)
+			elif dict.has(ID_SERIALIZE):
+				match dict[ID_SERIALIZE]:
+					ID_VECTOR2:
+						value = dict_to_vec2(dict)
+					ID_VECTOR3:
+						value = dict_to_vec3(dict)
+					ID_VECTOR4:
+						value = dict_to_vec4(dict)
+					ID_COLOR:
+						value = dict_to_color(dict)
+			else:
+				value = dict
+		TYPE_ARRAY:
+			var array: Array = []
+			array.resize(value.size())
+			for idx in range(value.size()):
+				array[idx] = to_var(value[idx])
+			value = array
+	
 	return value
 
 
