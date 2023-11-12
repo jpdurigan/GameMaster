@@ -262,17 +262,21 @@ func _test_serialize_value(value: Variant, type: String = "") -> void:
 ## If something is saved as an external file, jpSerialize should load that
 ## from disk.
 func _assert_equal_by_value(value: Variant, compare: Variant) -> void:
+	var msg: String = "Expected %s and %s to be equal by value" % [value, compare]
 	if _is_equal_by_value(value, compare):
-		pass_test("%s and %s are equal by value" % [value, compare])
+		pass_test(msg)
 	else:
-		fail_test("%s and %s not equal" % [value, compare])
+		fail_test(msg)
 
 func _is_equal_by_value(value: Variant, compare: Variant) -> bool:
 	var is_equal: bool = typeof(value) == typeof(compare)
 	if not is_equal:
 		fail_test(
-			"%s and %s should be same type %s"
-			% [value, compare, typeof(compare)]
+			"Expected %s<%s> and %s<%s> to be same type."
+			% [
+				value, jpConsole.pretty_typeof(value),
+				compare, jpConsole.pretty_typeof(compare)
+			]
 		)
 		return is_equal
 	
@@ -292,7 +296,7 @@ func _is_equal_by_value_array(value: Array, compare: Array) -> bool:
 	var is_equal: bool = value.size() == compare.size()
 	if not is_equal:
 		fail_test(
-			"%s and %s should have same size"
+			"Expected %s and %s to have same size."
 			% [value, compare]
 		)
 		return is_equal
@@ -311,7 +315,7 @@ func _is_equal_by_value_dict(value: Dictionary, compare: Dictionary) -> bool:
 	var is_equal: bool = value.size() == compare.size()
 	if not is_equal:
 		fail_test(
-			"%s and %s should have same size"
+			"Expected %s and %s to have same size."
 			% [value, compare]
 		)
 		return is_equal
@@ -324,8 +328,8 @@ func _is_equal_by_value_dict(value: Dictionary, compare: Dictionary) -> bool:
 	is_equal = _is_equal_by_value_array(value_keys, compare_keys)
 	if not is_equal:
 		fail_test(
-			"%s should match keys %s"
-			% [value, compare.keys()]
+			"Expected keys { %s } and { %s } to match."
+			% [value.keys(), compare.keys()]
 		)
 		return is_equal
 	
@@ -333,7 +337,7 @@ func _is_equal_by_value_dict(value: Dictionary, compare: Dictionary) -> bool:
 		if not _is_equal_by_value(value[key], compare[key]):
 			is_equal = false
 			fail_test(
-				"Difference at index key. Expected %s to be equal %s."
+				"Difference at key %s. Expected %s to be equal %s."
 				% [key, value[key], compare[key]]
 			)
 	
@@ -343,7 +347,7 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 	var is_equal: bool = value.get_class() == compare.get_class()
 	if not is_equal:
 		fail_test(
-			"%s<%s> and %s<%s> should match class"
+			"Expected %s<%s> and %s<%s> to match classes."
 			% [value, value.get_class(), compare, compare.get_class()]
 		)
 		return is_equal
@@ -352,7 +356,7 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 		is_equal = value.resource_path == compare.resource_path
 		if not is_equal:
 			fail_test(
-				"%s and %s should be same Resource"
+				"Expected %s and %s to be same Resource."
 				% [value, compare]
 			)
 		return is_equal
@@ -361,7 +365,7 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 	is_equal = _is_equal_by_value(value.get_class(), compare.get_class())
 	if not is_equal:
 		fail_test(
-			"%s and %s should be same Class"
+			"Expected %s and %s to have same Class."
 			% [value, compare]
 		)
 		return is_equal
@@ -370,7 +374,7 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 	is_equal = _is_equal_by_value(value.get_script(), compare.get_script())
 	if not is_equal:
 		fail_test(
-			"%s and %s should have same Script"
+			"Expected %s and %s to have same Script."
 			% [value, compare]
 		)
 		return is_equal
@@ -379,7 +383,7 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 	is_equal = _is_equal_by_value(value.get_method_list(), compare.get_method_list())
 	if not is_equal:
 		fail_test(
-			"%s and %s should have same method list"
+			"Expected %s and %s to have same method list."
 			% [value, compare]
 		)
 		return is_equal
@@ -388,7 +392,7 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 	is_equal = _is_equal_by_value(value.get_signal_list(), compare.get_signal_list())
 	if not is_equal:
 		fail_test(
-			"%s and %s should have same signal list"
+			"Expected %s and %s to have same signal list."
 			% [value, compare]
 		)
 		return is_equal
@@ -397,7 +401,7 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 	is_equal = _is_equal_by_value(value.get_property_list(), compare.get_property_list())
 	if not is_equal:
 		fail_test(
-			"%s and %s should have same property list"
+			"Expected %s and %s to have same property list."
 			% [value, compare]
 		)
 		return is_equal
@@ -405,11 +409,10 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 	# same properties values
 	for property_dict in value.get_property_list():
 		var property_name := StringName(property_dict.name)
-#		is_equal = is_equal and _is_equal_by_value(value.get(property_name), compare.get(property_name))
 		if not _is_equal_by_value(value.get(property_name), compare.get(property_name)):
 			is_equal = false
 			fail_test(
-				"expected property %s to be equal. [%s] != [%s]"
+				"Expected property %s to be equal. Got %s and %s."
 				% [property_name, value.get(property_name), compare.get(property_name)]
 			)
 	
@@ -420,29 +423,20 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 	is_equal = _is_equal_by_value(value.get_meta_list(), compare.get_meta_list())
 	if not is_equal:
 		fail_test(
-			"%s and %s should have same meta list"
+			"Expected %s and %s to have same meta list."
 			% [value, compare]
 		)
 		return is_equal
 	
-#	# same meta values
-#	is_equal = _is_equal_by_value(value.get_method_list(), compare.get_method_list())
-#	if not is_equal:
-#		fail_test(
-#			"%s and %s should have same method list"
-#			% [value, compare]
-#		)
-#		return is_equal
+	# same meta values
+	for meta_name in value.get_meta_list():
+		if not _is_equal_by_value(value.get_meta(meta_name), compare.get_meta(meta_name)):
+			is_equal = false
+			fail_test(
+				"Expected metadata entry %s to be equal. Got %s and %s."
+				% [meta_name, value.get_meta(meta_name), compare.get_meta(meta_name)]
+			)
 	
-#	printt(value.get_property_list(), compare.get_property_list())
-#	var value_str: String = var_to_str(value)
-#	var compare_str: String = var_to_str(compare)
-#	is_equal = value_str == compare_str
-#	if not is_equal:
-#		fail_test(
-#			"Expected same serialization %s and %s"
-#			% [value_str, compare_str]
-#		)
 	return is_equal
 
 
