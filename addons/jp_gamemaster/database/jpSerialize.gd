@@ -256,4 +256,4 @@ static func deserialize_dict(dict_str: Dictionary) -> Dictionary:
 
 
 static func _push_warning_unsupported_type(value: Variant) -> void:
-	push_warning("Unsupported type: %s | May yield unexpected results.")
+	push_warning("Unsupported type: %s | May yield unexpected results." % jpConsole.pretty_typeof(value))

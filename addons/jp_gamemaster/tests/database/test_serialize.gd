@@ -250,7 +250,7 @@ func _test_serialize_value(value: Variant, type: String = "") -> void:
 	
 	var deserialized = jpSerialize.to_var(serialized)
 	assert_not_null(deserialized, "%s deserialized should be not null" % [type])
-	assert_typeof(deserialized, typeof(value), "%s deserialized should be type %s" % [type])
+	assert_typeof(deserialized, typeof(value), "%s deserialized should be type %s" % [type, jpConsole.pretty_typeof(value)])
 	_assert_equal_by_value(value, deserialized)
 
 
@@ -292,7 +292,7 @@ func _is_equal_by_value(value: Variant, compare: Variant) -> bool:
 	
 	return is_equal
 
-func _is_equal_by_value_array(value: Array, compare: Array) -> bool:
+func _is_equal_by_value_array(value: Array, compare: Array, should_match_indexes: bool = true) -> bool:
 	var is_equal: bool = value.size() == compare.size()
 	if not is_equal:
 		fail_test(
@@ -301,13 +301,29 @@ func _is_equal_by_value_array(value: Array, compare: Array) -> bool:
 		)
 		return is_equal
 	
-	for idx in value.size():
-		if not _is_equal_by_value(value[idx], compare[idx]):
-			is_equal = false
-			fail_test(
-				"Difference at index %s. Expected %s to be equal %s."
-				% [idx, value[idx], compare[idx]]
-			)
+	if should_match_indexes:
+		for idx in value.size():
+			if not _is_equal_by_value(value[idx], compare[idx]):
+				is_equal = false
+				fail_test(
+					"Difference at index %s. Expected %s to be equal %s."
+					% [idx, value[idx], compare[idx]]
+				)
+	else:
+		for idx in value.size():
+			if not compare.has(value[idx]):
+				is_equal = false
+				fail_test(
+					"Expected %s to have value %s."
+					% [compare, value[idx]]
+				)
+		for idx in compare.size():
+			if not value.has(compare[idx]):
+				is_equal = false
+				fail_test(
+					"Expected %s to have value %s."
+					% [value, compare[idx]]
+				)
 	
 	return is_equal
 
@@ -320,12 +336,7 @@ func _is_equal_by_value_dict(value: Dictionary, compare: Dictionary) -> bool:
 		)
 		return is_equal
 	
-	var value_keys: Array = value.keys()
-	value_keys.sort()
-	var compare_keys: Array = compare.keys()
-	compare_keys.sort()
-	
-	is_equal = _is_equal_by_value_array(value_keys, compare_keys)
+	is_equal = _is_equal_by_value_array(value.keys(), compare.keys(), false)
 	if not is_equal:
 		fail_test(
 			"Expected keys { %s } and { %s } to match."
