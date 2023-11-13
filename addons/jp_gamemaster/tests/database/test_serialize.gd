@@ -237,7 +237,13 @@ func test_serialize_recursive_external_resource() -> void:
 
 
 func test_save_to_json_serialized() -> void:
-	pending()
+	var database := jpDatabase.new()
+	database.add_bulk(VALUE_SAVE_TO_JSON)
+	database.save_to_json(SAVE_TO_JSON_PATH)
+	
+	var database2 := jpDatabase.new()
+	database2.load_from_json_file(SAVE_TO_JSON_PATH)
+	_assert_equal_by_value(database, database2)
 
 
 func _test_serialize_value(value: Variant, type: String = "") -> void:

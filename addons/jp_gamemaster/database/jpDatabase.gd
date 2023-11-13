@@ -13,13 +13,11 @@ extends Resource
 ## You may dismiss this with [method ignore_warnings] and
 ## [method ignore_errors]. You may [method treat_warnings_as_errors]
 ## if you wanna be strict about it (errors abort the operation).[br]
-## If your dealing with non-Resource and/or saving to JSON, it's recommended to
-## [method serialize_data].
+## When saving to JSON, data is serialized through [jpSerialize].
 
 
 ## Raw database.
 @export var _data: Dictionary
-@export var _serialize_data_on_json: bool = false
 @export var _ignore_warnings: bool = false
 @export var _ignore_errors: bool = false
 @export var _treat_warnings_as_errors: bool = false
@@ -119,26 +117,15 @@ func save() -> void:
 	ResourceSaver.save(self, resource_path)
 
 ## Saves the database to a JSON file.
-## Check [method JSON.stringify] for options.
-func save_to_json(
-		json_path: String,
-		indent: String = "",
-		sort_keys: bool = true,
-		full_precision: bool = false
-) -> void:
-	var json_data := get_json_string(indent, sort_keys, full_precision)
+func save_to_json(json_path: String) -> void:
+	var json_data := get_json_string()
 	var file := FileAccess.open(json_path, FileAccess.WRITE)
 	file.store_string(json_data)
 
 ## Returns the database as JSON string.
-## Check [method JSON.stringify] for options.
-func get_json_string(
-		indent: String = "",
-		sort_keys: bool = true,
-		full_precision: bool = false
-) -> String:
+func get_json_string() -> String:
 	var json_data: Dictionary = _data
-	return JSON.stringify(json_data, indent, sort_keys, full_precision)
+	return jpSerialize.to_str(json_data)
 
 ## Populates the resource from a JSON file.
 func load_from_json_file(json_path: String) -> void:
@@ -150,7 +137,7 @@ func load_from_json_file(json_path: String) -> void:
 
 ## Populates the resource from a JSON string.
 func load_from_json_string(json_string: String) -> void:
-	var json_data: Dictionary = JSON.parse_string(json_string)
+	var json_data: Dictionary = jpSerialize.to_var(json_string)
 #	jpConsole.print_method(self, "changing_data", "load_from_json_string", [json_string])
 	_data = json_data
 	emit_changed()
@@ -172,44 +159,6 @@ func treat_warnings_as_errors(should_treat: bool = true) -> void:
 	if _treat_warnings_as_errors == should_treat: return
 	_treat_warnings_as_errors = should_treat
 	emit_changed()
-
-## Sets database configuration.
-func serialize_data_on_json(should_serialize: bool = true) -> void:
-	if _serialize_data_on_json == should_serialize: return
-	_serialize_data_on_json = should_serialize
-	emit_changed()
-
-
-func _serialize_value(value: Variant) -> String:
-	var serialized: String
-	var should_use_inst_to_dict: bool = (
-		is_instance_valid(value)
-		and value.get_script() != null
-		and (value.resource_path.is_empty() if value is Resource else true)
-	)
-	if should_use_inst_to_dict:
-		var dict: Dictionary = inst_to_dict(value)
-		for key in dict.keys():
-			dict[key] = _serialize_value(dict[key])
-		serialized = var_to_str(dict)
-	elif typeof(value) == TYPE_FLOAT:
-		# check https://github.com/godotengine/godot/issues/78204
-		serialized = JSON.stringify(value, "", true, true)
-	else:
-		serialized = var_to_str(value)
-	return serialized
-
-func _deserialize_value(serialized: String) -> Variant:
-	var value: Variant = str_to_var(serialized)
-	if typeof(value) == TYPE_DICTIONARY:
-		for key in value.keys():
-			if typeof(value[key]) == TYPE_STRING:
-				value[key] = _deserialize_value(value[key])
-		if value.has("@path"):
-			var object = dict_to_inst(value)
-			if is_instance_valid(object):
-				value = object
-	return value
 
 
 func _push_warning(message: String, method_name: String, args: Array = []) -> void:
