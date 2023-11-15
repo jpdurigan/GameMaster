@@ -8,12 +8,14 @@ var editor_interface: EditorInterface
 func _ready() -> void:
 	label = Label.new()
 	add_child(label)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.size.x = 36 * 3
 	label.position.x = size.x + 36
 
 
 func _process(delta: float) -> void:
 	if not editor_interface:
-		editor_interface = get_parent().editor_interface
+		editor_interface = owner.editor_interface
 		return
 	
 	var data: Dictionary = {
