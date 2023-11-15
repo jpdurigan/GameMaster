@@ -12,7 +12,7 @@ const VALUE_FLOAT = PI
 const VALUE_STRING = "String"
 const VALUE_VECTOR2 = Vector2.ONE
 const VALUE_VECTOR2I = Vector2i.ONE
-const VALUE_RECT2 = Rect2(Vector2.ZERO, Vector2(100, 100))
+const VALUE_RECT2 = Rect2(Vector2.ZERO, Vector2(100.0 / 3.0, 100))
 const VALUE_RECT2I = Rect2i(Vector2i.ZERO, Vector2i(100, 100))
 const VALUE_COLOR = Color.AQUAMARINE
 const VALUE_STRING_NAME = &"StringName"
@@ -143,6 +143,12 @@ var VALUE_SAVE_TO_JSON: Dictionary = {
 
 
 var _debug_data: Dictionary = {}
+
+
+func test_expects_var_to_str_to_fail() -> void:
+	var float_to_str: String = var_to_str(VALUE_FLOAT)
+	var float_from_str: float = str_to_var(float_to_str)
+	assert_ne(float_from_str, VALUE_FLOAT, "Expects var_to_str to lose precision and fail.")
 
 
 func test_serialize_bool() -> void:

@@ -1,6 +1,11 @@
 class_name jpSerialize
 extends RefCounted
 ## Static class for serializing values.
+##
+## Uses [method @GlobalScope.var_to_str] and [method @GDScript.inst_to_dict]
+## to serialize variables.[br]
+## Currently working around an issue when serializing floats.
+## @tutorial(Float losing precision when using var_to_str): https://github.com/godotengine/godot/issues/78204
 
 const ID_INST_TO_DICT = "@path"
 const ID_SERIALIZE = "@jpSerialize"
@@ -8,6 +13,7 @@ const ID_SERIALIZE = "@jpSerialize"
 const ID_VECTOR2 = jpConsole.PRETTY_TYPES[TYPE_VECTOR2]
 const ID_VECTOR3 = jpConsole.PRETTY_TYPES[TYPE_VECTOR3]
 const ID_VECTOR4 = jpConsole.PRETTY_TYPES[TYPE_VECTOR4]
+const ID_RECT2 = jpConsole.PRETTY_TYPES[TYPE_RECT2]
 const ID_COLOR = jpConsole.PRETTY_TYPES[TYPE_COLOR]
 
 
@@ -30,8 +36,8 @@ static func to_str(value: Variant) -> String:
 		TYPE_VECTOR2I:
 			string = var_to_str(value)
 		TYPE_RECT2:
-			_push_warning_unsupported_type(value)
-			string = var_to_str(value)
+			var dict: Dictionary = rect2_to_dict(value)
+			string = to_str(dict)
 		TYPE_RECT2I:
 			string = var_to_str(value)
 		TYPE_VECTOR3:
@@ -140,6 +146,8 @@ static func to_var(string: String) -> Variant:
 						value = dict_to_vec3(dict)
 					ID_VECTOR4:
 						value = dict_to_vec4(dict)
+					ID_RECT2:
+						value = dict_to_rect2(dict)
 					ID_COLOR:
 						value = dict_to_color(dict)
 			else:
@@ -203,6 +211,20 @@ static func dict_to_vec4(dict: Dictionary) -> Vector4:
 		dict.get("y", 0.0),
 		dict.get("z", 0.0),
 		dict.get("w", 0.0),
+	)
+
+
+static func rect2_to_dict(value: Rect2) -> Dictionary:
+	return {
+		ID_SERIALIZE: ID_RECT2,
+		"position": value.position,
+		"size": value.size,
+	}
+
+static func dict_to_rect2(dict: Dictionary) -> Rect2:
+	return Rect2(
+		dict.get("position", Vector2.ZERO),
+		dict.get("size", Vector2.ZERO)
 	)
 
 
