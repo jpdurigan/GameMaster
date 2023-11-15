@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://dr7gcj7gfm0gx"]
+[gd_scene load_steps=4 format=3 uid="uid://dr7gcj7gfm0gx"]
+
+[ext_resource type="Texture2D" uid="uid://def5i663hewwl" path="res://icon.svg" id="1_674i5"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/GameMasterEditor.gd" id="1_vidt2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhb5n"]
 
-[node name="GameMasterEditor" type="Control"]
+[node name="GameMasterEditor" type="Control" node_paths=PackedStringArray("texture_rect", "label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +14,9 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("1_vidt2")
+texture_rect = NodePath("HSplitContainer/VBoxContainer/TextureRect")
+label = NodePath("HSplitContainer/VBoxContainer/Label")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 1
@@ -20,12 +26,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="HSplitContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-color = Color(0.870588, 0.0705882, 0.431373, 1)
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="HSplitContainer/VBoxContainer"]
+custom_minimum_size = Vector2(2.08165e-12, 36)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("1_674i5")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+text = "
+texture: res://icon.svg
+texture_size: (128, 128)
+rect_size: (378, 378)
+editor_scale: <null>"
+horizontal_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_lhb5n")

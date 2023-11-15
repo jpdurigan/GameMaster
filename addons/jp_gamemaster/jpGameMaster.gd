@@ -21,6 +21,7 @@ func _disable_plugin():
 func _enter_tree():
 	editor_interface = get_editor_interface()
 	main_screen = preload(GAMEMASTER_EDITOR_PATH).instantiate()
+	main_screen.editor_interface = editor_interface
 	editor_interface.get_editor_main_screen().add_child(main_screen)
 	main_screen.hide()
 #	jpFileSystem.add_plugin_project_folders()
