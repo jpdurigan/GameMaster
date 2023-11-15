@@ -80,7 +80,6 @@ func delete_bulk(keys: Array[StringName]) -> void:
 
 ## Adds an entry. If key already exists, it will override it without warnings.
 func add(key: StringName, value) -> void:
-	jpConsole.print_method(self)
 	_data[key] = value
 	emit_changed()
 
