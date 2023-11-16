@@ -1,10 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dr7gcj7gfm0gx"]
+[gd_scene load_steps=2 format=3 uid="uid://dr7gcj7gfm0gx"]
 
-[ext_resource type="Texture2D" uid="uid://def5i663hewwl" path="res://icon.svg" id="1_674i5"]
-[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/GameMasterEditor.gd" id="1_vidt2"]
-[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/DebugTextureRect.gd" id="3_q2om4"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/GameMasterEditor.gd" id="1_rpjfk"]
 
-[node name="GameMasterEditor" type="Control" node_paths=PackedStringArray("subviewport_container")]
+[node name="GameMasterEditor" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,70 +11,12 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_vidt2")
-subviewport_container = NodePath("SubViewportContainer")
+script = ExtResource("1_rpjfk")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+[node name="Panel" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-stretch = true
-stretch_shrink = 7
-
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
-handle_input_locally = false
-size = Vector2i(164, 92)
-render_target_update_mode = 4
-
-[node name="Control" type="Control" parent="SubViewportContainer/SubViewport"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport/Control"]
-custom_minimum_size = Vector2(36, 36)
-layout_mode = 0
-offset_left = 36.0
-offset_top = 36.0
-offset_right = 72.0
-offset_bottom = 72.0
-texture = ExtResource("1_674i5")
-expand_mode = 2
-stretch_mode = 5
-script = ExtResource("3_q2om4")
-
-[node name="TextureRect2" type="TextureRect" parent="SubViewportContainer/SubViewport/Control"]
-custom_minimum_size = Vector2(72, 72)
-layout_mode = 0
-offset_left = 36.0
-offset_top = 108.0
-offset_right = 108.0
-offset_bottom = 180.0
-texture = ExtResource("1_674i5")
-expand_mode = 2
-stretch_mode = 5
-script = ExtResource("3_q2om4")
-
-[node name="TextureRect3" type="TextureRect" parent="SubViewportContainer/SubViewport/Control"]
-custom_minimum_size = Vector2(144, 144)
-layout_mode = 0
-offset_left = 36.0
-offset_top = 216.0
-offset_right = 180.0
-offset_bottom = 360.0
-texture = ExtResource("1_674i5")
-expand_mode = 2
-stretch_mode = 5
-script = ExtResource("3_q2om4")
-
-[node name="Label" type="Label" parent="."]
-custom_minimum_size = Vector2(110, 2.08165e-12)
-layout_mode = 0
-offset_right = 110.0
-offset_bottom = 104.0
-text = "testesssssa sa fsa d aa sdf adfsa asf dadsfsadf asdf "
-autowrap_mode = 1

@@ -1,32 +1,13 @@
 @tool
 extends Control
 
-enum ViewportScale {
-	DEFAULT,
-	EDITOR_SCALE,
-}
 
-const TIMER_DURATION = 2.0
-
-@export var subviewport_container: SubViewportContainer
-
-var scale_mode: ViewportScale = ViewportScale.DEFAULT
-
-var editor_interface: EditorInterface
-
-
+# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	_change_scale_mode()
+	$Panel.set("theme_override_styles/panel", StyleBoxEmpty.new())
+	pass # Replace with function body.
 
 
-func _change_scale_mode() -> void:
-	scale_mode = wrapi(scale_mode + 1, 0, ViewportScale.size())
-	if subviewport_container and editor_interface:
-#		printt("")
-		subviewport_container.stretch_shrink = (
-			editor_interface.get_editor_scale()
-			if scale_mode == ViewportScale.EDITOR_SCALE
-			else 1
-		)
-#	print(scale_mode)
-	get_tree().create_timer(TIMER_DURATION).timeout.connect(_change_scale_mode)
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass

@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl01envwroq1f"]
+
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/theme/inspector_plugin/resource_drop.gd" id="1_gatlm"]
+
+[node name="resource_drop" type="HBoxContainer"]
+script = ExtResource("1_gatlm")
+allowed_classes = Array[String](["StyleBox"])
+
+[node name="property" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mode"
+
+[node name="content" type="HBoxContainer" parent="."]
+show_behind_parent = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="path" type="LineEdit" parent="content"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+editable = false
+
+[node name="close" type="Button" parent="content"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "X"
