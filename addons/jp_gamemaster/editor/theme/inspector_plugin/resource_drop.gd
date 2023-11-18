@@ -1,6 +1,8 @@
 @tool
 extends HBoxContainer
 
+signal resource_changed(resource_path: String)
+
 @export var allowed_classes: Array[StringName]
 @export var allowed_scripts: Array[String]
 
@@ -11,7 +13,16 @@ var resource_path: String = "":
 			await ready
 		_path.text = resource_path
 		_close.visible = not resource_path.is_empty()
+		resource_changed.emit(resource_path)
 
+var property_name: String = "":
+	set(value):
+		property_name = value.get_slice("/", value.get_slice_count("/") - 1)
+		if not is_node_ready():
+			await ready
+		_property.text = property_name
+
+@onready var _property: Label = %property
 @onready var _path: LineEdit = %path
 @onready var _close: Button = %close
 

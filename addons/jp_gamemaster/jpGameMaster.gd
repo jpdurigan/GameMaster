@@ -4,7 +4,7 @@ extends EditorPlugin
 const GAMEMASTER_ICON_PATH = "res://addons/jp_gamemaster/editor/gamemaster.png"
 const GAMEMASTER_EDITOR_PATH = "res://addons/jp_gamemaster/editor/GameMasterEditor.tscn"
 
-const JPTHEME_INSPECTOR_PLUGIN_PATH = "res://addons/jp_gamemaster/editor/theme/inspector_plugin/jptheme_inspector_plugin.gd"
+const JPGMT_INSPECTOR_PLUGIN_PATH = "res://addons/jp_gamemaster/editor/theme/inspector_plugin/jpgmt_inspector_plugin.gd"
 
 var editor_interface: EditorInterface
 var main_screen: Control
@@ -28,7 +28,7 @@ func _enter_tree():
 	editor_interface.get_editor_main_screen().add_child(main_screen)
 	main_screen.hide()
 	
-	jptheme_inspector_plugin = preload(JPTHEME_INSPECTOR_PLUGIN_PATH).new()
+	jptheme_inspector_plugin = preload(JPGMT_INSPECTOR_PLUGIN_PATH).new()
 	add_inspector_plugin(jptheme_inspector_plugin)
 #	jpFileSystem.add_plugin_project_folders()
 #	jpFileSystem.editor_paths = editor_interface.get_editor_paths()

@@ -1,7 +1,7 @@
 extends EditorInspectorPlugin
 
 const GAMEMASTER_FOLDER_PATH = "res://addons/jp_gamemaster"
-const CONTROL_EDITOR = preload("res://addons/jp_gamemaster/editor/theme/inspector_plugin/jptheme_control_editor.tscn")
+const CONTROL_EDITOR = preload("res://addons/jp_gamemaster/editor/theme/inspector_plugin/jpgmt_control_editor.tscn")
 
 
 func _can_handle(object: Object) -> bool:
@@ -19,4 +19,5 @@ func _can_handle(object: Object) -> bool:
 func _parse_begin(object: Object) -> void:
 	if object is Control:
 		var control_editor: Control = CONTROL_EDITOR.instantiate()
+		control_editor.populate(object)
 		add_custom_control(control_editor)
