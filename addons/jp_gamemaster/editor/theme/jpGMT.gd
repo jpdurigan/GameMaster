@@ -9,8 +9,8 @@ enum ResourceType {
 
 const CONTROL_TYPES = {
 	INVALID = &"",
-	MAIN_PANEL = &"MAIN_PANEL",
-	MAIN_TAB_BUTTON = &"MAIN_TAB_BUTTON",
+	PANEL = &"PANEL",
+	TAB_BUTTON = &"TAB_BUTTON",
 }
 
 const PRESETS = {
@@ -20,7 +20,7 @@ const PRESETS = {
 }
 
 const OVERRIDE_DATA: Dictionary = {
-	CONTROL_TYPES.MAIN_PANEL: {
+	CONTROL_TYPES.PANEL: {
 		&"theme_override_styles/panel": ResourceType.STYLE_BOX,
 	},
 }
