@@ -7,6 +7,7 @@ extends Label
 @export var label_normal: LabelSettings:
 	set(value):
 		label_normal = value
+		label_settings = label_normal
 		_update_label()
 @export var label_pressed: LabelSettings:
 	set(value):

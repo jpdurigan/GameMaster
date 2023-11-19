@@ -28,7 +28,7 @@ metadata/_gmt_properties = {
 "GODOT:theme_override_styles/panel": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_godot_default_background.tres"
 }
 metadata/_gmt_control_type = &"PANEL"
-metadata/_gmt_preset = &"GODOT"
+metadata/_gmt_preset = &"DEFAULT"
 metadata/_gmt_applied_scale = 2.0
 
 [node name="list" type="VBoxContainer" parent="content"]
@@ -48,7 +48,6 @@ button_pressed = false
 button_group = ExtResource("4_j2sfb")
 tab_content = NodePath("../../content/app1")
 label_text = "App 1"
-metadata/_gmt_preset = &"GODOT"
 metadata/_gmt_applied_scale = 2.0
 
 [node name="Button2" parent="content/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
@@ -58,7 +57,6 @@ button_pressed = false
 button_group = ExtResource("4_j2sfb")
 tab_content = NodePath("../../content/app2")
 label_text = "App 2"
-metadata/_gmt_preset = &"GODOT"
 metadata/_gmt_applied_scale = 2.0
 
 [node name="Button3" parent="content/list/tabs" instance=ExtResource("3_27npm")]
@@ -66,7 +64,6 @@ layout_mode = 2
 button_pressed = false
 button_group = ExtResource("4_j2sfb")
 label_text = "TBD"
-metadata/_gmt_preset = &"GODOT"
 metadata/_gmt_applied_scale = 2.0
 
 [node name="content" type="Control" parent="content/list"]

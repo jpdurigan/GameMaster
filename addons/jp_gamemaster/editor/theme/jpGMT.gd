@@ -89,14 +89,10 @@ static var _pre_save_data: Dictionary
 static func on_notification(control: Control, what: int) -> void:
 	match what:
 		Node.NOTIFICATION_READY:
-			set_preset(control, get_preset(control), true)
+			set_preset(control, get_preset(control))
 		Node.NOTIFICATION_EDITOR_PRE_SAVE:
 			_clean_control_pre_saving(control)
 		Node.NOTIFICATION_EDITOR_POST_SAVE:
-			print("NOTIFICATION_EDITOR_POST_SAVE")
-			if not _pre_save_data or _pre_save_data.is_empty():
-				return
-			print(JSON.stringify(_pre_save_data, "\t"))
 			_reset_control_post_saving(control)
 
 
@@ -137,19 +133,13 @@ static func get_property(
 	return data.get(data_key, default_value)
 
 
-static func set_preset(control: Control, preset: StringName = &"", force_update: bool = false) -> void:
-	printt("settin preset", preset, control)
+static func set_preset(control: Control, preset: StringName = &"") -> void:
 	if preset.is_empty():
 		preset = jpSettings.get_setting(jpSettings.GMT_THEME_PRESET)
 	
 	var control_type: StringName = get_control_type(control)
 	var control_preset: StringName = get_preset(control)
-	var should_update_preset: bool = control_type != CONTROL_TYPES.INVALID and (
-		force_update
-		or control_preset != preset
-		or not _is_node_being_edited(control)
-	)
-	if should_update_preset:
+	if control_type != CONTROL_TYPES.INVALID:
 		var data: Dictionary = control.get_meta(META_PROPERTY, {})
 		var is_default: bool = preset == PRESETS.DEFAULT
 		for property in _get_properties_for(control_type):
@@ -161,15 +151,19 @@ static func set_preset(control: Control, preset: StringName = &"", force_update:
 			var default_key: StringName = _get_data_key(property, PRESETS.DEFAULT)
 			if data.has(default_key):
 				_set_control_value(control, property, data, default_key)
-		control.set_meta(META_PRESET, preset)
+		
+		var owner: Node = control.owner if control.owner else control
+		owner.set_meta(META_PRESET, preset)
 	
 	for child in control.get_children():
 		if child is Control:
-			set_preset(child, preset, force_update)
+			set_preset(child, preset)
 
 
 static func get_preset(control: Control) -> StringName:
-	return control.get_meta(META_PRESET, PRESETS.DEFAULT)
+	var owner: Node = control.owner if control.owner else control
+	var preset = owner.get_meta(META_PRESET, PRESETS.DEFAULT)
+	return preset
 
 
 static func get_classes(resource_type: ResourceType) -> Array[StringName]:
@@ -191,6 +185,11 @@ static func _clean_control_pre_saving(control: Control) -> void:
 				var value: Variant = control.get_indexed(property)
 				_pre_save_data[control_id][property] = value
 				control.set_indexed(property, DEFAULT_VALUES.get(property, null))
+		
+		# handle exceptions
+		match control_type:
+			CONTROL_TYPES.BUTTON_LABEL:
+				control.label_settings = null
 	
 	for child in control.get_children():
 		if child is Control:
@@ -229,14 +228,11 @@ static func _set_control_value(
 	
 	if not _is_node_being_edited(control):
 		value = _handle_scaling(control, value)
-		printt("_set_control_value with scaling", control, property, value)
-#		control.set_meta(META_APPLIED_SCALE, _get_editor_scale())
-	printt("_set_control_value", control, property, value)
+	
 	control.set_indexed(property, value)
 
 
 static func _handle_scaling(control: Control, value: Variant) -> Variant:
-#	var applied_scale: float = control.get_meta(META_APPLIED_SCALE, 1.0)
 	var editor_scale: float = _get_editor_scale()
 	
 	match typeof(value):
@@ -247,17 +243,30 @@ static func _handle_scaling(control: Control, value: Variant) -> Variant:
 				value = value.duplicate()
 				match value.get_class():
 					&"StyleBoxFlat":
-						pass
+						value.anti_aliasing_size *= editor_scale
+						value.border_width_bottom *= editor_scale
+						value.border_width_left *= editor_scale
+						value.border_width_right *= editor_scale
+						value.border_width_top *= editor_scale
+						value.corner_detail *= editor_scale
+						value.corner_radius_bottom_left *= editor_scale
+						value.corner_radius_bottom_right *= editor_scale
+						value.corner_radius_top_left *= editor_scale
+						value.corner_radius_top_right *= editor_scale
+						value.expand_margin_bottom *= editor_scale
+						value.expand_margin_left *= editor_scale
+						value.expand_margin_right *= editor_scale
+						value.expand_margin_top *= editor_scale
+						value.shadow_offset *= editor_scale
+						value.shadow_size *= editor_scale
+						value.skew *= editor_scale
 					&"LabelSettings":
-						printt("should update font!")
-						value.font_size = value.font_size * editor_scale
-						value.line_spacing = value.line_spacing * editor_scale
-						value.outline_size = value.outline_size * editor_scale
-						value.shadow_offset = value.shadow_offset * editor_scale
-						value.shadow_size = value.shadow_size * editor_scale
-				printt("duplicated resource", value, value.get_class())
+						value.font_size *= editor_scale
+						value.line_spacing *= editor_scale
+						value.outline_size *= editor_scale
+						value.shadow_offset *= editor_scale
+						value.shadow_size *= editor_scale
 	
-#	control.set_meta(META_APPLIED_SCALE, editor_scale)
 	return value
 
 

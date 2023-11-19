@@ -93,10 +93,6 @@ func _populate_contents() -> void:
 		resource_drop.resource_changed.connect(_on_property_value_changed.bind(property_name))
 		_resources_parent.add_child(resource_drop)
 	
-	if _control_type == jpGMT.CONTROL_TYPES.INVALID:
-		_presets.hide()
-	else:
-		_presets.show()
 	_update_size()
 
 
@@ -109,7 +105,8 @@ func _on_control_options_select(index: int) -> void:
 
 func _on_preset_options_select(index: int) -> void:
 	_preset = _preset_options.get_item_metadata(index)
-	jpGMT.set_preset(_control, _preset)
+	var control_owner: Node = _control.owner if _control.owner else _control
+	jpGMT.set_preset(control_owner, _preset)
 
 func _on_property_value_changed(new_value: Variant, property: NodePath) -> void:
 	jpGMT.set_property(_control, property, _preset, new_value)
