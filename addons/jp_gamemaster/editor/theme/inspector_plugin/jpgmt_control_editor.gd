@@ -10,12 +10,16 @@ var _control: Control
 var _control_type: StringName = jpGMT.CONTROL_TYPES.INVALID:
 	set(value):
 		_control_type = value
-		_populate_contents()
+		if _is_populated:
+			_populate_contents()
 
 var _preset: StringName = jpGMT.PRESETS.DEFAULT:
 	set(value):
 		_preset = value
-		_populate_contents()
+		if _is_populated:
+			_populate_contents()
+
+var _is_populated: bool = false
 
 @onready var _content: Control = %content
 @onready var _control_options: OptionButton = %control_options
@@ -25,6 +29,7 @@ var _preset: StringName = jpGMT.PRESETS.DEFAULT:
 
 
 func populate(control: Control) -> void:
+	_is_populated = false
 	_control = control
 	
 	if not is_node_ready():
@@ -34,10 +39,15 @@ func populate(control: Control) -> void:
 	_preset = jpGMT.get_preset(_control)
 	
 	_populate_control_options()
-	_populate_preset_options()
 	_control_options.item_selected.connect(_on_control_options_select)
+	
+	_populate_preset_options()
 	_preset_options.item_selected.connect(_on_preset_options_select)
+	
+	_populate_contents()
 	_update_size()
+	
+	_is_populated = true
 
 
 func _populate_control_options() -> void:
