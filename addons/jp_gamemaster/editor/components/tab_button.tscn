@@ -84,10 +84,11 @@ label_normal = ExtResource("5_t3coa")
 label_pressed = ExtResource("5_sm2v6")
 label_hover = ExtResource("5_sm2v6")
 label_disabled = ExtResource("12_2dguc")
-label_hover_pressed = ExtResource("5_t3coa")
+label_hover_pressed = ExtResource("5_sm2v6")
 metadata/_gmt_properties = {
 "DEFAULT:label_disabled": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark_light.tres",
 "DEFAULT:label_hover": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres",
+"DEFAULT:label_hover_pressed": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres",
 "DEFAULT:label_normal": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark.tres",
 "DEFAULT:label_pressed": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres"
 }

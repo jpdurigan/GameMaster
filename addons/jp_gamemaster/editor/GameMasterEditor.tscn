@@ -42,10 +42,44 @@ layout_mode = 2
 layout_mode = 2
 alignment = 1
 
-[node name="Button" parent="content/list/tabs" instance=ExtResource("3_27npm")]
+[node name="Button" parent="content/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
 layout_mode = 2
 button_group = ExtResource("4_j2sfb")
+tab_content = NodePath("../../content/app1")
+label_text = "App 1"
+
+[node name="Button2" parent="content/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
+layout_mode = 2
+button_group = ExtResource("4_j2sfb")
+tab_content = NodePath("../../content/app2")
+label_text = "App 2"
 
 [node name="content" type="Control" parent="content/list"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="app1" type="CenterContainer" parent="content/list/content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="content/list/content/app1"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.529412, 0.478431, 0.541176, 1)
+text = "App1"
+
+[node name="app2" type="CenterContainer" parent="content/list/content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="content/list/content/app2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.529412, 0.478431, 0.541176, 1)
+text = "App2"

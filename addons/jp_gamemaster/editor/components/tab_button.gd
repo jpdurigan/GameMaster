@@ -1,7 +1,10 @@
 @tool
 extends Button
 
-@export var tab_content: Control
+@export var tab_content: Control:
+	set(value):
+		tab_content = value
+		disabled = not is_instance_valid(tab_content)
 
 @export var icon_texture: Texture:
 	set(value):
@@ -15,8 +18,7 @@ extends Button
 
 
 func _ready() -> void:
-	if not is_instance_valid(tab_content):
-		disabled = true
+	disabled = not is_instance_valid(tab_content)
 
 
 func _toggled(button_pressed: bool) -> void:
