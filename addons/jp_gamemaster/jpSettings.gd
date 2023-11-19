@@ -15,6 +15,8 @@ const _DATA = {
 		hint = PROPERTY_HINT_ENUM_SUGGESTION,
 		hint_string = jpGMT.PRESETS_HINT_STRING,
 		value = jpGMT.PRESETS.DEFAULT,
+		basic = true,
+		restart = true,
 	},
 #	DIALOGUE_TESTER_SCENE_PATH: {
 #		name = "gamemaster/dialogue/tester/scene_path",
@@ -71,6 +73,8 @@ static func add_all_to_project(force_default: bool = false) -> void:
 			ProjectSettings.set_setting(setting_name, setting_default_value)
 		ProjectSettings.add_property_info(_get_setting_info(idx))
 		ProjectSettings.set_initial_value(setting_name, setting_default_value)
+		ProjectSettings.set_as_basic(setting_name, _is_setting_basic(idx))
+		ProjectSettings.set_restart_if_changed(setting_name, _is_setting_restart_needed(idx))
 	ProjectSettings.save()
 
 
@@ -89,3 +93,9 @@ static func _get_setting_name(setting: int) -> String:
 
 static func _get_setting_default_value(setting: int) -> Variant:
 	return _get_setting_info(setting).get("value", null)
+
+static func _is_setting_basic(setting: int) -> bool:
+	return _get_setting_info(setting).get("basic", false)
+
+static func _is_setting_restart_needed(setting: int) -> bool:
+	return _get_setting_info(setting).get("restart", false)
