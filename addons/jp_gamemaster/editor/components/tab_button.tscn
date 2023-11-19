@@ -1,38 +1,48 @@
 [gd_scene load_steps=13 format=3 uid="uid://cmgo38vr3t5di"]
 
-[ext_resource type="StyleBox" uid="uid://b7be626bgojk4" path="res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_dark.tres" id="1_mnrkh"]
-[ext_resource type="StyleBox" uid="uid://dhrbq7bpi3bn7" path="res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_dark_light.tres" id="2_csp0p"]
-[ext_resource type="StyleBox" uid="uid://cvifg8mysiunb" path="res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_light.tres" id="2_mn0u1"]
+[ext_resource type="StyleBox" uid="uid://cvifg8mysiunb" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_light.tres" id="1_qf385"]
+[ext_resource type="StyleBox" uid="uid://dhrbq7bpi3bn7" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_dark_light.tres" id="2_m56vp"]
+[ext_resource type="StyleBox" uid="uid://b7be626bgojk4" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_dark.tres" id="3_5mldc"]
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/button_label.gd" id="3_e1rst"]
-[ext_resource type="StyleBox" uid="uid://cpkoto40arlpo" path="res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_light_dark.tres" id="4_orfmn"]
-[ext_resource type="StyleBox" uid="uid://da1xk626iy6rr" path="res://addons/jp_gamemaster/editor/theme/resources/styleboxempty.tres" id="4_v0odg"]
+[ext_resource type="StyleBox" uid="uid://cpkoto40arlpo" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_light_dark.tres" id="4_lbxia"]
 [ext_resource type="LabelSettings" uid="uid://dwjogdaxcprwc" path="res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres" id="5_sm2v6"]
-[ext_resource type="LabelSettings" uid="uid://cg1sa2pgiyx03" path="res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark.tres" id="5_t3coa"]
+[ext_resource type="StyleBox" uid="uid://da1xk626iy6rr" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxempty.tres" id="5_tc5wg"]
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/tab_button.gd" id="6_lbqbv"]
 [ext_resource type="Texture2D" uid="uid://c7hl0323ovgrs" path="res://addons/jp_gamemaster/editor/gamemaster.png" id="7_nujg8"]
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/button_auto_modulate.gd" id="8_btft3"]
-[ext_resource type="LabelSettings" uid="uid://dg8a8uv6eqb6d" path="res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark_light.tres" id="12_2dguc"]
+[ext_resource type="LabelSettings" uid="uid://dg8a8uv6eqb6d" path="res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark_light.tres" id="9_q8obm"]
+[ext_resource type="LabelSettings" uid="uid://cg1sa2pgiyx03" path="res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark.tres" id="11_1e1ww"]
 
 [node name="tab_button" type="Button"]
 custom_minimum_size = Vector2(160, 28)
 offset_right = 160.0
 offset_bottom = 28.0
-theme_override_styles/normal = ExtResource("2_mn0u1")
-theme_override_styles/hover = ExtResource("2_csp0p")
-theme_override_styles/pressed = ExtResource("1_mnrkh")
-theme_override_styles/disabled = ExtResource("4_orfmn")
-theme_override_styles/focus = ExtResource("4_v0odg")
-disabled = true
+theme_override_styles/normal = ExtResource("1_qf385")
+theme_override_styles/hover = ExtResource("2_m56vp")
+theme_override_styles/pressed = ExtResource("3_5mldc")
+theme_override_styles/disabled = ExtResource("4_lbxia")
+theme_override_styles/focus = ExtResource("5_tc5wg")
 toggle_mode = true
+button_pressed = true
 expand_icon = true
 script = ExtResource("6_lbqbv")
-metadata/_gmt_control_type = &"TAB_BUTTON"
+metadata/_gmt_control_type = &"BUTTON"
 metadata/_gmt_properties = {
-"DEFAULT:theme_override_styles/disabled": "res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_light_dark.tres",
-"DEFAULT:theme_override_styles/focus": "res://addons/jp_gamemaster/editor/theme/resources/styleboxempty.tres",
-"DEFAULT:theme_override_styles/hover": "res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_dark_light.tres",
-"DEFAULT:theme_override_styles/normal": "res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_light.tres",
-"DEFAULT:theme_override_styles/pressed": "res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_dark.tres"
+"DARK:theme_override_styles/disabled": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_black_dark.tres",
+"DARK:theme_override_styles/focus": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxempty.tres",
+"DARK:theme_override_styles/hover": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_dark.tres",
+"DARK:theme_override_styles/normal": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_black.tres",
+"DARK:theme_override_styles/pressed": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_light.tres",
+"DEFAULT:theme_override_styles/disabled": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_light_dark.tres",
+"DEFAULT:theme_override_styles/focus": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxempty.tres",
+"DEFAULT:theme_override_styles/hover": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_dark_light.tres",
+"DEFAULT:theme_override_styles/normal": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_light.tres",
+"DEFAULT:theme_override_styles/pressed": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_dark.tres",
+"GODOT:theme_override_styles/disabled": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_godot_background.tres",
+"GODOT:theme_override_styles/focus": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxempty.tres",
+"GODOT:theme_override_styles/hover": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_godot_highlight.tres",
+"GODOT:theme_override_styles/normal": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_godot_foreground.tres",
+"GODOT:theme_override_styles/pressed": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button_light.tres"
 }
 metadata/_gmt_preset = &"DEFAULT"
 
@@ -48,7 +58,7 @@ alignment = 1
 
 [node name="icon" type="TextureRect" parent="content" node_paths=PackedStringArray("button")]
 unique_name_in_owner = true
-modulate = Color(0.529412, 0.478431, 0.541176, 1)
+modulate = Color(0.960784, 0.956863, 0.964706, 1)
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 texture = ExtResource("7_nujg8")
@@ -63,11 +73,21 @@ modulate_disabled = Color(0.529412, 0.478431, 0.541176, 1)
 modulate_hover_pressed = Color(0.960784, 0.956863, 0.964706, 1)
 metadata/_gmt_control_type = &"BUTTON_AUTO_MODULATE"
 metadata/_gmt_properties = {
-"DEFAULT:modulate_disabled": "res://addons/jp_gamemaster/editor/theme/resources/color_dark_light.tres",
-"DEFAULT:modulate_hover": "res://addons/jp_gamemaster/editor/theme/resources/color_light.tres",
-"DEFAULT:modulate_hover_pressed": "res://addons/jp_gamemaster/editor/theme/resources/color_light.tres",
-"DEFAULT:modulate_normal": "res://addons/jp_gamemaster/editor/theme/resources/color_dark.tres",
-"DEFAULT:modulate_pressed": "res://addons/jp_gamemaster/editor/theme/resources/color_light.tres"
+"DARK:modulate_disabled": "res://addons/jp_gamemaster/editor/theme/colors/color_dark.tres",
+"DARK:modulate_hover": "res://addons/jp_gamemaster/editor/theme/colors/color_light.tres",
+"DARK:modulate_hover_pressed": "res://addons/jp_gamemaster/editor/theme/colors/color_black.tres",
+"DARK:modulate_normal": "res://addons/jp_gamemaster/editor/theme/colors/color_light.tres",
+"DARK:modulate_pressed": "res://addons/jp_gamemaster/editor/theme/colors/color_black.tres",
+"DEFAULT:modulate_disabled": "res://addons/jp_gamemaster/editor/theme/colors/color_dark_light.tres",
+"DEFAULT:modulate_hover": "res://addons/jp_gamemaster/editor/theme/colors/color_light.tres",
+"DEFAULT:modulate_hover_pressed": "res://addons/jp_gamemaster/editor/theme/colors/color_light.tres",
+"DEFAULT:modulate_normal": "res://addons/jp_gamemaster/editor/theme/colors/color_dark.tres",
+"DEFAULT:modulate_pressed": "res://addons/jp_gamemaster/editor/theme/colors/color_light.tres",
+"GODOT:modulate_disabled": "res://addons/jp_gamemaster/editor/theme/colors/color_godot_foreground.tres",
+"GODOT:modulate_hover": "res://addons/jp_gamemaster/editor/theme/colors/color_light.tres",
+"GODOT:modulate_hover_pressed": "res://addons/jp_gamemaster/editor/theme/colors/color_godot_background.tres",
+"GODOT:modulate_normal": "res://addons/jp_gamemaster/editor/theme/colors/color_light.tres",
+"GODOT:modulate_pressed": "res://addons/jp_gamemaster/editor/theme/colors/color_godot_background.tres"
 }
 metadata/_gmt_preset = &"DEFAULT"
 
@@ -76,21 +96,31 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(2.08165e-12, 18)
 layout_mode = 2
 text = "Teste"
-label_settings = ExtResource("12_2dguc")
+label_settings = ExtResource("5_sm2v6")
 vertical_alignment = 1
 script = ExtResource("3_e1rst")
 button = NodePath("../..")
-label_normal = ExtResource("5_t3coa")
+label_normal = ExtResource("11_1e1ww")
 label_pressed = ExtResource("5_sm2v6")
 label_hover = ExtResource("5_sm2v6")
-label_disabled = ExtResource("12_2dguc")
+label_disabled = ExtResource("9_q8obm")
 label_hover_pressed = ExtResource("5_sm2v6")
 metadata/_gmt_properties = {
+"DARK:label_disabled": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark.tres",
+"DARK:label_hover": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres",
+"DARK:label_hover_pressed": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_black.tres",
+"DARK:label_normal": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres",
+"DARK:label_pressed": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_black.tres",
 "DEFAULT:label_disabled": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark_light.tres",
 "DEFAULT:label_hover": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres",
 "DEFAULT:label_hover_pressed": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres",
 "DEFAULT:label_normal": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark.tres",
-"DEFAULT:label_pressed": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres"
+"DEFAULT:label_pressed": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres",
+"GODOT:label_disabled": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_godot_foreground.tres",
+"GODOT:label_hover": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres",
+"GODOT:label_hover_pressed": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_godot_background.tres",
+"GODOT:label_normal": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_light.tres",
+"GODOT:label_pressed": "res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_godot_background.tres"
 }
 metadata/_gmt_preset = &"DEFAULT"
 metadata/_gmt_control_type = &"BUTTON_LABEL"
