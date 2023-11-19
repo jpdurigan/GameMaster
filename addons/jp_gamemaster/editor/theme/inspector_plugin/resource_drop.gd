@@ -3,8 +3,19 @@ extends HBoxContainer
 
 signal resource_changed(resource_path: String)
 
-@export var allowed_classes: Array[StringName]
-@export var allowed_scripts: Array[String]
+@export var allowed_classes: Array[StringName]:
+	set(value):
+		allowed_classes = value
+		_allowed_global_classes.assign(
+			ProjectSettings.get_global_class_list().filter(
+				func (class_dict): return allowed_classes.has(class_dict.class)
+			)
+		)
+		_allowed_classes_paths.assign(
+			_allowed_global_classes.map(
+				func (class_dict): return class_dict.path
+			)
+		)
 
 var resource_path: String = "":
 	set(value):
@@ -21,6 +32,9 @@ var property_name: String = "":
 		if not is_node_ready():
 			await ready
 		_property.text = property_name
+
+var _allowed_global_classes: Array[Dictionary]
+var _allowed_classes_paths: Array[String]
 
 @onready var _property: Label = %property
 @onready var _path: LineEdit = %path
@@ -52,30 +66,53 @@ func _is_valid_drop_data(at_position: Vector2, data: Variant) -> bool:
 	if not is_dictionary:
 		return false
 	
-	var is_type_files: bool = data.get("type", "") == "files"
-	if not is_type_files:
-		return false
+	var resource: Resource
+	var data_type: String = data.get("type", "")
+	match data_type:
+		"files":
+			var files: PackedStringArray = data.get("files", PackedStringArray())
+			var is_single_file: bool = files.size() == 1
+			
+			if not is_single_file:
+				return false
+			
+			var file_path: String = files[0]
+			resource = load(file_path)
+		"resource":
+			resource = data.get("resource")
+		"", _:
+			jpConsole.push_error_method(
+				self,
+				"Unknown type: %s" % [data_type],
+				"_is_valid_drop_data",
+				[data]
+			)
+			return false
 	
-	var files: PackedStringArray = data.get("files", PackedStringArray())
-	var is_single_file: bool = files.size() == 1
-	if not is_single_file:
-		return false
-	
-	var file_path: String = files[0]
-	if not allowed_scripts.is_empty():
-		var dependencies := ResourceLoader.get_dependencies(file_path)
-		var has_allowed_script := _has_any_match(allowed_scripts, dependencies)
-		if has_allowed_script:
+	if not _allowed_classes_paths.is_empty():
+		var resource_dependencies: Array[String]
+		resource_dependencies.assign(
+			ResourceLoader.get_dependencies(resource.resource_path)
+		)
+		var has_allowed_class: bool = _has_any_match(
+			_allowed_classes_paths,
+			resource_dependencies
+		)
+		if has_allowed_class:
 			return true
 	
-	var file: Object = load(file_path)
-	var file_classes: Array[StringName] = _get_class_heritance(file)
+	var file_classes: Array[StringName] = _get_class_heritance(resource)
 	var has_allowed_class: bool = _has_any_match(allowed_classes, file_classes)
 	return has_allowed_class
 
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	resource_path = data["files"][0]
+	var data_type: String = data.get("type", "")
+	match data_type:
+		"files":
+			resource_path = data["files"][0]
+		"resource":
+			resource_path = data["resource"].resource_path
 
 
 func _highlight_on() -> void:

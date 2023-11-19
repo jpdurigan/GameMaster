@@ -5,7 +5,8 @@ extends RefCounted
 
 enum ResourceType {
 	STYLE_BOX,
-	LABEL_SETTINGS
+	LABEL_SETTINGS,
+	JPCOLOR,
 }
 
 const CONTROL_TYPES = {
@@ -39,12 +40,20 @@ const OVERRIDE_DATA: Dictionary = {
 		&"label_hover": ResourceType.LABEL_SETTINGS,
 		&"label_disabled": ResourceType.LABEL_SETTINGS,
 		&"label_hover_pressed": ResourceType.LABEL_SETTINGS,
+	},
+	CONTROL_TYPES.BUTTON_AUTO_MODULATE: {
+		&"modulate_normal": ResourceType.JPCOLOR,
+		&"modulate_pressed": ResourceType.JPCOLOR,
+		&"modulate_hover": ResourceType.JPCOLOR,
+		&"modulate_disabled": ResourceType.JPCOLOR,
+		&"modulate_hover_pressed": ResourceType.JPCOLOR,
 	}
 }
 
 const RESOURCE_CLASSES = {
 	ResourceType.STYLE_BOX: [ &"StyleBox" ],
 	ResourceType.LABEL_SETTINGS: [ &"LabelSettings" ],
+	ResourceType.JPCOLOR: [ &"jpColor" ],
 }
 
 const META_PROPERTY = &"_gmt_properties"

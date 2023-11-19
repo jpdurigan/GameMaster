@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="jpColor" load_steps=2 format=3 uid="uid://cchrc12080a7m"]
+
+[ext_resource type="Script" path="res://addons/jp_gamemaster/value/jpColor.gd" id="1_xj52c"]
+
+[resource]
+script = ExtResource("1_xj52c")
+_value = Color(0.960784, 0.956863, 0.964706, 1)
+id = ""
