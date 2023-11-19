@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cmgo38vr3t5di"]
+[gd_scene load_steps=13 format=3 uid="uid://cmgo38vr3t5di"]
 
 [ext_resource type="StyleBox" uid="uid://b7be626bgojk4" path="res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_dark.tres" id="1_mnrkh"]
 [ext_resource type="StyleBox" uid="uid://dhrbq7bpi3bn7" path="res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_tab_button_dark_light.tres" id="2_csp0p"]
@@ -13,8 +13,6 @@
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/button_auto_modulate.gd" id="8_btft3"]
 [ext_resource type="LabelSettings" uid="uid://dg8a8uv6eqb6d" path="res://addons/jp_gamemaster/editor/theme/fonts/labelsettings_archivo_semi_bold_16px_dark_light.tres" id="12_2dguc"]
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_ju655"]
-
 [node name="tab_button" type="Button"]
 custom_minimum_size = Vector2(160, 28)
 offset_right = 160.0
@@ -26,7 +24,6 @@ theme_override_styles/disabled = ExtResource("4_orfmn")
 theme_override_styles/focus = ExtResource("4_v0odg")
 disabled = true
 toggle_mode = true
-button_group = SubResource("ButtonGroup_ju655")
 expand_icon = true
 script = ExtResource("6_lbqbv")
 metadata/_gmt_control_type = &"TAB_BUTTON"

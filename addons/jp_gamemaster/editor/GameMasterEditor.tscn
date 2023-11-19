@@ -3,8 +3,7 @@
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/GameMasterEditor.gd" id="1_rpjfk"]
 [ext_resource type="StyleBox" uid="uid://g334sbywoskt" path="res://addons/jp_gamemaster/editor/theme/resources/styleboxflat_light_dark.tres" id="2_5hmt8"]
 [ext_resource type="PackedScene" uid="uid://cmgo38vr3t5di" path="res://addons/jp_gamemaster/editor/components/tab_button.tscn" id="3_27npm"]
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_5qf0a"]
+[ext_resource type="ButtonGroup" uid="uid://u3e4qp87hv2w" path="res://addons/jp_gamemaster/editor/theme/resources/main_tab_button_group.tres" id="4_j2sfb"]
 
 [node name="GameMasterEditor" type="Control"]
 layout_mode = 3
@@ -45,8 +44,7 @@ alignment = 1
 
 [node name="Button" parent="content/list/tabs" instance=ExtResource("3_27npm")]
 layout_mode = 2
-disabled = true
-button_group = SubResource("ButtonGroup_5qf0a")
+button_group = ExtResource("4_j2sfb")
 
 [node name="content" type="Control" parent="content/list"]
 layout_mode = 2
