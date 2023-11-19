@@ -5,12 +5,15 @@ extends RefCounted
 
 enum ResourceType {
 	STYLE_BOX,
+	LABEL_SETTINGS
 }
 
 const CONTROL_TYPES = {
 	INVALID = &"",
 	PANEL = &"PANEL",
-	TAB_BUTTON = &"TAB_BUTTON",
+	BUTTON = &"BUTTON",
+	BUTTON_LABEL = &"BUTTON_LABEL",
+	BUTTON_AUTO_MODULATE = &"BUTTON_AUTO_MODULATE",
 }
 
 const PRESETS = {
@@ -23,10 +26,25 @@ const OVERRIDE_DATA: Dictionary = {
 	CONTROL_TYPES.PANEL: {
 		&"theme_override_styles/panel": ResourceType.STYLE_BOX,
 	},
+	CONTROL_TYPES.BUTTON: {
+		&"theme_override_styles/normal": ResourceType.STYLE_BOX,
+		&"theme_override_styles/hover": ResourceType.STYLE_BOX,
+		&"theme_override_styles/pressed": ResourceType.STYLE_BOX,
+		&"theme_override_styles/disabled": ResourceType.STYLE_BOX,
+		&"theme_override_styles/focus": ResourceType.STYLE_BOX,
+	},
+	CONTROL_TYPES.BUTTON_LABEL: {
+		&"label_normal": ResourceType.LABEL_SETTINGS,
+		&"label_pressed": ResourceType.LABEL_SETTINGS,
+		&"label_hover": ResourceType.LABEL_SETTINGS,
+		&"label_disabled": ResourceType.LABEL_SETTINGS,
+		&"label_hover_pressed": ResourceType.LABEL_SETTINGS,
+	}
 }
 
 const RESOURCE_CLASSES = {
 	ResourceType.STYLE_BOX: [ &"StyleBox" ],
+	ResourceType.LABEL_SETTINGS: [ &"LabelSettings" ],
 }
 
 const META_PROPERTY = &"_gmt_properties"

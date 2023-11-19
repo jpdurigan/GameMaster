@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://dg8a8uv6eqb6d"]
+
+[ext_resource type="FontFile" uid="uid://yp7el8rip83e" path="res://addons/jp_gamemaster/editor/theme/fonts/archivo/Archivo-SemiBold.ttf" id="1_1fe1k"]
+
+[resource]
+line_spacing = 2.08165e-12
+font = ExtResource("1_1fe1k")
+font_color = Color(0.529412, 0.478431, 0.541176, 1)
