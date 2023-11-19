@@ -23,6 +23,8 @@ const PRESETS = {
 	GODOT = &"GODOT",
 }
 
+const PRESETS_HINT_STRING = "DEFAULT,DARK,GODOT"
+
 const OVERRIDE_DATA: Dictionary = {
 	CONTROL_TYPES.PANEL: {
 		&"theme_override_styles/panel": ResourceType.STYLE_BOX,
@@ -98,9 +100,13 @@ static func get_property(
 	return data.get(data_key, default_value)
 
 
-static func set_preset(control: Control, preset: StringName) -> void:
+static func set_preset(control: Control, preset: StringName = &"") -> void:
+	if preset.is_empty():
+		preset = jpSettings.get_setting(jpSettings.GMT_THEME_PRESET)
+	
 	var control_type: StringName = get_control_type(control)
-	if OVERRIDE_DATA.has(control_type):
+	var control_preset: StringName = get_preset(control)
+	if control_preset != preset and OVERRIDE_DATA.has(control_type):
 		var data: Dictionary = control.get_meta(META_PROPERTY, {})
 		var is_default: bool = preset == PRESETS.DEFAULT
 		var properties: Array[StringName]
@@ -114,7 +120,11 @@ static func set_preset(control: Control, preset: StringName) -> void:
 			var default_key: StringName = _get_data_key(property, PRESETS.DEFAULT)
 			if data.has(default_key):
 				_set_control_value(control, property, data, default_key)
-	control.set_meta(META_PRESET, preset)
+		control.set_meta(META_PRESET, preset)
+	
+	for child in control.get_children():
+		if child is Control:
+			set_preset(child, preset)
 
 
 static func get_preset(control: Control) -> StringName:

@@ -17,6 +17,12 @@ extends Button
 		%label.text = label_text
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_EDITOR_PRE_SAVE:
+			jpGMT.set_preset(self, jpGMT.PRESETS.DEFAULT)
+
+
 func _ready() -> void:
 	disabled = not is_instance_valid(tab_content)
 

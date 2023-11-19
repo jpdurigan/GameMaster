@@ -44,12 +44,14 @@ alignment = 1
 
 [node name="Button" parent="content/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
 layout_mode = 2
+disabled = false
 button_group = ExtResource("4_j2sfb")
 tab_content = NodePath("../../content/app1")
 label_text = "App 1"
 
 [node name="Button2" parent="content/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
 layout_mode = 2
+disabled = false
 button_group = ExtResource("4_j2sfb")
 tab_content = NodePath("../../content/app2")
 label_text = "App 2"
