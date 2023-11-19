@@ -22,7 +22,11 @@ var resource_path: String = "":
 		resource_path = value
 		if not is_node_ready():
 			await ready
-		_path.text = ".../%s" % resource_path.get_file()
+		_path.text = (
+			".../%s" % resource_path.get_file()
+			if resource_path.is_absolute_path()
+			else resource_path
+		)
 		_path.tooltip_text = resource_path
 		_close.visible = not resource_path.is_empty()
 		resource_changed.emit(resource_path)

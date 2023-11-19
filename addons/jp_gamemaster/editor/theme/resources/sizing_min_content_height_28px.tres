@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="jpMetric" load_steps=2 format=3 uid="uid://m36ewjagg07c"]
+
+[ext_resource type="Script" path="res://addons/jp_gamemaster/value/jpMetric.gd" id="1_p2inn"]
+
+[resource]
+script = ExtResource("1_p2inn")
+as_int = true
+keep_max = false
+_value_float = 0.0
+_value_int = 18
+_condition = 1
+_comparison = 0.0
+id = ""

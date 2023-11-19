@@ -6,6 +6,7 @@ extends RefCounted
 enum ResourceType {
 	STYLE_BOX,
 	LABEL_SETTINGS,
+	JPMETRIC,
 	JPCOLOR,
 }
 
@@ -35,6 +36,8 @@ const OVERRIDE_DATA: Dictionary = {
 		&"theme_override_styles/pressed": ResourceType.STYLE_BOX,
 		&"theme_override_styles/disabled": ResourceType.STYLE_BOX,
 		&"theme_override_styles/focus": ResourceType.STYLE_BOX,
+		&"custom_minimum_size:x": ResourceType.JPMETRIC,
+		&"custom_minimum_size:y": ResourceType.JPMETRIC,
 	},
 	CONTROL_TYPES.BUTTON_LABEL: {
 		&"label_normal": ResourceType.LABEL_SETTINGS,
@@ -42,6 +45,8 @@ const OVERRIDE_DATA: Dictionary = {
 		&"label_hover": ResourceType.LABEL_SETTINGS,
 		&"label_disabled": ResourceType.LABEL_SETTINGS,
 		&"label_hover_pressed": ResourceType.LABEL_SETTINGS,
+		&"custom_minimum_size:x": ResourceType.JPMETRIC,
+		&"custom_minimum_size:y": ResourceType.JPMETRIC,
 	},
 	CONTROL_TYPES.BUTTON_AUTO_MODULATE: {
 		&"modulate_normal": ResourceType.JPCOLOR,
@@ -49,18 +54,25 @@ const OVERRIDE_DATA: Dictionary = {
 		&"modulate_hover": ResourceType.JPCOLOR,
 		&"modulate_disabled": ResourceType.JPCOLOR,
 		&"modulate_hover_pressed": ResourceType.JPCOLOR,
+		&"custom_minimum_size:x": ResourceType.JPMETRIC,
+		&"custom_minimum_size:y": ResourceType.JPMETRIC,
 	}
 }
 
 const RESOURCE_CLASSES = {
 	ResourceType.STYLE_BOX: [ &"StyleBox" ],
 	ResourceType.LABEL_SETTINGS: [ &"LabelSettings" ],
+	ResourceType.JPMETRIC: [ &"jpMetric" ],
 	ResourceType.JPCOLOR: [ &"jpColor" ],
 }
 
 const META_PROPERTY = &"_gmt_properties"
 const META_CONTROL_TYPE = &"_gmt_control_type"
 const META_PRESET = &"_gmt_preset"
+const META_APPLIED_SCALE = &"_gmt_applied_scale"
+
+
+static var _editor_interface: EditorInterface
 
 
 static func set_control_type(
@@ -106,7 +118,11 @@ static func set_preset(control: Control, preset: StringName = &"") -> void:
 	
 	var control_type: StringName = get_control_type(control)
 	var control_preset: StringName = get_preset(control)
-	if control_preset != preset and OVERRIDE_DATA.has(control_type):
+	var should_update_preset: bool = (
+		control_type != CONTROL_TYPES.INVALID
+		and (control_preset != preset or not _is_node_being_edited(control))
+	)
+	if should_update_preset:
 		var data: Dictionary = control.get_meta(META_PROPERTY, {})
 		var is_default: bool = preset == PRESETS.DEFAULT
 		var properties: Array[StringName]
@@ -152,8 +168,57 @@ static func _set_control_value(
 				value = load(value)
 				if value is jpValue:
 					value = value.get_value()
+	
+	if not _is_node_being_edited(control):
+		value = _handle_scaling(control, value)
+		printt("_set_control_value with scaling", control, property, value)
+#		control.set_meta(META_APPLIED_SCALE, _get_editor_scale())
 	control.set(property, value)
+
+
+static func _handle_scaling(control: Control, value: Variant) -> Variant:
+#	var applied_scale: float = control.get_meta(META_APPLIED_SCALE, 1.0)
+	var editor_scale: float = _get_editor_scale()
+	
+	match typeof(value):
+		TYPE_INT, TYPE_FLOAT:
+			value = value * editor_scale
+		TYPE_OBJECT:
+			if value is Resource:
+				value = value.duplicate()
+				match value.get_class():
+					&"StyleBoxFlat":
+						pass
+					&"LabelSettings":
+						printt("should update font!")
+						value.font_size = value.font_size * editor_scale
+						value.line_spacing = value.line_spacing * editor_scale
+						value.outline_size = value.outline_size * editor_scale
+						value.shadow_offset = value.shadow_offset * editor_scale
+						value.shadow_size = value.shadow_size * editor_scale
+				printt("duplicated resource", value, value.get_class())
+	
+	control.set_meta(META_APPLIED_SCALE, editor_scale)
+	return value
 
 
 static func _get_data_key(property: StringName, preset: StringName) -> String:
 	return "%s:%s" % [preset, property]
+
+
+static func _get_editor_scale() -> float:
+	if not is_instance_valid(_editor_interface):
+		var editor_plugin := EditorPlugin.new()
+		_editor_interface = editor_plugin.get_editor_interface()
+	return _editor_interface.get_editor_scale()
+
+static func _is_node_being_edited(node: Node) -> bool:
+	var edited_scene_root: Node = node.get_tree().edited_scene_root
+	var is_node_being_edited: bool = (
+		edited_scene_root != null
+		and (
+			edited_scene_root == node
+			or edited_scene_root.is_ancestor_of(node)
+		)
+	)
+	return is_node_being_edited

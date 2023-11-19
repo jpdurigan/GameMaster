@@ -33,6 +33,7 @@ func _enter_tree():
 #	jpFileSystem.editor_paths = editor_interface.get_editor_paths()
 #	jpUID.load_from_cache()
 	jpSettings.add_all_to_project()
+#	jpGMT.editor_interface = editor_interface
 #	jpMeta.initialize()
 
 func _exit_tree() -> void:
