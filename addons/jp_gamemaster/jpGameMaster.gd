@@ -14,11 +14,10 @@ var jptheme_inspector_plugin: EditorInspectorPlugin
 func _enable_plugin():
 	pass
 #	jpFileSystem.add_plugin_project_folders()
-#	jpSettings.add_all_to_project(true)
+	jpSettings.add_all_to_project(true)
 
 func _disable_plugin():
-	pass
-#	jpSettings.remove_all_from_project()
+	jpSettings.remove_all_from_project()
 
 
 func _enter_tree():
@@ -33,7 +32,7 @@ func _enter_tree():
 #	jpFileSystem.add_plugin_project_folders()
 #	jpFileSystem.editor_paths = editor_interface.get_editor_paths()
 #	jpUID.load_from_cache()
-#	jpSettings.add_all_to_project()
+	jpSettings.add_all_to_project()
 #	jpMeta.initialize()
 
 func _exit_tree() -> void:
