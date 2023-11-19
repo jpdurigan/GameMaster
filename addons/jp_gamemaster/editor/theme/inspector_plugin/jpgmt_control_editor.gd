@@ -111,6 +111,6 @@ func _on_preset_options_select(index: int) -> void:
 	_preset = _preset_options.get_item_metadata(index)
 	jpGMT.set_preset(_control, _preset)
 
-func _on_property_value_changed(new_value: Variant, property: StringName) -> void:
+func _on_property_value_changed(new_value: Variant, property: NodePath) -> void:
 	jpGMT.set_property(_control, property, _preset, new_value)
 	jpGMT.set_preset(_control, _preset)

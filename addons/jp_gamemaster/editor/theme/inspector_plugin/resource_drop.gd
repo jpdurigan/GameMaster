@@ -29,7 +29,6 @@ var resource_path: String = "":
 		)
 		_path.tooltip_text = resource_path
 		_close.visible = not resource_path.is_empty()
-		resource_changed.emit(resource_path)
 
 var property_name: String = "":
 	set(value):
@@ -118,6 +117,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 			resource_path = data["files"][0]
 		"resource":
 			resource_path = data["resource"].resource_path
+	resource_changed.emit(resource_path)
 
 
 func _highlight_on() -> void:
@@ -151,3 +151,4 @@ func _get_class_heritance(object: Object) -> Array[StringName]:
 
 func _on_close_pressed() -> void:
 	resource_path = ""
+	resource_changed.emit(resource_path)

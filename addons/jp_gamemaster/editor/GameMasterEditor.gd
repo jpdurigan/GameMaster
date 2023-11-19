@@ -10,6 +10,4 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_EDITOR_PRE_SAVE:
-			jpGMT.set_preset(self, jpGMT.PRESETS.DEFAULT)
+	jpGMT.on_notification(self, what)
