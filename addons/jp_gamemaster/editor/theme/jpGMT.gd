@@ -113,6 +113,8 @@ static func _set_control_value(
 				return
 			if value.is_absolute_path() and FileAccess.file_exists(value):
 				value = load(value)
+				if value is jpValue:
+					value = value.get_value()
 	control.set(property, value)
 
 

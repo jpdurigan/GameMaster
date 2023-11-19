@@ -9,7 +9,7 @@ extends jpValue
 
 
 ## Returns value.
-func get_value() -> bool:
+func get_value() -> Variant:
 	return _value
 
 ## Returns value as a boolean.

@@ -28,7 +28,7 @@ enum Condition {
 
 
 ## Returns value.
-func get_value():
+func get_value() -> Variant:
 	var value = _value_int if as_int else _value_float
 	return value
 

@@ -20,6 +20,10 @@ extends Resource
 @export var id: String
 
 
+## Returns value.
+func get_value() -> Variant:
+	return null
+
 ## Returns value as a boolean.
 func get_bool_value() -> bool:
 	return false

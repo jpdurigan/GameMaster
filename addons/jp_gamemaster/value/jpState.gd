@@ -20,7 +20,7 @@ enum Condition {
 
 
 ## Returns value.
-func get_value() -> int:
+func get_value() -> Variant:
 	return _value
 
 ## Returns value as a boolean. Uses [enum jpState.Condition].
