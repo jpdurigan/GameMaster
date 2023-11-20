@@ -58,8 +58,8 @@ const OVERRIDE_DATA: Dictionary = {
 		^"theme_override_styles/pressed": ResourceType.STYLE_BOX,
 		^"theme_override_styles/disabled": ResourceType.STYLE_BOX,
 		^"theme_override_styles/focus": ResourceType.STYLE_BOX,
-		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-		^"custom_minimum_size:y": ResourceType.JPMETRIC,
+#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
+#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
 	},
 	CONTROL_TYPES.BUTTON_LABEL: {
 		^"label_normal": ResourceType.LABEL_SETTINGS,
@@ -67,30 +67,30 @@ const OVERRIDE_DATA: Dictionary = {
 		^"label_hover": ResourceType.LABEL_SETTINGS,
 		^"label_disabled": ResourceType.LABEL_SETTINGS,
 		^"label_hover_pressed": ResourceType.LABEL_SETTINGS,
-		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-		^"custom_minimum_size:y": ResourceType.JPMETRIC,
+#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
+#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
 	},
 	CONTROL_TYPES.BUTTON_AUTO_MODULATE: {
-		^"modulate_normal": ResourceType.JPCOLOR,
-		^"modulate_pressed": ResourceType.JPCOLOR,
-		^"modulate_hover": ResourceType.JPCOLOR,
-		^"modulate_disabled": ResourceType.JPCOLOR,
-		^"modulate_hover_pressed": ResourceType.JPCOLOR,
-		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-		^"custom_minimum_size:y": ResourceType.JPMETRIC,
+		^"modulate_normal": ResourceType.COLOR,
+		^"modulate_pressed": ResourceType.COLOR,
+		^"modulate_hover": ResourceType.COLOR,
+		^"modulate_disabled": ResourceType.COLOR,
+		^"modulate_hover_pressed": ResourceType.COLOR,
+#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
+#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
 	},
 	CONTROL_TYPES.BOX_CONTAINER: {
-		^"theme_override_constants/separation": ResourceType.JPMETRIC,
-		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-		^"custom_minimum_size:y": ResourceType.JPMETRIC,
+#		^"theme_override_constants/separation": ResourceType.JPMETRIC,
+#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
+#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
 	},
 	CONTROL_TYPES.MARGIN_CONTAINER: {
-		^"theme_override_constants/margin_left": ResourceType.JPMETRIC,
-		^"theme_override_constants/margin_top": ResourceType.JPMETRIC,
-		^"theme_override_constants/margin_right": ResourceType.JPMETRIC,
-		^"theme_override_constants/margin_bottom": ResourceType.JPMETRIC,
-		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-		^"custom_minimum_size:y": ResourceType.JPMETRIC,
+#		^"theme_override_constants/margin_left": ResourceType.JPMETRIC,
+#		^"theme_override_constants/margin_top": ResourceType.JPMETRIC,
+#		^"theme_override_constants/margin_right": ResourceType.JPMETRIC,
+#		^"theme_override_constants/margin_bottom": ResourceType.JPMETRIC,
+#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
+#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
 	}
 }
 
@@ -116,9 +116,34 @@ const DEFAULT_VALUES = {
 	^"custom_minimum_size:y": 0.0,
 }
 
+const THEME_OVERRIDES = {
+	CONSTANTS = [
+		&"separation",
+		&"margin_left",
+		&"margin_top",
+		&"margin_right",
+		&"margin_bottom",
+	],
+	STYLES = [
+		&"panel",
+		&"normal",
+		&"hover",
+		&"pressed",
+		&"disabled",
+		&"focus",
+	],
+	FONT_SIZES = [
+		&"font_size",
+	],
+	PROPERTIES = [
+		&"custom_minimum_size",
+	],
+}
+
 const META_PROPERTY = &"_gmt_properties"
 const META_CONTROL_TYPE = &"_gmt_control_type"
 const META_PRESET = &"_gmt_preset"
+const META_APPLIED_SCALE = &"_gmt_applied_scale"
 
 
 static var _editor_interface: EditorInterface
@@ -194,6 +219,9 @@ static func set_preset(control: Control, preset: StringName = &"") -> void:
 		var owner: Node = control.owner if control.owner else control
 		owner.set_meta(META_PRESET, preset)
 	
+	if not _is_node_being_edited(control):
+		_handle_scaling(control)
+	
 	for child in control.get_children():
 		if child is Control:
 			set_preset(child, preset)
@@ -266,52 +294,81 @@ static func _set_control_value(
 					value = value.get_value()
 		TYPE_STRING_NAME:
 			if value in COLORS.values():
-				printt("got value in COLORS", value)
+#				printt("got value in COLORS", value)
 				value = COLORS_DEFAULT[value]
-				printt("got value in COLORS", value)
-				pass
-	
-	if not _is_node_being_edited(control):
-		value = _handle_scaling(control, value)
+#				printt("got value in COLORS", value)
 	
 	control.set_indexed(property, value)
 
 
-static func _handle_scaling(control: Control, value: Variant) -> Variant:
+static func _handle_scaling(control: Control) -> void:
 	var editor_scale: float = _get_editor_scale()
+	var applied_scale: float = control.get_meta(META_APPLIED_SCALE, 1.0)
 	
+	if editor_scale == applied_scale:
+		return
+	
+	var correction_ratio: float = editor_scale / applied_scale
+	for override in THEME_OVERRIDES.CONSTANTS:
+#		printt("checking", control, override, control.has_theme_constant_override(override))
+		if control.has_theme_constant_override(override):
+			var value = _scale_value(control.get_theme_constant(override), correction_ratio)
+			printt("setting", override, value, "on", control)
+			control.add_theme_constant_override(override, value)
+	
+	for override in THEME_OVERRIDES.STYLES:
+#		printt("checking", control, override, control.has_theme_stylebox_override(override))
+		if control.has_theme_stylebox_override(override):
+			var value = _scale_value(control.get_theme_stylebox(override), correction_ratio)
+			printt("setting", override, value, "on", control)
+			control.add_theme_stylebox_override(override, value)
+	
+	for override in THEME_OVERRIDES.FONT_SIZES:
+		if control.has_theme_font_size_override(override):
+			var value = _scale_value(control.get_theme_font_size(override), correction_ratio)
+			printt("setting", override, value, "on", control)
+			control.add_theme_font_size_override(override, value)
+	
+	for property in THEME_OVERRIDES.PROPERTIES:
+		var value = _scale_value(control.get(property), correction_ratio)
+		printt("setting", property, value, "on", control)
+		control.set(property, value)
+	
+	control.set_meta(META_APPLIED_SCALE, editor_scale)
+
+
+static func _scale_value(value: Variant, correction_ratio: float) -> Variant:
 	match typeof(value):
-		TYPE_INT, TYPE_FLOAT:
-			value = value * editor_scale
+		TYPE_INT, TYPE_FLOAT, TYPE_VECTOR2, TYPE_VECTOR2I:
+			value *= correction_ratio
 		TYPE_OBJECT:
 			if value is Resource:
 				value = value.duplicate()
 				match value.get_class():
 					&"StyleBoxFlat":
-						value.anti_aliasing_size *= editor_scale
-						value.border_width_bottom *= editor_scale
-						value.border_width_left *= editor_scale
-						value.border_width_right *= editor_scale
-						value.border_width_top *= editor_scale
-						value.corner_detail *= editor_scale
-						value.corner_radius_bottom_left *= editor_scale
-						value.corner_radius_bottom_right *= editor_scale
-						value.corner_radius_top_left *= editor_scale
-						value.corner_radius_top_right *= editor_scale
-						value.expand_margin_bottom *= editor_scale
-						value.expand_margin_left *= editor_scale
-						value.expand_margin_right *= editor_scale
-						value.expand_margin_top *= editor_scale
-						value.shadow_offset *= editor_scale
-						value.shadow_size *= editor_scale
-						value.skew *= editor_scale
+						value.anti_aliasing_size *= correction_ratio
+						value.border_width_bottom *= correction_ratio
+						value.border_width_left *= correction_ratio
+						value.border_width_right *= correction_ratio
+						value.border_width_top *= correction_ratio
+						value.corner_detail *= correction_ratio
+						value.corner_radius_bottom_left *= correction_ratio
+						value.corner_radius_bottom_right *= correction_ratio
+						value.corner_radius_top_left *= correction_ratio
+						value.corner_radius_top_right *= correction_ratio
+						value.expand_margin_bottom *= correction_ratio
+						value.expand_margin_left *= correction_ratio
+						value.expand_margin_right *= correction_ratio
+						value.expand_margin_top *= correction_ratio
+						value.shadow_offset *= correction_ratio
+						value.shadow_size *= correction_ratio
+						value.skew *= correction_ratio
 					&"LabelSettings":
-						value.font_size *= editor_scale
-						value.line_spacing *= editor_scale
-						value.outline_size *= editor_scale
-						value.shadow_offset *= editor_scale
-						value.shadow_size *= editor_scale
-	
+						value.font_size *= correction_ratio
+						value.line_spacing *= correction_ratio
+						value.outline_size *= correction_ratio
+						value.shadow_offset *= correction_ratio
+						value.shadow_size *= correction_ratio
 	return value
 
 

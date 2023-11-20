@@ -2,6 +2,7 @@
 extends CanvasItem
 
 @export var button: BaseButton
+@export var use_self_modulate: bool = false
 
 @export_group("Modulate")
 @export var modulate_normal: Color = Color.WHITE:
@@ -47,6 +48,11 @@ func _update_modulate() -> void:
 			color = modulate_disabled
 		BaseButton.DRAW_HOVER_PRESSED:
 			color = modulate_hover_pressed
+	
+	if use_self_modulate:
+		if color != self_modulate:
+			self_modulate = color
+		return
 	
 	if color != modulate:
 		modulate = color
