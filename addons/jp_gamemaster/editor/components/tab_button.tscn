@@ -8,9 +8,9 @@
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/button_auto_modulate.gd" id="8_btft3"]
 
 [node name="tab_button" type="Button" node_paths=PackedStringArray("button")]
-custom_minimum_size = Vector2(160, 28)
-offset_right = 160.0
-offset_bottom = 28.0
+custom_minimum_size = Vector2(120, 24)
+offset_right = 120.0
+offset_bottom = 24.0
 theme_override_styles/normal = ExtResource("1_107kl")
 theme_override_styles/hover = ExtResource("1_107kl")
 theme_override_styles/pressed = ExtResource("1_107kl")
@@ -35,10 +35,9 @@ metadata/_gmt_properties = {
 "GODOT:modulate_normal": &"FOREGROUND",
 "GODOT:modulate_pressed": &"FOREGROUND"
 }
-metadata/_gmt_preset = &"GODOT"
+metadata/_gmt_preset = &"DEFAULT"
 
 [node name="content" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(2.08165e-12, 28)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,7 +48,7 @@ alignment = 1
 
 [node name="icon" type="TextureRect" parent="content" node_paths=PackedStringArray("button")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(18, 18)
+custom_minimum_size = Vector2(14, 14)
 layout_mode = 2
 texture = ExtResource("7_nujg8")
 expand_mode = 1
@@ -75,11 +74,11 @@ metadata/_gmt_properties = {
 
 [node name="label" type="Label" parent="content" node_paths=PackedStringArray("button")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(2.08165e-12, 18)
+custom_minimum_size = Vector2(2.08165e-12, 12)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("4_ks0pe")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 12
 text = "Teste"
 vertical_alignment = 2
 script = ExtResource("8_btft3")
