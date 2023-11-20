@@ -127,6 +127,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("6_ow0gs")
 camera = NodePath("../../Camera2D")
+metadata/_gmt_control_type = &"TREE_EDITOR_GRID"
+metadata/_gmt_properties = {
+"DEFAULT:grid_background_color": &"BACKGROUND",
+"DEFAULT:grid_color": &"FOREGROUND"
+}
 
 [node name="ColorRect" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/container/viewport/root"]
 custom_minimum_size = Vector2(80, 80)

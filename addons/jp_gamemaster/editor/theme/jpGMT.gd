@@ -16,8 +16,8 @@ const PRESET_COLORS = {
 	PRESETS.DEFAULT: {
 		COLORS.NONE: Color.WHITE,
 		COLORS.BACKGROUND: Color("d7d5da"),
-		COLORS.FOREGROUND: Color("f5f4f6"),
-		COLORS.BLACK: Color("6a5b6e"),
+		COLORS.FOREGROUND: Color("6a5b6e"),
+		COLORS.BLACK: Color("554958"),
 		COLORS.WHITE: Color("f5f4f6"),
 		COLORS.ACCENT: Color("0f7173"),
 	},
@@ -35,6 +35,7 @@ const CONTROL_TYPES = {
 	INVALID = &"",
 	PANEL = &"PANEL",
 	BUTTON_AUTO_MODULATE = &"BUTTON_AUTO_MODULATE",
+	TREE_EDITOR_GRID = &"TREE_EDITOR_GRID",
 }
 
 const PRESETS = {
@@ -62,10 +63,16 @@ const _PROPERTY_LIST: Dictionary = {
 		^"modulate_disabled",
 		^"modulate_hover_pressed",
 	],
+	CONTROL_TYPES.TREE_EDITOR_GRID: [
+		^"grid_background_color",
+		^"grid_color",
+	]
 }
 
 const _DEFAULT_VALUES = {
 	^"self_modulate": Color.WHITE,
+	^"grid_background_color": Color.WHITE,
+	^"grid_color": Color.BLACK,
 	^"modulate_normal": Color.WHITE,
 	^"modulate_pressed": Color.WHITE,
 	^"modulate_hover": Color.WHITE,
@@ -190,37 +197,38 @@ static func get_preset(control: Control) -> StringName:
 	return preset
 
 
-static func _clean_control_pre_saving(control: Control) -> void:
-	var control_id: int = control.get_instance_id()
+static func _clean_control_pre_saving(node: Node) -> void:
 	if typeof(_pre_save_data) == TYPE_NIL:
 		_pre_save_data = {}
 	
-	var control_type: StringName = get_control_type(control)
-	if control_type != CONTROL_TYPES.INVALID:
-		if not _pre_save_data.has(control_id):
-			_pre_save_data[control_id] = {}
-			for property in get_properties_for(control_type):
-				var value: Variant = control.get_indexed(property)
-				_pre_save_data[control_id][property] = value
-				control.set_indexed(property, _DEFAULT_VALUES.get(property, null))
+	if node is Control:
+		var control: Control = node
+		var control_type: StringName = get_control_type(control)
+		if control_type != CONTROL_TYPES.INVALID:
+			var control_id: int = control.get_instance_id()
+			if not _pre_save_data.has(control_id):
+				_pre_save_data[control_id] = {}
+				for property in get_properties_for(control_type):
+					var value: Variant = control.get_indexed(property)
+					_pre_save_data[control_id][property] = value
+					control.set_indexed(property, _DEFAULT_VALUES.get(property, null))
 	
-	for child in control.get_children():
-		if child is Control:
-			_clean_control_pre_saving(child)
+	for child in node.get_children():
+		_clean_control_pre_saving(child)
 
 
-static func _reset_control_post_saving(control: Control) -> void:
-	var control_id: int = control.get_instance_id()
+static func _reset_control_post_saving(node: Node) -> void:
+	if node is Control:
+		var control: Control = node
+		var control_id: int = control.get_instance_id()
+		if _pre_save_data.has(control_id):
+			for property in _pre_save_data[control_id]:
+				var value: Variant = _pre_save_data[control_id][property]
+				control.set_indexed(property, value)
+			_pre_save_data.erase(control_id)
 	
-	if _pre_save_data.has(control_id):
-		for property in _pre_save_data[control_id]:
-			var value: Variant = _pre_save_data[control_id][property]
-			control.set_indexed(property, value)
-		_pre_save_data.erase(control_id)
-	
-	for child in control.get_children():
-		if child is Control:
-			_reset_control_post_saving(child)
+	for child in node.get_children():
+		_reset_control_post_saving(child)
 
 
 static func _set_control_value(

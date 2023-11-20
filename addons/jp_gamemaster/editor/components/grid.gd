@@ -1,12 +1,30 @@
 @tool
 extends Control
 
-@export var grid_size: float = 128.0
-@export var grid_width: float = 0.8
-@export var grid_subunits: int = 4
-@export var grid_subunit_width: float = 0.4
-@export var grid_background_color: Color = Color.WHITE
-@export var grid_color: Color = Color.BLACK
+@export var grid_size: float = 128.0:
+	set(value):
+		grid_size = value
+		queue_redraw()
+@export var grid_width: float = 0.8:
+	set(value):
+		grid_width = value
+		queue_redraw()
+@export var grid_subunits: int = 4:
+	set(value):
+		grid_subunits = value
+		queue_redraw()
+@export var grid_subunit_width: float = 0.4:
+	set(value):
+		grid_subunit_width = value
+		queue_redraw()
+@export var grid_background_color: Color = Color.WHITE:
+	set(value):
+		grid_background_color = value
+		queue_redraw()
+@export var grid_color: Color = Color.BLACK:
+	set(value):
+		grid_color = value
+		queue_redraw()
 
 @export var camera: Camera2D
 
