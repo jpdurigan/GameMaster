@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dr7gcj7gfm0gx"]
+[gd_scene load_steps=9 format=3 uid="uid://dr7gcj7gfm0gx"]
 
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/GameMasterEditor.gd" id="1_rpjfk"]
 [ext_resource type="StyleBox" uid="uid://br0kor1w6admh" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_main_panel.tres" id="2_tormf"]
@@ -7,6 +7,7 @@
 [ext_resource type="StyleBox" uid="uid://cphs5ovukkyol" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tree_editor_mask.tres" id="5_n2nnr"]
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/grid.gd" id="6_ow0gs"]
 [ext_resource type="StyleBox" uid="uid://be1ep8ww6v55n" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tree_editor_border.tres" id="6_ypgwc"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/grid_input.gd" id="7_cj8f4"]
 
 [node name="GameMasterEditor" type="Control"]
 layout_mode = 3
@@ -100,6 +101,19 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 theme_override_styles/panel = ExtResource("5_n2nnr")
 
+[node name="grid_input" type="Control" parent="content/margins/list/content/app1/split/tree_editor" node_paths=PackedStringArray("border", "root")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 1
+script = ExtResource("7_cj8f4")
+focus_color = Color(0.0588235, 0.443137, 0.45098, 1)
+border = NodePath("../border")
+root = NodePath("../root")
+
 [node name="root" type="Control" parent="content/margins/list/content/app1/split/tree_editor"]
 layout_mode = 1
 anchors_preset = 15
@@ -107,6 +121,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="grid" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root" node_paths=PackedStringArray("root")]
 layout_mode = 1
@@ -115,6 +130,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("6_ow0gs")
 root = NodePath("..")
 metadata/_gmt_control_type = &"TREE_EDITOR_GRID"
@@ -130,6 +146,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
 custom_minimum_size = Vector2(80, 80)
@@ -211,6 +228,7 @@ metadata/_gmt_properties = {
 "DEFAULT:self_modulate": &"FOREGROUND",
 "GODOT:self_modulate": &"FOREGROUND"
 }
+metadata/_edit_lock_ = true
 
 [node name="app2" type="CenterContainer" parent="content/margins/list/content"]
 visible = false
