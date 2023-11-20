@@ -20,7 +20,6 @@ script = ExtResource("1_rpjfk")
 metadata/_gmt_preset = &"DEFAULT"
 
 [node name="content" type="PanelContainer" parent="."]
-self_modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,8 +28,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("2_tormf")
 metadata/_gmt_properties = {
-"DEFAULT:self_modulate": &"BACKGROUND",
-"DEFAULT:theme_override_styles/panel": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_main_panel.tres"
+"DEFAULT:self_modulate": &"BACKGROUND"
 }
 metadata/_gmt_control_type = &"PANEL"
 
@@ -40,31 +38,15 @@ theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
-metadata/_gmt_control_type = &"MARGIN_CONTAINER"
-metadata/_gmt_properties = {
-"DEFAULT:theme_override_constants/margin_bottom": "res://addons/jp_gamemaster/editor/theme/resources/sizing_separation_8px.tres",
-"DEFAULT:theme_override_constants/margin_left": "res://addons/jp_gamemaster/editor/theme/resources/sizing_separation_8px.tres",
-"DEFAULT:theme_override_constants/margin_right": "res://addons/jp_gamemaster/editor/theme/resources/sizing_separation_8px.tres",
-"DEFAULT:theme_override_constants/margin_top": "res://addons/jp_gamemaster/editor/theme/resources/sizing_separation_8px.tres"
-}
 
 [node name="list" type="VBoxContainer" parent="content/margins"]
 layout_mode = 2
 theme_override_constants/separation = 8
-metadata/_gmt_control_type = &"BOX_CONTAINER"
-metadata/_gmt_properties = {
-"DEFAULT:theme_override_constants/separation": "res://addons/jp_gamemaster/editor/theme/resources/sizing_separation_8px.tres"
-}
 
 [node name="tabs" type="HBoxContainer" parent="content/margins/list"]
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
-metadata/_gmt_control_type = &"BOX_CONTAINER"
-metadata/_gmt_properties = {
-"DEFAULT:custom_minimum_size:y": "res://addons/jp_gamemaster/editor/theme/resources/sizing_min_content_height_28px.tres",
-"DEFAULT:theme_override_constants/separation": "res://addons/jp_gamemaster/editor/theme/resources/sizing_separation_8px.tres"
-}
 
 [node name="Button" parent="content/margins/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
 layout_mode = 2
@@ -116,11 +98,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 theme_override_styles/panel = ExtResource("5_n2nnr")
-metadata/_gmt_control_type = &""
-metadata/_gmt_properties = {
-"DEFAULT:self_modulate": &"NONE",
-"DEFAULT:theme_override_styles/panel": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tree_editor_mask.tres"
-}
 
 [node name="container" type="SubViewportContainer" parent="content/margins/list/content/app1/split/tree_editor"]
 layout_mode = 2
@@ -204,14 +181,12 @@ position = Vector2(484.001, 310.001)
 editor_draw_screen = false
 
 [node name="border" type="Panel" parent="content/margins/list/content/app1/split/tree_editor"]
-self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("6_ypgwc")
 metadata/_gmt_control_type = &"PANEL"
 metadata/_gmt_properties = {
-"DEFAULT:self_modulate": &"BLACK",
-"DEFAULT:theme_override_styles/panel": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tree_editor_border.tres"
+"DEFAULT:self_modulate": &"BLACK"
 }
 
 [node name="app2" type="CenterContainer" parent="content/margins/list/content"]

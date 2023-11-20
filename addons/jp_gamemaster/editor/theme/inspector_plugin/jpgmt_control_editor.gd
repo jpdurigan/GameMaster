@@ -27,7 +27,7 @@ var _is_populated: bool = false
 @onready var _control_options: OptionButton = %control_options
 @onready var _presets: Control = %presets
 @onready var _preset_options: OptionButton = %preset_options
-@onready var _resources_parent: Control = %resources_parent
+@onready var _control_colors: Control = %control_colors
 
 
 func populate(control: Control) -> void:
@@ -81,27 +81,17 @@ func _populate_preset_options() -> void:
 
 
 func _populate_contents() -> void:
-	for child in _resources_parent.get_children():
-		_resources_parent.remove_child(child)
+	for child in _control_colors.get_children():
+		_control_colors.remove_child(child)
 		child.queue_free()
 	
-	var override_data: Dictionary = jpGMT.OVERRIDE_DATA.get(_control_type, {})
-	for property_name in override_data.keys():
-		var resource_type: jpGMT.ResourceType = override_data[property_name]
-		match resource_type:
-			jpGMT.ResourceType.COLOR:
-				var theme_colors: ThemeColors = theme_colors_scene.instantiate()
-				theme_colors.property_name = property_name
-				theme_colors.color = jpGMT.get_property(_control, property_name, _preset, jpGMT.COLORS.NONE)
-				theme_colors.color_changed.connect(_on_property_value_changed.bind(property_name))
-				_resources_parent.add_child(theme_colors)
-			_:
-				var resource_drop: ResourceDrop = resource_drop_scene.instantiate()
-				resource_drop.property_name = property_name
-				resource_drop.resource_path = jpGMT.get_property(_control, property_name, _preset, "")
-				resource_drop.allowed_classes = jpGMT.get_classes(resource_type)
-				resource_drop.resource_changed.connect(_on_property_value_changed.bind(property_name))
-				_resources_parent.add_child(resource_drop)
+	if _control_type != jpGMT.CONTROL_TYPES.INVALID:
+		for property_name in jpGMT.get_properties_for(_control_type):
+			var theme_colors: ThemeColors = theme_colors_scene.instantiate()
+			theme_colors.property_name = property_name
+			theme_colors.color = jpGMT.get_property(_control, property_name, _preset, jpGMT.COLORS.NONE)
+			theme_colors.color_changed.connect(_on_property_value_changed.bind(property_name))
+			_control_colors.add_child(theme_colors)
 	
 	_update_size()
 
@@ -119,5 +109,6 @@ func _on_preset_options_select(index: int) -> void:
 	jpGMT.set_preset(control_owner, _preset)
 
 func _on_property_value_changed(new_value: Variant, property: NodePath) -> void:
+	new_value = new_value if new_value != jpGMT.COLORS.NONE else null
 	jpGMT.set_property(_control, property, _preset, new_value)
 	jpGMT.set_preset(_control, _preset)

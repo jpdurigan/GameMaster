@@ -3,13 +3,13 @@ extends RefCounted
 ## GameMaster Theming static helper.
 
 
-enum ResourceType {
-	STYLE_BOX,
-	LABEL_SETTINGS,
-	JPMETRIC,
-	JPCOLOR,
-	COLOR,
-}
+#enum ResourceType {
+#	STYLE_BOX,
+#	LABEL_SETTINGS,
+#	JPMETRIC,
+#	JPCOLOR,
+#	COLOR,
+#}
 
 const COLORS = {
 	NONE = &"NONE",
@@ -32,11 +32,7 @@ const COLORS_DEFAULT = {
 const CONTROL_TYPES = {
 	INVALID = &"",
 	PANEL = &"PANEL",
-	BUTTON = &"BUTTON",
-	BUTTON_LABEL = &"BUTTON_LABEL",
 	BUTTON_AUTO_MODULATE = &"BUTTON_AUTO_MODULATE",
-	BOX_CONTAINER = &"BOX_CONTAINER",
-	MARGIN_CONTAINER = &"MARGIN_CONTAINER",
 }
 
 const PRESETS = {
@@ -47,76 +43,29 @@ const PRESETS = {
 
 const PRESETS_HINT_STRING = "DEFAULT,DARK,GODOT"
 
-const OVERRIDE_DATA: Dictionary = {
-	CONTROL_TYPES.PANEL: {
-		^"self_modulate": ResourceType.COLOR,
-#		^"theme_override_styles/panel": ResourceType.STYLE_BOX,
-	},
-	CONTROL_TYPES.BUTTON: {
-		^"theme_override_styles/normal": ResourceType.STYLE_BOX,
-		^"theme_override_styles/hover": ResourceType.STYLE_BOX,
-		^"theme_override_styles/pressed": ResourceType.STYLE_BOX,
-		^"theme_override_styles/disabled": ResourceType.STYLE_BOX,
-		^"theme_override_styles/focus": ResourceType.STYLE_BOX,
-#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
-	},
-	CONTROL_TYPES.BUTTON_LABEL: {
-		^"label_normal": ResourceType.LABEL_SETTINGS,
-		^"label_pressed": ResourceType.LABEL_SETTINGS,
-		^"label_hover": ResourceType.LABEL_SETTINGS,
-		^"label_disabled": ResourceType.LABEL_SETTINGS,
-		^"label_hover_pressed": ResourceType.LABEL_SETTINGS,
-#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
-	},
-	CONTROL_TYPES.BUTTON_AUTO_MODULATE: {
-		^"modulate_normal": ResourceType.COLOR,
-		^"modulate_pressed": ResourceType.COLOR,
-		^"modulate_hover": ResourceType.COLOR,
-		^"modulate_disabled": ResourceType.COLOR,
-		^"modulate_hover_pressed": ResourceType.COLOR,
-#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
-	},
-	CONTROL_TYPES.BOX_CONTAINER: {
-#		^"theme_override_constants/separation": ResourceType.JPMETRIC,
-#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
-	},
-	CONTROL_TYPES.MARGIN_CONTAINER: {
-#		^"theme_override_constants/margin_left": ResourceType.JPMETRIC,
-#		^"theme_override_constants/margin_top": ResourceType.JPMETRIC,
-#		^"theme_override_constants/margin_right": ResourceType.JPMETRIC,
-#		^"theme_override_constants/margin_bottom": ResourceType.JPMETRIC,
-#		^"custom_minimum_size:x": ResourceType.JPMETRIC,
-#		^"custom_minimum_size:y": ResourceType.JPMETRIC,
-	}
+const _PROPERTY_LIST: Dictionary = {
+	CONTROL_TYPES.PANEL: [
+		^"self_modulate",
+	],
+	CONTROL_TYPES.BUTTON_AUTO_MODULATE: [
+		^"modulate_normal",
+		^"modulate_pressed",
+		^"modulate_hover",
+		^"modulate_disabled",
+		^"modulate_hover_pressed",
+	],
 }
 
-const RESOURCE_CLASSES = {
-	ResourceType.STYLE_BOX: [ &"StyleBox" ],
-	ResourceType.LABEL_SETTINGS: [ &"LabelSettings" ],
-	ResourceType.JPMETRIC: [ &"jpMetric" ],
-	ResourceType.JPCOLOR: [ &"jpColor" ],
-}
-
-const DEFAULT_VALUES = {
+const _DEFAULT_VALUES = {
+	^"self_modulate": Color.WHITE,
 	^"modulate_normal": Color.WHITE,
 	^"modulate_pressed": Color.WHITE,
 	^"modulate_hover": Color.WHITE,
 	^"modulate_disabled": Color.WHITE,
 	^"modulate_hover_pressed": Color.WHITE,
-	^"theme_override_constants/separation": 4,
-	^"theme_override_constants/margin_left": 0,
-	^"theme_override_constants/margin_top": 0,
-	^"theme_override_constants/margin_right": 0,
-	^"theme_override_constants/margin_bottom": 0,
-	^"custom_minimum_size:x": 0.0,
-	^"custom_minimum_size:y": 0.0,
 }
 
-const THEME_OVERRIDES = {
+const _THEME_OVERRIDES = {
 	CONSTANTS = [
 		&"separation",
 		&"margin_left",
@@ -140,9 +89,9 @@ const THEME_OVERRIDES = {
 	],
 }
 
-const META_PROPERTY = &"_gmt_properties"
-const META_CONTROL_TYPE = &"_gmt_control_type"
 const META_PRESET = &"_gmt_preset"
+const META_CONTROL_TYPE = &"_gmt_control_type"
+const META_PROPERTY = &"_gmt_properties"
 const META_APPLIED_SCALE = &"_gmt_applied_scale"
 
 
@@ -206,7 +155,7 @@ static func set_preset(control: Control, preset: StringName = &"") -> void:
 	if control_type != CONTROL_TYPES.INVALID:
 		var data: Dictionary = control.get_meta(META_PROPERTY, {})
 		var is_default: bool = preset == PRESETS.DEFAULT
-		for property in _get_properties_for(control_type):
+		for property in get_properties_for(control_type):
 			var data_key: StringName = _get_data_key(property, preset)
 			if data.has(data_key):
 				_set_control_value(control, property, data, data_key)
@@ -219,7 +168,9 @@ static func set_preset(control: Control, preset: StringName = &"") -> void:
 		var owner: Node = control.owner if control.owner else control
 		owner.set_meta(META_PRESET, preset)
 	
-	if not _is_node_being_edited(control):
+	if _is_node_being_edited(control):
+		_clean_up_editing_node(control)
+	else:
 		_handle_scaling(control)
 	
 	for child in control.get_children():
@@ -233,12 +184,6 @@ static func get_preset(control: Control) -> StringName:
 	return preset
 
 
-static func get_classes(resource_type: ResourceType) -> Array[StringName]:
-	var classes: Array[StringName]
-	classes.assign(RESOURCE_CLASSES.get(resource_type, []))
-	return classes
-
-
 static func _clean_control_pre_saving(control: Control) -> void:
 	var control_id: int = control.get_instance_id()
 	if typeof(_pre_save_data) == TYPE_NIL:
@@ -248,15 +193,10 @@ static func _clean_control_pre_saving(control: Control) -> void:
 	if control_type != CONTROL_TYPES.INVALID:
 		if not _pre_save_data.has(control_id):
 			_pre_save_data[control_id] = {}
-			for property in _get_properties_for(control_type):
+			for property in get_properties_for(control_type):
 				var value: Variant = control.get_indexed(property)
 				_pre_save_data[control_id][property] = value
-				control.set_indexed(property, DEFAULT_VALUES.get(property, null))
-		
-		# handle exceptions
-		match control_type:
-			CONTROL_TYPES.BUTTON_LABEL:
-				control.label_settings = null
+				control.set_indexed(property, _DEFAULT_VALUES.get(property, null))
 	
 	for child in control.get_children():
 		if child is Control:
@@ -284,6 +224,7 @@ static func _set_control_value(
 		key: StringName
 ) -> void:
 	var value: Variant = data[key]
+#	jpConsole.print_method(jpGMT, "", "_set_control_value", [control, property, data, key])
 	match typeof(value):
 		TYPE_STRING:
 			if value.is_empty():
@@ -294,11 +235,27 @@ static func _set_control_value(
 					value = value.get_value()
 		TYPE_STRING_NAME:
 			if value in COLORS.values():
-#				printt("got value in COLORS", value)
 				value = COLORS_DEFAULT[value]
-#				printt("got value in COLORS", value)
 	
 	control.set_indexed(property, value)
+
+
+static func _clean_up_editing_node(control: Control) -> void:
+	var control_type: StringName = get_control_type(control)
+	var is_invalid_control_type: bool = (
+		control_type == CONTROL_TYPES.INVALID
+		or not CONTROL_TYPES.values().has(control_type)
+	)
+	if is_invalid_control_type:
+		control.remove_meta(META_CONTROL_TYPE)
+		control.remove_meta(META_PROPERTY)
+	else:
+		var data: Dictionary = control.get_meta(META_PROPERTY, {})
+		var allowed_keys: Array[String] = _get_allowed_data_keys_for(control_type)
+		for key in data.keys():
+			if not allowed_keys.has(key):
+				data.erase(key)
+		control.set_meta(META_PROPERTY, data if not data.is_empty() else null)
 
 
 static func _handle_scaling(control: Control) -> void:
@@ -309,29 +266,23 @@ static func _handle_scaling(control: Control) -> void:
 		return
 	
 	var correction_ratio: float = editor_scale / applied_scale
-	for override in THEME_OVERRIDES.CONSTANTS:
-#		printt("checking", control, override, control.has_theme_constant_override(override))
+	for override in _THEME_OVERRIDES.CONSTANTS:
 		if control.has_theme_constant_override(override):
 			var value = _scale_value(control.get_theme_constant(override), correction_ratio)
-			printt("setting", override, value, "on", control)
 			control.add_theme_constant_override(override, value)
 	
-	for override in THEME_OVERRIDES.STYLES:
-#		printt("checking", control, override, control.has_theme_stylebox_override(override))
+	for override in _THEME_OVERRIDES.STYLES:
 		if control.has_theme_stylebox_override(override):
 			var value = _scale_value(control.get_theme_stylebox(override), correction_ratio)
-			printt("setting", override, value, "on", control)
 			control.add_theme_stylebox_override(override, value)
 	
-	for override in THEME_OVERRIDES.FONT_SIZES:
+	for override in _THEME_OVERRIDES.FONT_SIZES:
 		if control.has_theme_font_size_override(override):
 			var value = _scale_value(control.get_theme_font_size(override), correction_ratio)
-			printt("setting", override, value, "on", control)
 			control.add_theme_font_size_override(override, value)
 	
-	for property in THEME_OVERRIDES.PROPERTIES:
+	for property in _THEME_OVERRIDES.PROPERTIES:
 		var value = _scale_value(control.get(property), correction_ratio)
-		printt("setting", property, value, "on", control)
 		control.set(property, value)
 	
 	control.set_meta(META_APPLIED_SCALE, editor_scale)
@@ -376,13 +327,22 @@ static func _get_data_key(property: NodePath, preset: StringName) -> String:
 	return "%s:%s" % [preset, property]
 
 
-static func _get_properties_for(control_type: StringName) -> Array[NodePath]:
+static func get_properties_for(control_type: StringName) -> Array[NodePath]:
 	var properties: Array[NodePath]
-	if not OVERRIDE_DATA.has(control_type):
+	if not _PROPERTY_LIST.has(control_type):
 		push_error("Unknown control type: %s" % control_type)
 		return properties
-	properties.assign(OVERRIDE_DATA[control_type].keys())
+	properties.assign(_PROPERTY_LIST[control_type])
 	return properties
+
+
+static func _get_allowed_data_keys_for(control_type: StringName) -> Array[String]:
+	var allowed_data_keys: Array[String] = []
+	var properties: Array[NodePath] = get_properties_for(control_type)
+	for preset in PRESETS.values():
+		for property in properties:
+			allowed_data_keys.append(_get_data_key(property, preset))
+	return allowed_data_keys
 
 
 static func _get_editor_scale() -> float:

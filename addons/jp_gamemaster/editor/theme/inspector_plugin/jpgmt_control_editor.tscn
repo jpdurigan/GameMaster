@@ -82,13 +82,9 @@ popup/item_2/id = 2
 [node name="separator" type="HSeparator" parent="content"]
 layout_mode = 2
 
-[node name="resources_parent" type="VBoxContainer" parent="content"]
+[node name="control_colors" type="VBoxContainer" parent="content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="resource_drop" parent="content/resources_parent" instance=ExtResource("2_ksar8")]
-visible = false
-layout_mode = 2
-
-[node name="theme_colors" parent="content/resources_parent" instance=ExtResource("3_6ns7v")]
+[node name="theme_colors" parent="content/control_colors" instance=ExtResource("3_6ns7v")]
 layout_mode = 2
