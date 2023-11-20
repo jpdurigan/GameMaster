@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dr7gcj7gfm0gx"]
+[gd_scene load_steps=10 format=3 uid="uid://dr7gcj7gfm0gx"]
 
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/GameMasterEditor.gd" id="1_rpjfk"]
 [ext_resource type="StyleBox" uid="uid://br0kor1w6admh" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_main_panel.tres" id="2_tormf"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/grid.gd" id="6_ow0gs"]
 [ext_resource type="StyleBox" uid="uid://be1ep8ww6v55n" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tree_editor_border.tres" id="6_ypgwc"]
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/grid_input.gd" id="7_cj8f4"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/draggable_node.gd" id="8_0kba6"]
 
 [node name="GameMasterEditor" type="Control"]
 layout_mode = 3
@@ -148,60 +149,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-offset_left = 54.0
-offset_top = 47.0
-offset_right = 134.0
-offset_bottom = 127.0
-color = Color(0, 1, 0, 1)
-
-[node name="ColorRect2" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-offset_left = 158.0
-offset_top = 90.0
-offset_right = 238.0
-offset_bottom = 170.0
-color = Color(0, 1, 0, 1)
-
-[node name="ColorRect3" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-offset_left = 62.0
-offset_top = 152.0
-offset_right = 142.0
-offset_bottom = 232.0
-color = Color(0, 1, 0, 1)
-
-[node name="ColorRect4" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-offset_left = 153.0
-offset_top = 193.0
-offset_right = 233.0
-offset_bottom = 273.0
-color = Color(0, 1, 0, 1)
-
-[node name="ColorRect5" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-offset_left = 261.0
-offset_top = 67.0
-offset_right = 341.0
-offset_bottom = 147.0
-color = Color(0, 1, 0, 1)
-
-[node name="ColorRect6" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-offset_left = 267.0
-offset_top = 189.0
-offset_right = 347.0
-offset_bottom = 269.0
-color = Color(0, 1, 0, 1)
-
 [node name="PanelContainer" type="PanelContainer" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
 layout_mode = 0
 offset_left = 256.0
@@ -213,6 +160,47 @@ offset_bottom = 424.0
 custom_minimum_size = Vector2(128, 2.08165e-12)
 layout_mode = 2
 placeholder_text = "something"
+
+[node name="node" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root/nodes" node_paths=PackedStringArray("grid_input")]
+custom_minimum_size = Vector2(128, 192)
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+focus_mode = 1
+mouse_filter = 1
+script = ExtResource("8_0kba6")
+grid_input = NodePath("../../../grid_input")
+
+[node name="bg" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes/node"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 1, 0, 1)
+
+[node name="node2" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root/nodes" node_paths=PackedStringArray("grid_input")]
+custom_minimum_size = Vector2(128, 192)
+anchors_preset = 0
+offset_left = 256.0
+offset_right = 384.0
+offset_bottom = 192.0
+focus_mode = 1
+mouse_filter = 1
+script = ExtResource("8_0kba6")
+grid_input = NodePath("../../../grid_input")
+
+[node name="bg" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes/node2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 1, 0, 1)
 
 [node name="border" type="Panel" parent="content/margins/list/content/app1/split/tree_editor"]
 layout_mode = 1
