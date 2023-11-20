@@ -28,9 +28,14 @@ metadata/_gmt_properties = {
 "DEFAULT:modulate_hover": &"BLACK",
 "DEFAULT:modulate_hover_pressed": &"ACCENT",
 "DEFAULT:modulate_normal": &"FOREGROUND",
-"DEFAULT:modulate_pressed": &"ACCENT"
+"DEFAULT:modulate_pressed": &"ACCENT",
+"GODOT:modulate_disabled": &"BACKGROUND",
+"GODOT:modulate_hover": &"FOREGROUND",
+"GODOT:modulate_hover_pressed": &"FOREGROUND",
+"GODOT:modulate_normal": &"FOREGROUND",
+"GODOT:modulate_pressed": &"FOREGROUND"
 }
-metadata/_gmt_preset = &"DEFAULT"
+metadata/_gmt_preset = &"GODOT"
 
 [node name="content" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(2.08165e-12, 28)
@@ -60,7 +65,12 @@ metadata/_gmt_properties = {
 "DEFAULT:modulate_hover": &"WHITE",
 "DEFAULT:modulate_hover_pressed": &"WHITE",
 "DEFAULT:modulate_normal": &"BLACK",
-"DEFAULT:modulate_pressed": &"WHITE"
+"DEFAULT:modulate_pressed": &"WHITE",
+"GODOT:modulate_disabled": &"FOREGROUND",
+"GODOT:modulate_hover": &"WHITE",
+"GODOT:modulate_hover_pressed": &"ACCENT",
+"GODOT:modulate_normal": &"WHITE",
+"GODOT:modulate_pressed": &"ACCENT"
 }
 
 [node name="label" type="Label" parent="content" node_paths=PackedStringArray("button")]
@@ -82,6 +92,11 @@ metadata/_gmt_properties = {
 "DEFAULT:modulate_hover": &"WHITE",
 "DEFAULT:modulate_hover_pressed": &"WHITE",
 "DEFAULT:modulate_normal": &"BLACK",
-"DEFAULT:modulate_pressed": &"WHITE"
+"DEFAULT:modulate_pressed": &"WHITE",
+"GODOT:modulate_disabled": &"FOREGROUND",
+"GODOT:modulate_hover": &"WHITE",
+"GODOT:modulate_hover_pressed": &"ACCENT",
+"GODOT:modulate_normal": &"WHITE",
+"GODOT:modulate_pressed": &"ACCENT"
 }
 metadata/_gmt_control_type = &"BUTTON_AUTO_MODULATE"

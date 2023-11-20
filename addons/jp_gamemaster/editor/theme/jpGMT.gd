@@ -238,7 +238,10 @@ static func _set_control_value(
 					value = value.get_value()
 		TYPE_STRING_NAME:
 			if value in COLORS.values():
-				value = PRESET_COLORS[preset][value]
+				if preset == PRESETS.GODOT:
+					value = _get_editor_theme_color(value)
+				else:
+					value = PRESET_COLORS[preset][value]
 	
 	control.set_indexed(property, value)
 
@@ -348,11 +351,39 @@ static func _get_allowed_data_keys_for(control_type: StringName) -> Array[String
 	return allowed_data_keys
 
 
+static func _get_editor_theme_color(color: StringName) -> Color:
+	var editor_color: Color = Color.WHITE
+	
+	_assert_editor_interface()
+	var editor_settings: EditorSettings = _editor_interface.get_editor_settings()
+	var base_color: Color = editor_settings.get_setting("interface/theme/base_color")
+	var accent_color: Color = editor_settings.get_setting("interface/theme/accent_color")
+	var contrast: float = editor_settings.get_setting("interface/theme/contrast")
+	
+	match color:
+		COLORS.BACKGROUND:
+			editor_color = base_color.darkened(contrast)
+		COLORS.FOREGROUND:
+			editor_color = base_color
+		COLORS.BLACK:
+			editor_color = Color("010101")
+		COLORS.WHITE:
+			editor_color = Color("fefefe")
+		COLORS.ACCENT:
+			editor_color = accent_color
+	
+	return editor_color
+
+
 static func _get_editor_scale() -> float:
+	_assert_editor_interface()
+	return _editor_interface.get_editor_scale()
+
+
+static func _assert_editor_interface() -> void:
 	if not is_instance_valid(_editor_interface):
 		var editor_plugin := EditorPlugin.new()
 		_editor_interface = editor_plugin.get_editor_interface()
-	return _editor_interface.get_editor_scale()
 
 
 static func _is_node_being_edited(node: Node) -> bool:

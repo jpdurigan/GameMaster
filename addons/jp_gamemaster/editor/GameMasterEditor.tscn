@@ -17,7 +17,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_rpjfk")
-metadata/_gmt_preset = &"DEFAULT"
+metadata/_gmt_preset = &"GODOT"
 
 [node name="content" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -186,7 +186,8 @@ mouse_filter = 2
 theme_override_styles/panel = ExtResource("6_ypgwc")
 metadata/_gmt_control_type = &"PANEL"
 metadata/_gmt_properties = {
-"DEFAULT:self_modulate": &"BLACK"
+"DEFAULT:self_modulate": &"BLACK",
+"GODOT:self_modulate": &"FOREGROUND"
 }
 
 [node name="app2" type="CenterContainer" parent="content/margins/list/content"]
