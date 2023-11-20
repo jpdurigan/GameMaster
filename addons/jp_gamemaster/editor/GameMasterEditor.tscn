@@ -93,32 +93,22 @@ custom_minimum_size = Vector2(160, 2.08165e-12)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="tree_editor" type="PanelContainer" parent="content/margins/list/content/app1/split"]
+[node name="tree_editor" type="Panel" parent="content/margins/list/content/app1/split"]
 clip_children = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 theme_override_styles/panel = ExtResource("5_n2nnr")
 
-[node name="container" type="SubViewportContainer" parent="content/margins/list/content/app1/split/tree_editor"]
-layout_mode = 2
-stretch = true
-
-[node name="viewport" type="SubViewport" parent="content/margins/list/content/app1/split/tree_editor/container"]
-disable_3d = true
-handle_input_locally = false
-size = Vector2i(941, 600)
-render_target_update_mode = 4
-
-[node name="root" type="Control" parent="content/margins/list/content/app1/split/tree_editor/container/viewport"]
-layout_mode = 3
+[node name="root" type="Control" parent="content/margins/list/content/app1/split/tree_editor"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="grid" type="Control" parent="content/margins/list/content/app1/split/tree_editor/container/viewport/root" node_paths=PackedStringArray("camera")]
+[node name="grid" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root" node_paths=PackedStringArray("root")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -126,14 +116,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("6_ow0gs")
-camera = NodePath("../../Camera2D")
+root = NodePath("..")
 metadata/_gmt_control_type = &"TREE_EDITOR_GRID"
 metadata/_gmt_properties = {
 "DEFAULT:grid_background_color": &"BACKGROUND",
 "DEFAULT:grid_color": &"FOREGROUND"
 }
 
-[node name="ColorRect" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/container/viewport/root"]
+[node name="nodes" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
 offset_left = 54.0
@@ -142,7 +140,7 @@ offset_right = 134.0
 offset_bottom = 127.0
 color = Color(0, 1, 0, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/container/viewport/root"]
+[node name="ColorRect2" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
 offset_left = 158.0
@@ -151,7 +149,7 @@ offset_right = 238.0
 offset_bottom = 170.0
 color = Color(0, 1, 0, 1)
 
-[node name="ColorRect3" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/container/viewport/root"]
+[node name="ColorRect3" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
 offset_left = 62.0
@@ -160,7 +158,7 @@ offset_right = 142.0
 offset_bottom = 232.0
 color = Color(0, 1, 0, 1)
 
-[node name="ColorRect4" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/container/viewport/root"]
+[node name="ColorRect4" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
 offset_left = 153.0
@@ -169,7 +167,7 @@ offset_right = 233.0
 offset_bottom = 273.0
 color = Color(0, 1, 0, 1)
 
-[node name="ColorRect5" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/container/viewport/root"]
+[node name="ColorRect5" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
 offset_left = 261.0
@@ -178,7 +176,7 @@ offset_right = 341.0
 offset_bottom = 147.0
 color = Color(0, 1, 0, 1)
 
-[node name="ColorRect6" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/container/viewport/root"]
+[node name="ColorRect6" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
 offset_left = 267.0
@@ -187,13 +185,25 @@ offset_right = 347.0
 offset_bottom = 269.0
 color = Color(0, 1, 0, 1)
 
-[node name="Camera2D" type="Camera2D" parent="content/margins/list/content/app1/split/tree_editor/container/viewport"]
-position = Vector2(-180, -120)
-anchor_mode = 0
-editor_draw_screen = false
+[node name="PanelContainer" type="PanelContainer" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 384.0
+offset_right = 384.0
+offset_bottom = 424.0
+
+[node name="LineEdit" type="LineEdit" parent="content/margins/list/content/app1/split/tree_editor/root/nodes/PanelContainer"]
+custom_minimum_size = Vector2(128, 2.08165e-12)
+layout_mode = 2
+placeholder_text = "something"
 
 [node name="border" type="Panel" parent="content/margins/list/content/app1/split/tree_editor"]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("6_ypgwc")
 metadata/_gmt_control_type = &"PANEL"

@@ -101,6 +101,9 @@ const _THEME_OVERRIDES = {
 	],
 	PROPERTIES = [
 		&"custom_minimum_size",
+		&"grid_size",
+		&"grid_width",
+		&"grid_subunit_width",
 	],
 }
 
@@ -297,8 +300,9 @@ static func _handle_scaling(control: Control) -> void:
 			control.add_theme_font_size_override(override, value)
 	
 	for property in _THEME_OVERRIDES.PROPERTIES:
-		var value = _scale_value(control.get(property), correction_ratio)
-		control.set(property, value)
+		if control.get(property) != null:
+			var value = _scale_value(control.get(property), correction_ratio)
+			control.set(property, value)
 	
 	control.set_meta(META_APPLIED_SCALE, editor_scale)
 

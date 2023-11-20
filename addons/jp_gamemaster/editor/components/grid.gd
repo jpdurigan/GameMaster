@@ -26,19 +26,17 @@ extends Control
 		grid_color = value
 		queue_redraw()
 
-@export var camera: Camera2D
+@export var root: Control
 
 
 func _ready() -> void:
-	if camera:
-		camera.draw.connect(queue_redraw)
+	root.draw.connect(queue_redraw)
+	root.item_rect_changed.connect(queue_redraw)
 
 
 func _draw() -> void:
 	# draw background
-	var bg_rect: Rect2 = get_viewport_rect()
-	if camera:
-		bg_rect.position = camera.position
+	var bg_rect := Rect2(-root.position, root.size)
 	draw_rect(bg_rect, grid_background_color)
 	
 	# draw grid
