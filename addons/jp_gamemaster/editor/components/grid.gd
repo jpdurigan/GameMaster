@@ -86,3 +86,7 @@ func _draw() -> void:
 				true
 			)
 		y += grid_size
+
+
+func get_grid_snap() -> Vector2:
+	return Vector2.ONE * grid_size / grid_subunits

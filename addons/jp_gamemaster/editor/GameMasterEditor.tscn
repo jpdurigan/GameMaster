@@ -97,12 +97,13 @@ size_flags_horizontal = 3
 
 [node name="tree_editor" type="Panel" parent="content/margins/list/content/app1/split"]
 clip_children = 1
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 theme_override_styles/panel = ExtResource("5_n2nnr")
 
-[node name="grid_input" type="Control" parent="content/margins/list/content/app1/split/tree_editor" node_paths=PackedStringArray("border", "root", "nodes")]
+[node name="grid_input" type="Control" parent="content/margins/list/content/app1/split/tree_editor" node_paths=PackedStringArray("border", "root", "grid", "nodes")]
 z_index = 1
 layout_mode = 1
 anchors_preset = 15
@@ -112,10 +113,15 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 1
 script = ExtResource("7_cj8f4")
-focus_color = Color(0.0588235, 0.443137, 0.45098, 1)
 border = NodePath("../border")
 root = NodePath("../root")
+grid = NodePath("../root/grid")
 nodes = NodePath("../root/nodes")
+metadata/_gmt_control_type = &"TREE_EDITOR_GRID_INPUT"
+metadata/_gmt_properties = {
+"DEFAULT:focus_color": &"ACCENT",
+"DEFAULT:select_color": &"ACCENT"
+}
 
 [node name="root" type="Control" parent="content/margins/list/content/app1/split/tree_editor"]
 layout_mode = 1
@@ -202,6 +208,7 @@ mouse_filter = 1
 color = Color(0, 1, 0, 1)
 
 [node name="border" type="Panel" parent="content/margins/list/content/app1/split/tree_editor"]
+z_index = 10
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

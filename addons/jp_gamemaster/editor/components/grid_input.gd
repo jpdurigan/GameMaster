@@ -5,10 +5,12 @@ const ZOOM_MIN = 0.33
 const ZOOM_MAX = 1.0
 const ZOOM_STEP = 1.05
 
-@export var focus_color: Color
+@export var focus_color: Color = Color.WHITE
+@export var select_color: Color = Color.WHITE
 @export var border: Control
 
 @export var root: Control
+@export var grid: Control
 @export var nodes: Control
 
 var _border_color_backup: Color
@@ -42,6 +44,7 @@ func _notification(what: int) -> void:
 			border.self_modulate = focus_color
 		NOTIFICATION_FOCUS_EXIT:
 			border.self_modulate = _border_color_backup
+			_unselect_all()
 
 
 #func _input(event: InputEvent) -> void:
@@ -88,7 +91,8 @@ func _gui_input(event: InputEvent) -> void:
 func _draw() -> void:
 	if _can_select_nodes:
 		draw_set_transform(-global_position)
-		draw_rect(_selection_rect, Color.MAGENTA)
+		draw_rect(_selection_rect, select_color.lerp(Color.TRANSPARENT, 0.5))
+		draw_rect(_selection_rect, select_color, false, grid.grid_width)
 
 
 func _process(_delta: float) -> void:
@@ -125,7 +129,7 @@ func _process_dragging_root(relative: Vector2) -> void:
 func _process_dragging_nodes(relative: Vector2) -> void:
 	for node_id in _selected_nodes.keys():
 		var selected_node: SelectedNode = _selected_nodes[node_id]
-		selected_node.move_by(relative, Vector2.ONE * 64.0)
+		selected_node.move_by(relative, grid.get_grid_snap())
 
 
 func _update_selection() -> void:
@@ -187,12 +191,12 @@ func _update_conditions() -> void:
 	_is_dragging_root = _can_drag_root and _is_mouse_pressed
 	_is_dragging_nodes = _is_node_pressed and not _selected_nodes.is_empty()
 	_can_select_nodes = not _can_drag_root and _is_mouse_pressed
-	printt(
-		"_update_conditions",
-		_can_select_nodes,
-		_selection_start,
-		_selection_end
-	)
+#	printt(
+#		"_update_conditions",
+#		_can_select_nodes,
+#		_selection_start,
+#		_selection_end
+#	)
 
 
 func _handle_cursor() -> void:

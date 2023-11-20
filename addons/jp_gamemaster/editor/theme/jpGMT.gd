@@ -36,6 +36,7 @@ const CONTROL_TYPES = {
 	PANEL = &"PANEL",
 	BUTTON_AUTO_MODULATE = &"BUTTON_AUTO_MODULATE",
 	TREE_EDITOR_GRID = &"TREE_EDITOR_GRID",
+	TREE_EDITOR_GRID_INPUT = &"TREE_EDITOR_GRID_INPUT",
 }
 
 const PRESETS = {
@@ -66,6 +67,10 @@ const _PROPERTY_LIST: Dictionary = {
 	CONTROL_TYPES.TREE_EDITOR_GRID: [
 		^"grid_background_color",
 		^"grid_color",
+	],
+	CONTROL_TYPES.TREE_EDITOR_GRID_INPUT: [
+		^"focus_color",
+		^"select_color"
 	]
 }
 
@@ -73,6 +78,8 @@ const _DEFAULT_VALUES = {
 	^"self_modulate": Color.WHITE,
 	^"grid_background_color": Color.WHITE,
 	^"grid_color": Color.BLACK,
+	^"focus_color": Color.WHITE,
+	^"select_color": Color.WHITE,
 	^"modulate_normal": Color.WHITE,
 	^"modulate_pressed": Color.WHITE,
 	^"modulate_hover": Color.WHITE,
