@@ -21,7 +21,7 @@ const COLORS = {
 }
 
 const COLORS_DEFAULT = {
-	COLORS.NONE: Color.TRANSPARENT,
+	COLORS.NONE: Color.WHITE,
 	COLORS.BACKGROUND: Color("d7d5da"),
 	COLORS.FOREGROUND: Color("f5f4f6"),
 	COLORS.BLACK: Color("6a5b6e"),
@@ -50,7 +50,7 @@ const PRESETS_HINT_STRING = "DEFAULT,DARK,GODOT"
 const OVERRIDE_DATA: Dictionary = {
 	CONTROL_TYPES.PANEL: {
 		^"self_modulate": ResourceType.COLOR,
-		^"theme_override_styles/panel": ResourceType.STYLE_BOX,
+#		^"theme_override_styles/panel": ResourceType.STYLE_BOX,
 	},
 	CONTROL_TYPES.BUTTON: {
 		^"theme_override_styles/normal": ResourceType.STYLE_BOX,
