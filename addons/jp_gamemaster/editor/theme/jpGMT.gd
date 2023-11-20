@@ -16,6 +16,7 @@ const CONTROL_TYPES = {
 	BUTTON = &"BUTTON",
 	BUTTON_LABEL = &"BUTTON_LABEL",
 	BUTTON_AUTO_MODULATE = &"BUTTON_AUTO_MODULATE",
+	BOX = &"BOX",
 }
 
 const PRESETS = {
@@ -56,6 +57,11 @@ const OVERRIDE_DATA: Dictionary = {
 		^"modulate_hover_pressed": ResourceType.JPCOLOR,
 		^"custom_minimum_size:x": ResourceType.JPMETRIC,
 		^"custom_minimum_size:y": ResourceType.JPMETRIC,
+	},
+	CONTROL_TYPES.BOX: {
+		^"theme_override_constants/separation": ResourceType.JPMETRIC,
+		^"custom_minimum_size:x": ResourceType.JPMETRIC,
+		^"custom_minimum_size:y": ResourceType.JPMETRIC,
 	}
 }
 
@@ -72,6 +78,7 @@ const DEFAULT_VALUES = {
 	^"modulate_hover": Color.WHITE,
 	^"modulate_disabled": Color.WHITE,
 	^"modulate_hover_pressed": Color.WHITE,
+	^"theme_override_constants/separation": 0.0,
 	^"custom_minimum_size:x": 0.0,
 	^"custom_minimum_size:y": 0.0,
 }
@@ -79,7 +86,6 @@ const DEFAULT_VALUES = {
 const META_PROPERTY = &"_gmt_properties"
 const META_CONTROL_TYPE = &"_gmt_control_type"
 const META_PRESET = &"_gmt_preset"
-#const META_APPLIED_SCALE = &"_gmt_applied_scale"
 
 
 static var _editor_interface: EditorInterface

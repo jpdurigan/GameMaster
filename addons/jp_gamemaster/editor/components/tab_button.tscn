@@ -44,7 +44,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
-metadata/_gmt_preset = &"DARK"
 
 [node name="icon" type="TextureRect" parent="content" node_paths=PackedStringArray("button")]
 unique_name_in_owner = true
