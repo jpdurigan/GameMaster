@@ -9,6 +9,7 @@ const ZOOM_STEP = 1.05
 @export var border: Control
 
 @export var root: Control
+@export var nodes: Control
 
 var _border_color_backup: Color
 
@@ -22,7 +23,11 @@ var _is_pressing_space: bool = false
 var _can_drag_root: bool = false
 var _is_dragging_root: bool = false
 var _is_dragging_nodes: bool = false
+var _can_select_nodes: bool = false
 
+var _selection_start: Vector2
+var _selection_end: Vector2
+var _selection_rect: Rect2
 var _selected_nodes: Dictionary
 
 
@@ -55,17 +60,35 @@ func _gui_input(event: InputEvent) -> void:
 		match event.button_index:
 			MOUSE_BUTTON_LEFT:
 				_is_mouse_pressed = event.is_pressed()
+				if event.is_pressed():
+					_update_selection()
+					_selection_start = get_global_mouse_position()
+					_selection_end = get_global_mouse_position()
+				elif _can_select_nodes:
+					_selection_start = Vector2.INF
+					_selection_end = Vector2.INF
+					queue_redraw()
 			MOUSE_BUTTON_WHEEL_UP:
 				_zoom_in()
 			MOUSE_BUTTON_WHEEL_DOWN:
 				_zoom_out()
 	
 	if event is InputEventMouseMotion:
+		if _can_select_nodes:
+			_selection_end = get_global_mouse_position()
+			_update_selection()
+			queue_redraw()
 		if _is_dragging_root:
 			_process_dragging_root(event.relative)
 	
 	_update_conditions()
-	printt("_gui_input", event, _is_pressing_space)
+#	printt("_gui_input", event, _is_pressing_space)
+
+
+func _draw() -> void:
+	if _can_select_nodes:
+		draw_set_transform(-global_position)
+		draw_rect(_selection_rect, Color.MAGENTA)
 
 
 func _process(_delta: float) -> void:
@@ -80,9 +103,9 @@ func on_node_gui_input(node: Control, event: InputEvent) -> void:
 			MOUSE_BUTTON_LEFT:
 				_is_node_pressed = event.is_pressed()
 				if event.is_pressed():
-					_select_node(node)
+					_select_node(node, false)
 				else:
-					_unselect_node(node)
+					_unselect_node(node, false)
 			MOUSE_BUTTON_WHEEL_UP:
 				_zoom_in()
 			MOUSE_BUTTON_WHEEL_DOWN:
@@ -105,19 +128,49 @@ func _process_dragging_nodes(relative: Vector2) -> void:
 		selected_node.move_by(relative, Vector2.ONE * 64.0)
 
 
-func _select_node(node: Control) -> void:
+func _update_selection() -> void:
+	_selection_start = _selection_start.clamp(global_position, global_position + size)
+	_selection_end = _selection_end.clamp(global_position, global_position + size)
+	_selection_rect = Rect2(
+		min(_selection_start.x, _selection_end.x),
+		min(_selection_start.y, _selection_end.y),
+		abs(_selection_end.x - _selection_start.x),
+		abs(_selection_end.y - _selection_start.y),
+	)
+	
+#	var global_selection: Rect2 = _selection_rect * root.scale.x
+	for child in nodes.get_children():
+		if child is Control:
+			var child_rect: Rect2 = child.get_global_rect()
+			if _selection_rect.intersects(child_rect):
+				_select_node(child, true)
+			else:
+				_unselect_node(child, true)
+
+func _select_node(node: Control, is_multiple: bool) -> void:
 	var node_id: int = node.get_instance_id()
 	if _selected_nodes.has(node_id):
 		return
-	_selected_nodes[node_id] = SelectedNode.new(node)
+	_selected_nodes[node_id] = SelectedNode.new(node, is_multiple)
+	node.modulate = Color.WHITE.lerp(Color.TRANSPARENT, 0.2)
 	printt("selected node", _selected_nodes)
 
-func _unselect_node(node: Control) -> void:
+func _unselect_node(node: Control, is_multiple: bool) -> void:
 	var node_id: int = node.get_instance_id()
 	if not _selected_nodes.has(node_id):
 		return
+	var selected_node: SelectedNode = _selected_nodes[node_id]
+	if is_multiple != selected_node.is_multiple:
+		return
 	_selected_nodes.erase(node_id)
+	node.modulate = Color.WHITE
+	printt("unselected node", _selected_nodes)
 
+func _unselect_all() -> void:
+	for node_id in _selected_nodes.keys():
+		var selected_node: SelectedNode = _selected_nodes[node_id]
+		selected_node.node.modulate = Color.WHITE
+		_selected_nodes.erase(node_id)
 
 func _zoom_in() -> void:
 	if root.scale.x >= ZOOM_MAX:
@@ -133,6 +186,13 @@ func _update_conditions() -> void:
 	_can_drag_root = _is_pressing_space
 	_is_dragging_root = _can_drag_root and _is_mouse_pressed
 	_is_dragging_nodes = _is_node_pressed and not _selected_nodes.is_empty()
+	_can_select_nodes = not _can_drag_root and _is_mouse_pressed
+	printt(
+		"_update_conditions",
+		_can_select_nodes,
+		_selection_start,
+		_selection_end
+	)
 
 
 func _handle_cursor() -> void:
@@ -145,10 +205,12 @@ func _handle_cursor() -> void:
 class SelectedNode:
 	var node: Control
 	var target_position: Vector2
+	var is_multiple: bool
 	
-	func _init(p_node: Control) -> void:
+	func _init(p_node: Control, p_is_multiple: bool = false) -> void:
 		node = p_node
 		target_position = node.position
+		is_multiple = p_is_multiple
 	
 	func move_by(relative: Vector2, grid_snap: Vector2) -> void:
 		target_position += relative

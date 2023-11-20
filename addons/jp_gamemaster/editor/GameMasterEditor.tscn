@@ -102,7 +102,8 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 theme_override_styles/panel = ExtResource("5_n2nnr")
 
-[node name="grid_input" type="Control" parent="content/margins/list/content/app1/split/tree_editor" node_paths=PackedStringArray("border", "root")]
+[node name="grid_input" type="Control" parent="content/margins/list/content/app1/split/tree_editor" node_paths=PackedStringArray("border", "root", "nodes")]
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -114,6 +115,7 @@ script = ExtResource("7_cj8f4")
 focus_color = Color(0.0588235, 0.443137, 0.45098, 1)
 border = NodePath("../border")
 root = NodePath("../root")
+nodes = NodePath("../root/nodes")
 
 [node name="root" type="Control" parent="content/margins/list/content/app1/split/tree_editor"]
 layout_mode = 1
@@ -149,19 +151,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="content/margins/list/content/app1/split/tree_editor/root/nodes"]
-layout_mode = 0
-offset_left = 256.0
-offset_top = 384.0
-offset_right = 384.0
-offset_bottom = 424.0
-
-[node name="LineEdit" type="LineEdit" parent="content/margins/list/content/app1/split/tree_editor/root/nodes/PanelContainer"]
-custom_minimum_size = Vector2(128, 2.08165e-12)
-layout_mode = 2
-placeholder_text = "something"
-
 [node name="node" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root/nodes" node_paths=PackedStringArray("grid_input")]
+z_index = 5
 custom_minimum_size = Vector2(128, 192)
 anchors_preset = 0
 offset_right = 40.0
@@ -181,7 +172,15 @@ grow_vertical = 2
 mouse_filter = 1
 color = Color(0, 1, 0, 1)
 
+[node name="LineEdit" type="LineEdit" parent="content/margins/list/content/app1/split/tree_editor/root/nodes/node"]
+custom_minimum_size = Vector2(128, 2.08165e-12)
+layout_mode = 2
+offset_right = 128.0
+offset_bottom = 40.0
+placeholder_text = "something"
+
 [node name="node2" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root/nodes" node_paths=PackedStringArray("grid_input")]
+z_index = 5
 custom_minimum_size = Vector2(128, 192)
 anchors_preset = 0
 offset_left = 256.0
