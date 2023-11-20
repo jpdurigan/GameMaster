@@ -36,6 +36,7 @@ var property_name: String = "":
 		if not is_node_ready():
 			await ready
 		_property.text = property_name
+		_property.tooltip_text = value
 
 var _allowed_global_classes: Array[Dictionary]
 var _allowed_classes_paths: Array[String]
@@ -84,6 +85,8 @@ func _is_valid_drop_data(at_position: Vector2, data: Variant) -> bool:
 			resource = load(file_path)
 		"resource":
 			resource = data.get("resource")
+		"nodes":
+			return false
 		"", _:
 			jpConsole.push_error_method(
 				self,

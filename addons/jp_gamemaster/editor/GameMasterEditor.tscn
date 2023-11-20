@@ -62,10 +62,12 @@ metadata/_gmt_properties = {
 "DEFAULT:theme_override_constants/separation": "res://addons/jp_gamemaster/editor/theme/resources/sizing_separation_8px.tres"
 }
 
-[node name="Button" parent="content/margins/list/tabs" instance=ExtResource("3_27npm")]
+[node name="Button" parent="content/margins/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
 layout_mode = 2
+disabled = false
 button_pressed = false
 button_group = ExtResource("4_j2sfb")
+tab_content = NodePath("../../content/app1")
 label_text = "App 1"
 
 [node name="Button2" parent="content/margins/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
