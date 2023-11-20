@@ -3,14 +3,6 @@ extends RefCounted
 ## GameMaster Theming static helper.
 
 
-#enum ResourceType {
-#	STYLE_BOX,
-#	LABEL_SETTINGS,
-#	JPMETRIC,
-#	JPCOLOR,
-#	COLOR,
-#}
-
 const COLORS = {
 	NONE = &"NONE",
 	BACKGROUND = &"BACKGROUND",
@@ -20,13 +12,23 @@ const COLORS = {
 	ACCENT = &"ACCENT",
 }
 
-const COLORS_DEFAULT = {
-	COLORS.NONE: Color.WHITE,
-	COLORS.BACKGROUND: Color("d7d5da"),
-	COLORS.FOREGROUND: Color("f5f4f6"),
-	COLORS.BLACK: Color("6a5b6e"),
-	COLORS.WHITE: Color("f5f4f6"),
-	COLORS.ACCENT: Color("0f7173"),
+const PRESET_COLORS = {
+	PRESETS.DEFAULT: {
+		COLORS.NONE: Color.WHITE,
+		COLORS.BACKGROUND: Color("d7d5da"),
+		COLORS.FOREGROUND: Color("f5f4f6"),
+		COLORS.BLACK: Color("6a5b6e"),
+		COLORS.WHITE: Color("f5f4f6"),
+		COLORS.ACCENT: Color("0f7173"),
+	},
+	PRESETS.DARK: {
+		COLORS.NONE: Color.WHITE,
+		COLORS.BACKGROUND: Color("262128"),
+		COLORS.FOREGROUND: Color("403742"),
+		COLORS.BLACK: Color("6a5b6e"),
+		COLORS.WHITE: Color("f5f4f6"),
+		COLORS.ACCENT: Color("0f7173"),
+	},
 }
 
 const CONTROL_TYPES = {
@@ -42,6 +44,12 @@ const PRESETS = {
 }
 
 const PRESETS_HINT_STRING = "DEFAULT,DARK,GODOT"
+
+const META_PRESET = &"_gmt_preset"
+const META_CONTROL_TYPE = &"_gmt_control_type"
+const META_PROPERTY = &"_gmt_properties"
+const META_APPLIED_SCALE = &"_gmt_applied_scale"
+
 
 const _PROPERTY_LIST: Dictionary = {
 	CONTROL_TYPES.PANEL: [
@@ -88,11 +96,6 @@ const _THEME_OVERRIDES = {
 		&"custom_minimum_size",
 	],
 }
-
-const META_PRESET = &"_gmt_preset"
-const META_CONTROL_TYPE = &"_gmt_control_type"
-const META_PROPERTY = &"_gmt_properties"
-const META_APPLIED_SCALE = &"_gmt_applied_scale"
 
 
 static var _editor_interface: EditorInterface
@@ -158,12 +161,14 @@ static func set_preset(control: Control, preset: StringName = &"") -> void:
 		for property in get_properties_for(control_type):
 			var data_key: StringName = _get_data_key(property, preset)
 			if data.has(data_key):
-				_set_control_value(control, property, data, data_key)
+				var value: Variant = data[data_key]
+				_set_control_value(control, property, value, preset)
 				continue
 			
 			var default_key: StringName = _get_data_key(property, PRESETS.DEFAULT)
 			if data.has(default_key):
-				_set_control_value(control, property, data, default_key)
+				var value: Variant = data[default_key]
+				_set_control_value(control, property, value, preset)
 		
 		var owner: Node = control.owner if control.owner else control
 		owner.set_meta(META_PRESET, preset)
@@ -220,11 +225,9 @@ static func _reset_control_post_saving(control: Control) -> void:
 static func _set_control_value(
 		control: Control,
 		property: NodePath,
-		data: Dictionary,
-		key: StringName
+		value: Variant,
+		preset: StringName
 ) -> void:
-	var value: Variant = data[key]
-#	jpConsole.print_method(jpGMT, "", "_set_control_value", [control, property, data, key])
 	match typeof(value):
 		TYPE_STRING:
 			if value.is_empty():
@@ -235,7 +238,7 @@ static func _set_control_value(
 					value = value.get_value()
 		TYPE_STRING_NAME:
 			if value in COLORS.values():
-				value = COLORS_DEFAULT[value]
+				value = PRESET_COLORS[preset][value]
 	
 	control.set_indexed(property, value)
 

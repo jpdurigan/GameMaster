@@ -53,6 +53,9 @@ script = ExtResource("8_btft3")
 button = NodePath("../..")
 metadata/_gmt_control_type = &"BUTTON_AUTO_MODULATE"
 metadata/_gmt_properties = {
+"DARK:modulate_hover": &"WHITE",
+"DARK:modulate_normal": &"WHITE",
+"DARK:modulate_pressed": &"WHITE",
 "DEFAULT:modulate_disabled": &"BLACK",
 "DEFAULT:modulate_hover": &"WHITE",
 "DEFAULT:modulate_hover_pressed": &"WHITE",
@@ -72,6 +75,9 @@ vertical_alignment = 2
 script = ExtResource("8_btft3")
 button = NodePath("../..")
 metadata/_gmt_properties = {
+"DARK:modulate_hover": &"WHITE",
+"DARK:modulate_normal": &"WHITE",
+"DARK:modulate_pressed": &"WHITE",
 "DEFAULT:modulate_disabled": &"BLACK",
 "DEFAULT:modulate_hover": &"WHITE",
 "DEFAULT:modulate_hover_pressed": &"WHITE",
