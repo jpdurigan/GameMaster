@@ -8,6 +8,25 @@ enum ResourceType {
 	LABEL_SETTINGS,
 	JPMETRIC,
 	JPCOLOR,
+	COLOR,
+}
+
+const COLORS = {
+	NONE = &"NONE",
+	BACKGROUND = &"BACKGROUND",
+	FOREGROUND = &"FOREGROUND",
+	BLACK = &"BLACK",
+	WHITE = &"WHITE",
+	ACCENT = &"ACCENT",
+}
+
+const COLORS_DEFAULT = {
+	COLORS.NONE: Color.TRANSPARENT,
+	COLORS.BACKGROUND: Color("d7d5da"),
+	COLORS.FOREGROUND: Color("f5f4f6"),
+	COLORS.BLACK: Color("6a5b6e"),
+	COLORS.WHITE: Color("f5f4f6"),
+	COLORS.ACCENT: Color("0f7173"),
 }
 
 const CONTROL_TYPES = {
@@ -30,6 +49,7 @@ const PRESETS_HINT_STRING = "DEFAULT,DARK,GODOT"
 
 const OVERRIDE_DATA: Dictionary = {
 	CONTROL_TYPES.PANEL: {
+		^"self_modulate": ResourceType.COLOR,
 		^"theme_override_styles/panel": ResourceType.STYLE_BOX,
 	},
 	CONTROL_TYPES.BUTTON: {
@@ -244,6 +264,12 @@ static func _set_control_value(
 				value = load(value)
 				if value is jpValue:
 					value = value.get_value()
+		TYPE_STRING_NAME:
+			if value in COLORS.values():
+				printt("got value in COLORS", value)
+				value = COLORS_DEFAULT[value]
+				printt("got value in COLORS", value)
+				pass
 	
 	if not _is_node_being_edited(control):
 		value = _handle_scaling(control, value)

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b6ai5apd5fuw0"]
+[gd_scene load_steps=4 format=3 uid="uid://b6ai5apd5fuw0"]
 
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/theme/inspector_plugin/jpgmt_control_editor.gd" id="1_shdma"]
 [ext_resource type="PackedScene" uid="uid://bl01envwroq1f" path="res://addons/jp_gamemaster/editor/theme/inspector_plugin/resource_drop.tscn" id="2_ksar8"]
+[ext_resource type="PackedScene" uid="uid://bmegvget07u3s" path="res://addons/jp_gamemaster/editor/theme/inspector_plugin/theme_colors.tscn" id="3_6ns7v"]
 
 [node name="jpgmt_control_editor" type="Control"]
 custom_minimum_size = Vector2(76, 90)
@@ -14,6 +15,7 @@ grow_vertical = 2
 size_flags_vertical = 3
 script = ExtResource("1_shdma")
 resource_drop_scene = ExtResource("2_ksar8")
+theme_colors_scene = ExtResource("3_6ns7v")
 metadata/_gmt_properties = {
 "DEFAULT:theme_override_styles/panel": "",
 "GODOT:theme_override_styles/panel": ""
@@ -86,4 +88,7 @@ layout_mode = 2
 
 [node name="resource_drop" parent="content/resources_parent" instance=ExtResource("2_ksar8")]
 visible = false
+layout_mode = 2
+
+[node name="theme_colors" parent="content/resources_parent" instance=ExtResource("3_6ns7v")]
 layout_mode = 2

@@ -17,6 +17,7 @@ script = ExtResource("1_rpjfk")
 metadata/_gmt_preset = &"DEFAULT"
 
 [node name="content" type="PanelContainer" parent="."]
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,9 +25,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_gmt_properties = {
-"DARK:theme_override_styles/panel": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_black_dark.tres",
-"DEFAULT:theme_override_styles/panel": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_light_dark.tres",
-"GODOT:theme_override_styles/panel": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_godot_default_background.tres"
+"DEFAULT:self_modulate": &"BACKGROUND",
+"DEFAULT:theme_override_styles/panel": "res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_main_panel.tres"
 }
 metadata/_gmt_control_type = &"PANEL"
 
@@ -109,6 +109,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="tree_editor" type="PanelContainer" parent="content/margins/list/content/app1/split"]
+self_modulate = Color(0, 0, 0, 1)
 clip_children = 1
 layout_mode = 2
 size_flags_horizontal = 3
@@ -199,6 +200,7 @@ position = Vector2(484.001, 310.001)
 editor_draw_screen = false
 
 [node name="border" type="Panel" parent="content/margins/list/content/app1/split/tree_editor"]
+self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 mouse_filter = 2
 metadata/_gmt_control_type = &"PANEL"

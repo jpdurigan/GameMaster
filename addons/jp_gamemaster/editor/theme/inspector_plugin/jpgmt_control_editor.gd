@@ -2,8 +2,10 @@
 extends Control
 
 const ResourceDrop = preload("res://addons/jp_gamemaster/editor/theme/inspector_plugin/resource_drop.gd")
+const ThemeColors = preload("res://addons/jp_gamemaster/editor/theme/inspector_plugin/theme_colors.gd")
 
 @export var resource_drop_scene: PackedScene
+@export var theme_colors_scene: PackedScene
 
 var _control: Control
 
@@ -86,12 +88,20 @@ func _populate_contents() -> void:
 	var override_data: Dictionary = jpGMT.OVERRIDE_DATA.get(_control_type, {})
 	for property_name in override_data.keys():
 		var resource_type: jpGMT.ResourceType = override_data[property_name]
-		var resource_drop: ResourceDrop = resource_drop_scene.instantiate()
-		resource_drop.property_name = property_name
-		resource_drop.resource_path = jpGMT.get_property(_control, property_name, _preset, "")
-		resource_drop.allowed_classes = jpGMT.get_classes(resource_type)
-		resource_drop.resource_changed.connect(_on_property_value_changed.bind(property_name))
-		_resources_parent.add_child(resource_drop)
+		match resource_type:
+			jpGMT.ResourceType.COLOR:
+				var theme_colors: ThemeColors = theme_colors_scene.instantiate()
+				theme_colors.property_name = property_name
+				theme_colors.color = jpGMT.get_property(_control, property_name, _preset, jpGMT.COLORS.NONE)
+				theme_colors.color_changed.connect(_on_property_value_changed.bind(property_name))
+				_resources_parent.add_child(theme_colors)
+			_:
+				var resource_drop: ResourceDrop = resource_drop_scene.instantiate()
+				resource_drop.property_name = property_name
+				resource_drop.resource_path = jpGMT.get_property(_control, property_name, _preset, "")
+				resource_drop.allowed_classes = jpGMT.get_classes(resource_type)
+				resource_drop.resource_changed.connect(_on_property_value_changed.bind(property_name))
+				_resources_parent.add_child(resource_drop)
 	
 	_update_size()
 
