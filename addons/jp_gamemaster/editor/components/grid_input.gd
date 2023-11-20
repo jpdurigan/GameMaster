@@ -1,12 +1,18 @@
 @tool
 extends Control
 
+const ZOOM_MIN = 0.33
+const ZOOM_MAX = 1.0
+const ZOOM_STEP = 1.05
+
 @export var focus_color: Color
 @export var border: Control
 
 @export var root: Control
 
 var _border_color_backup: Color
+
+var _zoom_relative: float = 0.0
 
 var _is_mouse_over: bool = false
 var _is_mouse_pressed: bool = false
@@ -45,13 +51,17 @@ func _gui_input(event: InputEvent) -> void:
 		match event.button_index:
 			MOUSE_BUTTON_LEFT:
 				_is_mouse_pressed = event.is_pressed()
+			MOUSE_BUTTON_WHEEL_UP:
+				_zoom_in()
+			MOUSE_BUTTON_WHEEL_DOWN:
+				_zoom_out()
 	
 	if event is InputEventMouseMotion:
 		if _is_dragging:
 			_process_dragging(event.relative)
 	
 	_update_conditions()
-	printt("_gui_input", event, _is_pressing_space)
+#	printt("_gui_input", event, _is_pressing_space)
 
 
 func _process(_delta: float) -> void:
@@ -63,6 +73,17 @@ func _process(_delta: float) -> void:
 func _process_dragging(relative: Vector2) -> void:
 	root.position += relative
 
+func _zoom_in() -> void:
+	if root.scale.x >= ZOOM_MAX:
+		return
+	root.scale *= ZOOM_STEP
+#	printt(root.scale)
+
+func _zoom_out() -> void:
+	if root.scale.x <= ZOOM_MIN:
+		return
+	root.scale /= ZOOM_STEP
+#	printt(root.scale)
 
 func _update_conditions() -> void:
 	_can_drag = _is_pressing_space

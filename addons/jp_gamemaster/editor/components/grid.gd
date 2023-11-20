@@ -41,8 +41,8 @@ func _draw() -> void:
 	
 	# draw grid
 	var grid_offset: Vector2 = bg_rect.position.posmod(grid_size)
-	var grid_start_pos: Vector2 = bg_rect.position - grid_offset
-	var grid_rect_size: Vector2 = bg_rect.size + Vector2.ONE * grid_size
+	var grid_start_pos: Vector2 = (bg_rect.position - grid_offset) / root.scale
+	var grid_rect_size: Vector2 = (bg_rect.size + Vector2.ONE * grid_size) / root.scale
 	var grid_rect := Rect2(grid_start_pos, grid_rect_size)
 	
 	# draw vertical lines
