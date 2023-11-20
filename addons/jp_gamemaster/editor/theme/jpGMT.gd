@@ -16,7 +16,8 @@ const CONTROL_TYPES = {
 	BUTTON = &"BUTTON",
 	BUTTON_LABEL = &"BUTTON_LABEL",
 	BUTTON_AUTO_MODULATE = &"BUTTON_AUTO_MODULATE",
-	BOX = &"BOX",
+	BOX_CONTAINER = &"BOX_CONTAINER",
+	MARGIN_CONTAINER = &"MARGIN_CONTAINER",
 }
 
 const PRESETS = {
@@ -58,8 +59,16 @@ const OVERRIDE_DATA: Dictionary = {
 		^"custom_minimum_size:x": ResourceType.JPMETRIC,
 		^"custom_minimum_size:y": ResourceType.JPMETRIC,
 	},
-	CONTROL_TYPES.BOX: {
+	CONTROL_TYPES.BOX_CONTAINER: {
 		^"theme_override_constants/separation": ResourceType.JPMETRIC,
+		^"custom_minimum_size:x": ResourceType.JPMETRIC,
+		^"custom_minimum_size:y": ResourceType.JPMETRIC,
+	},
+	CONTROL_TYPES.MARGIN_CONTAINER: {
+		^"theme_override_constants/margin_left": ResourceType.JPMETRIC,
+		^"theme_override_constants/margin_top": ResourceType.JPMETRIC,
+		^"theme_override_constants/margin_right": ResourceType.JPMETRIC,
+		^"theme_override_constants/margin_bottom": ResourceType.JPMETRIC,
 		^"custom_minimum_size:x": ResourceType.JPMETRIC,
 		^"custom_minimum_size:y": ResourceType.JPMETRIC,
 	}
@@ -78,7 +87,11 @@ const DEFAULT_VALUES = {
 	^"modulate_hover": Color.WHITE,
 	^"modulate_disabled": Color.WHITE,
 	^"modulate_hover_pressed": Color.WHITE,
-	^"theme_override_constants/separation": 0.0,
+	^"theme_override_constants/separation": 4,
+	^"theme_override_constants/margin_left": 0,
+	^"theme_override_constants/margin_top": 0,
+	^"theme_override_constants/margin_right": 0,
+	^"theme_override_constants/margin_bottom": 0,
 	^"custom_minimum_size:x": 0.0,
 	^"custom_minimum_size:y": 0.0,
 }
