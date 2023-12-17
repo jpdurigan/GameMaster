@@ -44,7 +44,8 @@ func _notification(what: int) -> void:
 			border.self_modulate = focus_color
 		NOTIFICATION_FOCUS_EXIT:
 			border.self_modulate = _border_color_backup
-			_unselect_all()
+			if not get_rect().has_point(get_local_mouse_position()):
+				_unselect_all()
 
 
 #func _input(event: InputEvent) -> void:
