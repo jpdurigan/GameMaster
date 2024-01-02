@@ -37,6 +37,7 @@ const CONTROL_TYPES = {
 	BUTTON_AUTO_MODULATE = &"BUTTON_AUTO_MODULATE",
 	TREE_EDITOR_GRID = &"TREE_EDITOR_GRID",
 	TREE_EDITOR_GRID_INPUT = &"TREE_EDITOR_GRID_INPUT",
+	TASK_EDITOR_TITLE = &"TASK_EDITOR_TITLE",
 }
 
 const PRESETS = {
@@ -71,6 +72,8 @@ const _PROPERTY_LIST: Dictionary = {
 	CONTROL_TYPES.TREE_EDITOR_GRID_INPUT: [
 		^"focus_color",
 		^"select_color"
+	],
+	CONTROL_TYPES.TASK_EDITOR_TITLE: [
 	]
 }
 
@@ -88,14 +91,14 @@ const _DEFAULT_VALUES = {
 }
 
 const _THEME_OVERRIDES = {
-	CONSTANTS = [
+	&"CONSTANTS": [
 		&"separation",
 		&"margin_left",
 		&"margin_top",
 		&"margin_right",
 		&"margin_bottom",
 	],
-	STYLES = [
+	&"STYLES": [
 		&"panel",
 		&"normal",
 		&"hover",
@@ -103,15 +106,18 @@ const _THEME_OVERRIDES = {
 		&"disabled",
 		&"focus",
 	],
-	FONT_SIZES = [
+	&"FONT_SIZES": [
 		&"font_size",
 	],
-	PROPERTIES = [
+	&"PROPERTIES": [
 		&"custom_minimum_size",
 		&"grid_size",
 		&"grid_width",
 		&"grid_subunit_width",
 	],
+	&"TASK_EDITOR_TITLE": [
+		&"position",
+	]
 }
 
 
@@ -195,7 +201,7 @@ static func set_preset(node: Node, preset: StringName = &"") -> void:
 		if _is_node_being_edited(control):
 			_clean_up_editing_node(control)
 		else:
-			_handle_scaling(control)
+			_handle_scaling(control, control_type)
 	
 	for child in node.get_children():
 		set_preset(child, preset)
@@ -283,7 +289,7 @@ static func _clean_up_editing_node(control: Control) -> void:
 		control.set_meta(META_PROPERTY, data if not data.is_empty() else null)
 
 
-static func _handle_scaling(control: Control) -> void:
+static func _handle_scaling(control: Control, control_type: StringName) -> void:
 	var editor_scale: float = _get_editor_scale()
 	var applied_scale: float = control.get_meta(META_APPLIED_SCALE, 1.0)
 	
@@ -311,6 +317,11 @@ static func _handle_scaling(control: Control) -> void:
 			var value = _scale_value(control.get(property), correction_ratio)
 			control.set(property, value)
 	
+	for property in _THEME_OVERRIDES.get(control_type, []):
+		if control.get(property) != null:
+			var value = _scale_value(control.get(property), correction_ratio)
+			control.set(property, value)
+	
 	control.set_meta(META_APPLIED_SCALE, editor_scale)
 
 
@@ -323,6 +334,11 @@ static func _scale_value(value: Variant, correction_ratio: float) -> Variant:
 				value = value.duplicate()
 				match value.get_class():
 					&"StyleBoxFlat":
+						value.content_margin_left *= correction_ratio
+						value.content_margin_top *= correction_ratio
+						value.content_margin_right *= correction_ratio
+						value.content_margin_bottom *= correction_ratio
+						
 						value.anti_aliasing_size *= correction_ratio
 						value.border_width_bottom *= correction_ratio
 						value.border_width_left *= correction_ratio
