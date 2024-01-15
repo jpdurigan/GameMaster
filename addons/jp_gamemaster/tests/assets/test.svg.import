@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://00me52bn8lc8"
-path="res://.godot/imported/test.svg-46baf03c1e7ed0a6373b0bbea8029b21.ctex"
+path="res://.godot/imported/test.svg-3c7c5bc2533fffecc4773d86fabe0bdc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/jp_gamemaster/tests/database/test.svg"
-dest_files=["res://.godot/imported/test.svg-46baf03c1e7ed0a6373b0bbea8029b21.ctex"]
+source_file="res://addons/jp_gamemaster/tests/assets/test.svg"
+dest_files=["res://.godot/imported/test.svg-3c7c5bc2533fffecc4773d86fabe0bdc.ctex"]
 
 [params]
 

@@ -3,8 +3,8 @@ extends GutTest
 const SAVE_DESERIALIZED_TO = "res://.godot/game_master/debug_serialized.json"
 const SAVE_TO_JSON_PATH = "res://.godot/game_master/debug_serialized.json"
 
-const CustomResource = preload("res://addons/jp_gamemaster/tests/database/custom_resource.gd")
-const CustomObject = preload("res://addons/jp_gamemaster/tests/database/custom_object.gd")
+const CustomResource = preload("res://addons/jp_gamemaster/tests/assets/custom_resource.gd")
+const CustomObject = preload("res://addons/jp_gamemaster/tests/assets/custom_object.gd")
 
 const VALUE_BOOL = true
 const VALUE_INT = 1234567890
@@ -27,8 +27,8 @@ var VALUE_RESOURCE = CircleShape2D.new()
 var VALUE_CUSTOM_OBJECT = CustomObject.new(VALUE_STRING, VALUE_INT, VALUE_COLOR)
 var VALUE_CUSTOM_RESOURCE = CustomResource.new(VALUE_STRING, VALUE_INT, VALUE_COLOR)
 var VALUE_CUSTOM_SUBCLASS = CustomObject.SubClass.new(VALUE_STRING, VALUE_INT, VALUE_COLOR)
-var VALUE_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/database/test.svg")
-var VALUE_CUSTOM_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/database/test_resource.tres")
+var VALUE_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/assets/test.svg")
+var VALUE_CUSTOM_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/assets/test_resource.tres")
 var VALUE_ARRAY_OBJECT = [
 	CustomObject.new("Leonardo", 13, Color.BLUE),
 	CustomObject.new("Michelangelo", 13, Color.ORANGE),
@@ -112,7 +112,7 @@ var VALUE_RECURSIVE_RESOURCE = CustomResource.new(
 		CustomResource.new("resource3"),
 	]
 )
-var VALUE_RECURSIVE_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/database/test_resource_recursive.tres")
+var VALUE_RECURSIVE_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/assets/test_resource_recursive.tres")
 
 
 var VALUE_SAVE_TO_JSON: Dictionary = {
