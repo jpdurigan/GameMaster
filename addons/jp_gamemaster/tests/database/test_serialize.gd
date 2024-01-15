@@ -1,7 +1,8 @@
 extends GutTest
 
-const SAVE_DESERIALIZED_TO = "res://.godot/game_master/debug_serialized.json"
-const SAVE_TO_JSON_PATH = "res://.godot/game_master/debug_serialized.json"
+const DEBUG_FOLDER_PATH = "res://.godot/game_master/tests"
+const DEBUG_DATA_PATH = "%s/debug_data.json" % DEBUG_FOLDER_PATH
+const SAVE_TO_JSON_PATH = "%s/test_serialize_database.json" % DEBUG_FOLDER_PATH
 
 const CustomResource = preload("res://addons/jp_gamemaster/tests/assets/custom_resource.gd")
 const CustomObject = preload("res://addons/jp_gamemaster/tests/assets/custom_object.gd")
@@ -143,6 +144,12 @@ var VALUE_SAVE_TO_JSON: Dictionary = {
 
 
 var _debug_data: Dictionary = {}
+
+
+func before_all():
+	# create debug folder
+	if not DirAccess.dir_exists_absolute(DEBUG_FOLDER_PATH):
+		DirAccess.make_dir_recursive_absolute(DEBUG_FOLDER_PATH)
 
 
 func test_expects_var_to_str_to_fail() -> void:
@@ -464,9 +471,9 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 
 
 func _handle_debug_data(type: String, value: Variant, serialized: String) -> void:
-	if SAVE_DESERIALIZED_TO:
+	if DEBUG_DATA_PATH:
 		_debug_data[type] = DebugData.new(type, value, serialized).to_dict()
-		var file := FileAccess.open(SAVE_DESERIALIZED_TO, FileAccess.WRITE_READ)
+		var file := FileAccess.open(DEBUG_DATA_PATH, FileAccess.WRITE_READ)
 		if file:
 			file.store_string(JSON.stringify(_debug_data, "\t"))
 			file.close()

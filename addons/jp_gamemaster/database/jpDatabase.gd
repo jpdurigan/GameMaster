@@ -119,7 +119,9 @@ func save() -> void:
 func save_to_json(json_path: String) -> void:
 	var json_data := get_json_string()
 	var file := FileAccess.open(json_path, FileAccess.WRITE)
-	file.store_string(json_data)
+	if file != null:
+		file.store_string(json_data)
+	# TODO: handle possible error
 
 ## Returns the database as JSON string.
 func get_json_string() -> String:
@@ -130,6 +132,7 @@ func get_json_string() -> String:
 func load_from_json_file(json_path: String) -> void:
 	# _print_debug_data_types("Before loading from json")
 	var file := FileAccess.open(json_path, FileAccess.READ)
+	# TODO: handle possible error
 	var file_data := file.get_as_text()
 	load_from_json_string(file_data)
 	# _print_debug_data_types("After loading from json")

@@ -27,7 +27,6 @@ const EXPECTED_METHODS = [
 	"load_from_json_string",
 	
 	# CONFIGURATION
-	"serialize_data_on_json",
 	"ignore_warnings",
 	"ignore_errors",
 	"treat_warnings_as_errors",
