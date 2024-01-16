@@ -135,6 +135,14 @@ static func do_safe_checks(deep_check: bool = false) -> void:
 				has_changes()
 
 
+## Clear all static references.
+static func clear() -> void:
+	_database = null
+	_rng = null
+	_queued_resources = {}
+	_has_changes = false
+
+
 static func _add_to_database(resource_uid: jpResourceUID, deep_check: bool = false) -> void:
 	var uid := resource_uid.uid
 	if _is_database_loaded() and resource_uid.is_valid(deep_check):
