@@ -38,6 +38,7 @@ func test_track_resource_no_database() -> void:
 
 
 func test_track_resource_with_database() -> void:
+	jpUID.load_from_cache()
 	var resource: Resource = Resource.new()
 	_test_track_resource(resource, "", false, true)
 	_test_track_resource(RESOURCE, RESOURCE.resource_path, true, true)
