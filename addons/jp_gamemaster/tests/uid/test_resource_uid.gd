@@ -22,15 +22,24 @@ func test_new_resource_must_have_invalid_uid() -> void:
 # after tracking, resource must have valid id
 func test_track_resource_no_database() -> void:
 	var resource: Resource = Resource.new()
-	_test_track_resource(resource, "", false)
-	_test_track_resource(RESOURCE, RESOURCE.resource_path, true)
-	_test_track_resource(RESOURCE_RECURSIVE, RESOURCE_RECURSIVE.resource_path, true)
+	_test_track_resource(resource, "", false, false)
+	_test_track_resource(RESOURCE, RESOURCE.resource_path, true, false)
+	_test_track_resource(RESOURCE_RECURSIVE, RESOURCE_RECURSIVE.resource_path, true, false)
+
+
+func test_track_resource_with_database() -> void:
+	jpUID.load_from_cache()
+	var resource: Resource = Resource.new()
+	_test_track_resource(resource, "", false, true)
+	_test_track_resource(RESOURCE, RESOURCE.resource_path, true, true)
+	_test_track_resource(RESOURCE_RECURSIVE, RESOURCE_RECURSIVE.resource_path, true, true)
 
 
 func _test_track_resource(
 		resource: Resource,
 		resource_path: String,
-		is_valid: bool
+		is_valid: bool,
+		is_valid_database: bool
 ) -> void:
 	jpUID.track_resource(resource)
 	
@@ -44,7 +53,7 @@ func _test_track_resource(
 	assert_eq(resource_uid.path, resource_path)
 	assert_eq(resource_uid.instance_id, resource.get_instance_id())
 	assert_eq(resource_uid.is_valid(), is_valid, "expects jpResourceUID to not be valid")
-	if is_valid and jpUID._is_database_loaded():
+	if is_valid and is_valid_database:
 		assert_true(jpUID._database.has(uid), "expects jpResourceUID to be in database")
 	else:
 		assert_true(jpUID._queued_resources.has(uid), "expects jpResourceUID to be queued")

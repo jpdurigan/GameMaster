@@ -102,7 +102,6 @@ static func save_to_cache() -> void:
 
 static func load_from_cache() -> void:
 	_database = jpDatabase.new()
-	_database.serialize_data_on_json()
 	jpConsole.print_method(_database, "load from cache")
 	var path := CACHE_PATH
 	if FileAccess.file_exists(path):
