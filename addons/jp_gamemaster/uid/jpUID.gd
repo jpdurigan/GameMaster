@@ -76,6 +76,9 @@ static func get_resource_uid(
 static func get_new_uid() -> StringName:
 	var uid: StringName = INVALID_ID
 	while _is_invalid_new_uid(uid):
+		if not is_instance_valid(_rng):
+			_rng = RandomNumberGenerator.new()
+			_rng.randomize()
 		uid = StringName(
 			_format_hexadecimal(_rng.randi())
 			+ _format_hexadecimal(_rng.randi())
@@ -140,7 +143,7 @@ static func _add_to_database(resource_uid: jpResourceUID, deep_check: bool = fal
 	else:
 		if _queued_resources == null:
 			_queued_resources = {}
-		if _database.has(uid):
+		if _is_database_loaded() and _database.has(uid):
 			_database.delete(uid)
 			has_changes()
 		_queued_resources[uid] = resource_uid
