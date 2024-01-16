@@ -4,6 +4,8 @@ extends GutTest
 const RESOURCE = preload("res://addons/jp_gamemaster/tests/assets/test_resource.tres")
 const RESOURCE_RECURSIVE = preload("res://addons/jp_gamemaster/tests/assets/test_resource_recursive.tres")
 
+const INVALID_CACHE_JSON_PATH = "res://.godot/game_master/tests/invalid_cache.json"
+
 
 func before_each():
 	_clear_all_references()
@@ -33,7 +35,6 @@ func test_track_resource_no_database() -> void:
 
 
 func test_track_resource_with_database() -> void:
-	jpUID.load_from_cache()
 	var resource: Resource = Resource.new()
 	_test_track_resource(resource, "", false, true)
 	_test_track_resource(RESOURCE, RESOURCE.resource_path, true, true)
@@ -53,6 +54,23 @@ func test_get_resource_from_uid() -> void:
 		if not subresource is Resource:
 			continue
 		_test_get_resource_from_uid(subresource)
+
+
+func test_load_invalid_cache() -> void:
+	# write invalid cache
+	var file := FileAccess.open(INVALID_CACHE_JSON_PATH, FileAccess.WRITE_READ)
+	file.store_string(JSON.stringify(INVALID_CACHE_JSON_DATA))
+	file.close()
+	
+	# must load invalid cache
+	jpUID.load_from_cache(INVALID_CACHE_JSON_PATH)
+	assert_eq(jpUID._database.size(), 5)
+	assert_eq(jpUID._queued_resources.size(), 0)
+	
+	# must invalidate database
+	jpUID.do_safe_checks(true)
+	assert_eq(jpUID._database.size(), 0)
+	assert_eq(jpUID._queued_resources.size(), 5)
 
 
 func _test_track_resource(
@@ -100,3 +118,42 @@ func _clear_all_references() -> void:
 	for resource in [RESOURCE, RESOURCE_RECURSIVE]:
 		for meta_name in resource.get_meta_list():
 			resource.remove_meta(meta_name)
+
+
+const INVALID_CACHE_JSON_DATA = {
+"\"190041887723F006\"": "{
+\"\\\"@path\\\"\": \"\\\"res://addons/jp_gamemaster/uid/jpUID.gd\\\"\",
+\"\\\"@subpath\\\"\": \"NodePath(\\\"jpResourceUID\\\")\",
+\"\\\"instance_id\\\"\": \"-9223371992646810141\",
+\"\\\"path\\\"\": \"\\\"res://addons/jp_gamemaster/tests/assets/test_resource_recursive.tres::Resource_vgeqt\\\"\",
+\"\\\"uid\\\"\": \"&\\\"190041887723F006\\\"\"
+}",
+"\"1C57F6B172A54F77\"": "{
+\"\\\"@path\\\"\": \"\\\"res://addons/jp_gamemaster/uid/jpUID.gd\\\"\",
+\"\\\"@subpath\\\"\": \"NodePath(\\\"jpResourceUID\\\")\",
+\"\\\"instance_id\\\"\": \"-9223371992630032924\",
+\"\\\"path\\\"\": \"\\\"res://addons/jp_gamemaster/tests/assets/test_resource_recursive.tres\\\"\",
+\"\\\"uid\\\"\": \"&\\\"1C57F6B172A54F77\\\"\"
+}",
+"\"739B76A0BDA417B3\"": "{
+\"\\\"@path\\\"\": \"\\\"res://addons/jp_gamemaster/uid/jpUID.gd\\\"\",
+\"\\\"@subpath\\\"\": \"NodePath(\\\"jpResourceUID\\\")\",
+\"\\\"instance_id\\\"\": \"-9223371992948800034\",
+\"\\\"path\\\"\": \"\\\"res://addons/jp_gamemaster/tests/assets/test_resource.tres\\\"\",
+\"\\\"uid\\\"\": \"&\\\"739B76A0BDA417B3\\\"\"
+}",
+"\"B397F7A328F916A9\"": "{
+\"\\\"@path\\\"\": \"\\\"res://addons/jp_gamemaster/uid/jpUID.gd\\\"\",
+\"\\\"@subpath\\\"\": \"NodePath(\\\"jpResourceUID\\\")\",
+\"\\\"instance_id\\\"\": \"-9223371992680364575\",
+\"\\\"path\\\"\": \"\\\"res://addons/jp_gamemaster/tests/assets/test_resource_recursive.tres::Resource_oae7x\\\"\",
+\"\\\"uid\\\"\": \"&\\\"B397F7A328F916A9\\\"\"
+}",
+"\"E513877802AF5708\"": "{
+\"\\\"@path\\\"\": \"\\\"res://addons/jp_gamemaster/uid/jpUID.gd\\\"\",
+\"\\\"@subpath\\\"\": \"NodePath(\\\"jpResourceUID\\\")\",
+\"\\\"instance_id\\\"\": \"-9223371992697141792\",
+\"\\\"path\\\"\": \"\\\"res://addons/jp_gamemaster/tests/assets/test_resource_recursive.tres::Resource_whgiw\\\"\",
+\"\\\"uid\\\"\": \"&\\\"E513877802AF5708\\\"\"
+}"
+}

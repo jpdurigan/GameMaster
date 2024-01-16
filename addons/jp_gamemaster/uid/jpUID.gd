@@ -103,12 +103,11 @@ static func get_new_uid() -> StringName:
 	return uid
 
 
-static func save_to_cache() -> void:
+static func save_to_cache(path: String = CACHE_PATH) -> void:
 	do_safe_checks()
 	if not _has_changes:
 		return
 	
-	var path := CACHE_PATH
 	_database.save_to_json(path)
 	
 	var debug_database := _database.duplicate()
@@ -117,10 +116,10 @@ static func save_to_cache() -> void:
 	_has_changes = false
 
 
-static func load_from_cache() -> void:
+static func load_from_cache(path: String = CACHE_PATH) -> void:
 	_database = jpDatabase.new()
 	jpConsole.print_method(_database, "load from cache")
-	var path := CACHE_PATH
+	
 	if FileAccess.file_exists(path):
 		_database.load_from_json_file(path)
 		_invalidate_instance_ids()
