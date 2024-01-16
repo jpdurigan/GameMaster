@@ -11,6 +11,8 @@ class_name jpUID
 const META_UID = &"jpuid"
 const INVALID_ID = &"OH-NO"
 
+const CACHE_PATH = "res://.godot/game_master/uid_cache.json"
+
 static var _database: jpDatabase
 static var _rng: RandomNumberGenerator
 static var _queued_resources: Dictionary = {}
@@ -86,7 +88,7 @@ static func save_to_cache() -> void:
 	if not _has_changes:
 		return
 	
-	var path := jpFileSystem.get_cache_uid_database_path()
+	var path := CACHE_PATH
 	_database.save_to_json(path)
 	
 	var debug_database := _database.duplicate()
@@ -99,7 +101,7 @@ static func load_from_cache() -> void:
 	_database = jpDatabase.new()
 	_database.serialize_data_on_json()
 	jpConsole.print_method(_database, "load from cache")
-	var path := jpFileSystem.get_cache_uid_database_path()
+	var path := CACHE_PATH
 	if FileAccess.file_exists(path):
 		_database.load_from_json_file(path)
 		_invalidate_instance_ids()
