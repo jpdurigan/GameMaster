@@ -44,6 +44,17 @@ func test_track_resource_with_database() -> void:
 		_test_track_resource(subresource, subresource.resource_path, true, true)
 
 
+func test_get_resource_from_uid() -> void:
+	var resource: Resource = Resource.new()
+	_test_get_resource_from_uid(resource)
+	_test_get_resource_from_uid(RESOURCE)
+	_test_get_resource_from_uid(RESOURCE_RECURSIVE)
+	for subresource in RESOURCE_RECURSIVE._data:
+		if not subresource is Resource:
+			continue
+		_test_get_resource_from_uid(subresource)
+
+
 func _test_track_resource(
 		resource: Resource,
 		resource_path: String,
@@ -55,7 +66,7 @@ func _test_track_resource(
 	var uid: StringName = jpUID.get_uid(resource)
 	assert_ne(uid, jpUID.INVALID_ID)
 	
-	var resource_uid: jpUID.jpResourceUID = jpUID.get_resource_uid(resource)
+	var resource_uid: jpUID.jpResourceUID = jpUID.get_resource_uid_from_resource(resource)
 	assert_not_null(resource_uid)
 	assert_is(resource_uid, jpUID.jpResourceUID)
 	assert_eq(resource_uid.uid, uid)
@@ -66,6 +77,18 @@ func _test_track_resource(
 		assert_true(jpUID._database.has(uid), "expects jpResourceUID to be in database")
 	else:
 		assert_true(jpUID._queued_resources.has(uid), "expects jpResourceUID to be queued")
+
+
+func _test_get_resource_from_uid(resource: Resource) -> void:
+	var test_uid: StringName = &"MY-TEST-UID"
+	
+	jpUID.set_uid(resource, test_uid)
+	var uid: StringName = jpUID.get_uid(resource)
+	assert_eq(uid, test_uid)
+	
+	jpUID.track_resource(resource)
+	var test_resource: Resource = jpUID.get_resource_from_uid(test_uid)
+	assert_eq(resource, test_resource)
 
 
 func _clear_all_references() -> void:

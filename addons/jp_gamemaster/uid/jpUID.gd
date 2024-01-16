@@ -26,7 +26,7 @@ static func track_resource(resource: Resource) -> void:
 		uid = get_new_uid()
 		set_uid(resource, uid)
 	
-	var resource_uid: jpResourceUID = get_resource_uid(resource, true)
+	var resource_uid: jpResourceUID = get_resource_uid_from_resource(resource, true)
 	var has_changes := resource_uid.update_from(resource)
 	if has_changes:
 		_add_to_database(resource_uid)
@@ -49,13 +49,22 @@ static func remove_uid(resource: Resource) -> void:
 	resource.set_meta(META_UID, null)
 
 
-static func get_resource_uid(
+static func get_resource_uid_from_resource(
 		resource: Resource,
+		should_create_new: bool = false
+) -> jpResourceUID:
+	var uid := get_uid(resource)
+	var resource_uid := get_resource_uid_from_uid(uid, should_create_new)
+	
+	return resource_uid
+
+
+static func get_resource_uid_from_uid(
+		uid: StringName,
 		should_create_new: bool = false
 ) -> jpResourceUID:
 	var resource_uid: jpResourceUID = null
 	
-	var uid := get_uid(resource)
 	if _is_database_loaded() and _database.has(uid):
 		resource_uid = _database.read(uid)
 	elif _queued_resources.has(uid):
@@ -66,11 +75,19 @@ static func get_resource_uid(
 		jpConsole.push_error_method(
 			jpUID,
 			"Resource does not have UID. Make sure to track_resource() before.",
-			"get_resource_uid",
-			[resource]
+			"get_resource_uid_from_uid",
+			[uid]
 		)
 	
 	return resource_uid
+
+
+static func get_resource_from_uid(uid: StringName) -> Resource:
+	var resource: Resource = null
+	var resource_uid := get_resource_uid_from_uid(uid)
+	if resource_uid != null:
+		resource = resource_uid.get_resource()
+	return resource
 
 
 static func get_new_uid() -> StringName:
