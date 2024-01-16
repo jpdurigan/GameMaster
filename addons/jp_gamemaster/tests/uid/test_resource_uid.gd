@@ -4,7 +4,10 @@ extends GutTest
 const RESOURCE = preload("res://addons/jp_gamemaster/tests/assets/test_resource.tres")
 const RESOURCE_RECURSIVE = preload("res://addons/jp_gamemaster/tests/assets/test_resource_recursive.tres")
 
-const INVALID_CACHE_JSON_PATH = "res://.godot/game_master/tests/invalid_cache.json"
+const RESOURCE_WITH_UID = preload("res://addons/jp_gamemaster/tests/assets/test_resource_with_uid.tres")
+
+const VALID_CACHE_JSON_PATH = "res://.godot/game_master/tests/valid_uid_cache.json"
+const INVALID_CACHE_JSON_PATH = "res://.godot/game_master/tests/invalid_uid_cache.json"
 
 
 func before_each():
@@ -54,6 +57,40 @@ func test_get_resource_from_uid() -> void:
 		if not subresource is Resource:
 			continue
 		_test_get_resource_from_uid(subresource)
+
+
+func test_load_valid_cache() -> void:
+	# assert valid cache is still valid
+	var expected_uid: StringName = &"3F1AA471F7F6035A"
+	var uid: StringName = jpUID.get_uid(RESOURCE_WITH_UID)
+	assert_eq(uid, expected_uid)
+	
+	# write invalid cache
+	var file := FileAccess.open(VALID_CACHE_JSON_PATH, FileAccess.WRITE_READ)
+	file.store_string(JSON.stringify(VALID_CACHE_JSON_DATA))
+	file.close()
+	
+	# must load valid cache
+	jpUID.load_from_cache(VALID_CACHE_JSON_PATH)
+	assert_eq(jpUID._database.size(), 1)
+	assert_eq(jpUID._queued_resources.size(), 0)
+	
+	# assert resource is in database
+	assert_true(jpUID._database.has(expected_uid), "expects uid to be in database")
+	var resource_uid: jpUID.jpResourceUID = jpUID.get_resource_uid_from_uid(expected_uid)
+	assert_eq(resource_uid.uid, expected_uid)
+	assert_eq(resource_uid.path, RESOURCE_WITH_UID.resource_path)
+	assert_eq(resource_uid.instance_id, jpUID.jpResourceUID.INVALID_INSTANCE_ID)
+	
+	# safe checks shouldn't change database
+	jpUID.do_safe_checks(true)
+	assert_eq(jpUID._database.size(), 1)
+	assert_eq(jpUID._queued_resources.size(), 0)
+	
+	# tracking the resource should update instance id
+	jpUID.track_resource(RESOURCE_WITH_UID)
+	resource_uid = jpUID.get_resource_uid_from_uid(expected_uid)
+	assert_eq(resource_uid.instance_id, RESOURCE_WITH_UID.get_instance_id())
 
 
 func test_load_invalid_cache() -> void:
@@ -119,6 +156,16 @@ func _clear_all_references() -> void:
 		for meta_name in resource.get_meta_list():
 			resource.remove_meta(meta_name)
 
+
+const VALID_CACHE_JSON_DATA = {
+"\"3F1AA471F7F6035A\"": "{
+\"\\\"@path\\\"\": \"\\\"res://addons/jp_gamemaster/uid/jpUID.gd\\\"\",
+\"\\\"@subpath\\\"\": \"NodePath(\\\"jpResourceUID\\\")\",
+\"\\\"instance_id\\\"\": \"-9223371992210602512\",
+\"\\\"path\\\"\": \"\\\"res://addons/jp_gamemaster/tests/assets/test_resource_with_uid.tres\\\"\",
+\"\\\"uid\\\"\": \"&\\\"3F1AA471F7F6035A\\\"\"
+}"
+}
 
 const INVALID_CACHE_JSON_DATA = {
 "\"190041887723F006\"": "{

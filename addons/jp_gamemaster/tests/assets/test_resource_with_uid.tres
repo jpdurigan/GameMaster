@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://p8axmnmtnwei"]
+
+[ext_resource type="Script" path="res://addons/jp_gamemaster/tests/assets/custom_resource.gd" id="1_nski3"]
+
+[resource]
+script = ExtResource("1_nski3")
+name = "i have a uid"
+number = 123
+color = Color(0.223529, 0.780392, 0.12549, 1)
+_data = []
+metadata/jpuid = &"3F1AA471F7F6035A"
