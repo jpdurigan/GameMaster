@@ -6,10 +6,11 @@ const RESOURCE_RECURSIVE = preload("res://addons/jp_gamemaster/tests/assets/test
 
 
 func before_each():
-	jpUID.clear()
-	for resource in [RESOURCE, RESOURCE_RECURSIVE]:
-		for meta_name in resource.get_meta_list():
-			resource.remove_meta(meta_name)
+	_clear_all_references()
+
+
+func after_all():
+	_clear_all_references()
 
 
 # new resource must begin with invalid id
@@ -25,6 +26,10 @@ func test_track_resource_no_database() -> void:
 	_test_track_resource(resource, "", false, false)
 	_test_track_resource(RESOURCE, RESOURCE.resource_path, true, false)
 	_test_track_resource(RESOURCE_RECURSIVE, RESOURCE_RECURSIVE.resource_path, true, false)
+	for subresource in RESOURCE_RECURSIVE._data:
+		if not subresource is Resource:
+			continue
+		_test_track_resource(subresource, subresource.resource_path, true, false)
 
 
 func test_track_resource_with_database() -> void:
@@ -33,6 +38,10 @@ func test_track_resource_with_database() -> void:
 	_test_track_resource(resource, "", false, true)
 	_test_track_resource(RESOURCE, RESOURCE.resource_path, true, true)
 	_test_track_resource(RESOURCE_RECURSIVE, RESOURCE_RECURSIVE.resource_path, true, true)
+	for subresource in RESOURCE_RECURSIVE._data:
+		if not subresource is Resource:
+			continue
+		_test_track_resource(subresource, subresource.resource_path, true, true)
 
 
 func _test_track_resource(
@@ -57,3 +66,14 @@ func _test_track_resource(
 		assert_true(jpUID._database.has(uid), "expects jpResourceUID to be in database")
 	else:
 		assert_true(jpUID._queued_resources.has(uid), "expects jpResourceUID to be queued")
+
+
+func _clear_all_references() -> void:
+	jpUID.clear()
+	if FileAccess.file_exists(jpUID.CACHE_PATH):
+		var file := FileAccess.open(jpUID.CACHE_PATH, FileAccess.WRITE_READ)
+		file.store_string("{}")
+		file.close()
+	for resource in [RESOURCE, RESOURCE_RECURSIVE]:
+		for meta_name in resource.get_meta_list():
+			resource.remove_meta(meta_name)
