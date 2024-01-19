@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dltooueenrldc"]
+
+[ext_resource type="Script" path="res://addons/jp_gamemaster/tests/assets/custom_resource.gd" id="1_x608c"]
+
+[resource]
+script = ExtResource("1_x608c")
+name = "i have a path!"
+number = -5
+color = Color(0.403922, 0.635294, 0.811765, 1)
+_data = []

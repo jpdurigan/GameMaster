@@ -1,0 +1,90 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6ai5apd5fuw0"]
+
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/theme/inspector_plugin/jpgmt_control_editor.gd" id="1_shdma"]
+[ext_resource type="PackedScene" uid="uid://bl01envwroq1f" path="res://addons/jp_gamemaster/editor/theme/inspector_plugin/resource_drop.tscn" id="2_ksar8"]
+[ext_resource type="PackedScene" uid="uid://bmegvget07u3s" path="res://addons/jp_gamemaster/editor/theme/inspector_plugin/theme_colors.tscn" id="3_6ns7v"]
+
+[node name="jpgmt_control_editor" type="Control"]
+custom_minimum_size = Vector2(76, 90)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_shdma")
+resource_drop_scene = ExtResource("2_ksar8")
+theme_colors_scene = ExtResource("3_6ns7v")
+metadata/_gmt_properties = {
+"DEFAULT:theme_override_styles/panel": "",
+"GODOT:theme_override_styles/panel": ""
+}
+
+[node name="content" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 56.0
+grow_horizontal = 2
+
+[node name="title" type="Label" parent="content"]
+layout_mode = 2
+text = "jpTheme"
+horizontal_alignment = 1
+
+[node name="control" type="HBoxContainer" parent="content"]
+layout_mode = 2
+
+[node name="property" type="Label" parent="content/control"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Control"
+
+[node name="control_options" type="OptionButton" parent="content/control"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 3
+selected = 0
+allow_reselect = true
+popup/item_0/text = "Invalid"
+popup/item_0/id = 0
+popup/item_1/text = "Main Panel"
+popup/item_1/id = 1
+popup/item_2/text = "Main Tab Button"
+popup/item_2/id = 2
+
+[node name="presets" type="HBoxContainer" parent="content"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="property" type="Label" parent="content/presets"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Presets"
+
+[node name="preset_options" type="OptionButton" parent="content/presets"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 3
+selected = 0
+allow_reselect = true
+popup/item_0/text = "Default"
+popup/item_0/id = 0
+popup/item_1/text = "Dark"
+popup/item_1/id = 1
+popup/item_2/text = "Godot"
+popup/item_2/id = 2
+
+[node name="separator" type="HSeparator" parent="content"]
+layout_mode = 2
+
+[node name="control_colors" type="VBoxContainer" parent="content"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="theme_colors" parent="content/control_colors" instance=ExtResource("3_6ns7v")]
+layout_mode = 2

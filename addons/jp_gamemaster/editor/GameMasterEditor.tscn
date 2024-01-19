@@ -1,0 +1,212 @@
+[gd_scene load_steps=10 format=3 uid="uid://dr7gcj7gfm0gx"]
+
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/GameMasterEditor.gd" id="1_rpjfk"]
+[ext_resource type="StyleBox" uid="uid://br0kor1w6admh" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_main_panel.tres" id="2_tormf"]
+[ext_resource type="PackedScene" uid="uid://cmgo38vr3t5di" path="res://addons/jp_gamemaster/editor/components/tab_button.tscn" id="3_27npm"]
+[ext_resource type="StyleBox" uid="uid://cphs5ovukkyol" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tree_editor_mask.tres" id="5_n2nnr"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/grid.gd" id="6_ow0gs"]
+[ext_resource type="StyleBox" uid="uid://be1ep8ww6v55n" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tree_editor_border.tres" id="6_ypgwc"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/grid_input.gd" id="7_cj8f4"]
+[ext_resource type="PackedScene" uid="uid://cpcqoejxneicb" path="res://addons/jp_gamemaster/editor/logic/jpLogicEditorTask.tscn" id="7_oisva"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/draggable_node.gd" id="8_0kba6"]
+
+[node name="GameMasterEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_rpjfk")
+metadata/_gmt_preset = &"DEFAULT"
+
+[node name="content" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_tormf")
+metadata/_gmt_properties = {
+"DEFAULT:self_modulate": &"BACKGROUND"
+}
+metadata/_gmt_control_type = &"PANEL"
+
+[node name="margins" type="MarginContainer" parent="content"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="list" type="VBoxContainer" parent="content/margins"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="tabs" type="HBoxContainer" parent="content/margins/list"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Button" parent="content/margins/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
+layout_mode = 2
+disabled = false
+tab_content = NodePath("../../content/app1")
+label_text = "App 1"
+
+[node name="Button2" parent="content/margins/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
+layout_mode = 2
+disabled = false
+tab_content = NodePath("../../content/app2")
+label_text = "App 2"
+
+[node name="Button3" parent="content/margins/list/tabs" instance=ExtResource("3_27npm")]
+layout_mode = 2
+label_text = "TBD"
+
+[node name="content" type="Control" parent="content/margins/list"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="app1" type="Control" parent="content/margins/list/content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="split" type="HSplitContainer" parent="content/margins/list/content/app1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="properties" type="VBoxContainer" parent="content/margins/list/content/app1/split"]
+custom_minimum_size = Vector2(160, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="tree_editor" type="Panel" parent="content/margins/list/content/app1/split"]
+clip_children = 1
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+theme_override_styles/panel = ExtResource("5_n2nnr")
+
+[node name="grid_input" type="Control" parent="content/margins/list/content/app1/split/tree_editor" node_paths=PackedStringArray("border", "root", "grid", "nodes")]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 1
+script = ExtResource("7_cj8f4")
+border = NodePath("../border")
+root = NodePath("../root")
+grid = NodePath("../root/grid")
+nodes = NodePath("../root/nodes")
+metadata/_gmt_control_type = &"TREE_EDITOR_GRID_INPUT"
+metadata/_gmt_properties = {
+"DEFAULT:focus_color": &"ACCENT",
+"DEFAULT:select_color": &"ACCENT"
+}
+
+[node name="root" type="Control" parent="content/margins/list/content/app1/split/tree_editor"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="grid" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root" node_paths=PackedStringArray("root")]
+modulate = Color(1, 1, 1, 0.2)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_ow0gs")
+root = NodePath("..")
+metadata/_gmt_control_type = &"TREE_EDITOR_GRID"
+metadata/_gmt_properties = {
+"DEFAULT:grid_background_color": &"BACKGROUND",
+"DEFAULT:grid_color": &"FOREGROUND"
+}
+
+[node name="nodes" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="node" parent="content/margins/list/content/app1/split/tree_editor/root/nodes" node_paths=PackedStringArray("grid_input") instance=ExtResource("7_oisva")]
+grid_input = NodePath("../../../grid_input")
+
+[node name="node2" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root/nodes" node_paths=PackedStringArray("grid_input")]
+z_index = 5
+custom_minimum_size = Vector2(128, 192)
+anchors_preset = 0
+offset_left = 256.0
+offset_right = 384.0
+offset_bottom = 192.0
+focus_mode = 1
+mouse_filter = 1
+script = ExtResource("8_0kba6")
+grid_input = NodePath("../../../grid_input")
+
+[node name="bg" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes/node2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 1, 0, 1)
+
+[node name="border" type="Panel" parent="content/margins/list/content/app1/split/tree_editor"]
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("6_ypgwc")
+metadata/_gmt_control_type = &"PANEL"
+metadata/_gmt_properties = {
+"DEFAULT:self_modulate": &"FOREGROUND",
+"GODOT:self_modulate": &"FOREGROUND"
+}
+metadata/_edit_lock_ = true
+
+[node name="app2" type="CenterContainer" parent="content/margins/list/content"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="content/margins/list/content/app2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.529412, 0.478431, 0.541176, 1)
+text = "App2"

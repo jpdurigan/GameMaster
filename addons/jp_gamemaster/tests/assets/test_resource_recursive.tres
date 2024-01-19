@@ -1,0 +1,38 @@
+[gd_resource type="Resource" load_steps=6 format=3 uid="uid://bfiwwrq7im2jq"]
+
+[ext_resource type="Script" path="res://addons/jp_gamemaster/tests/assets/custom_resource.gd" id="1_ldb6u"]
+
+[sub_resource type="Resource" id="Resource_whgiw"]
+script = ExtResource("1_ldb6u")
+name = "i'm a child"
+number = 0
+color = Color(0.611765, 0.776471, 0.207843, 1)
+_data = []
+
+[sub_resource type="Resource" id="Resource_oae7x"]
+script = ExtResource("1_ldb6u")
+name = "i'm another child"
+number = 0
+color = Color(0.25098, 0.772549, 0.937255, 1)
+_data = []
+
+[sub_resource type="Resource" id="Resource_3fknp"]
+script = ExtResource("1_ldb6u")
+name = "i'm a child *-*"
+number = 0
+color = Color(0.843137, 0.686275, 0.243137, 1)
+_data = []
+
+[sub_resource type="Resource" id="Resource_vgeqt"]
+script = ExtResource("1_ldb6u")
+name = "don't tell them but i'm also a dad"
+number = 0
+color = Color(0.541176, 0.501961, 0.776471, 1)
+_data = [SubResource("Resource_3fknp")]
+
+[resource]
+script = ExtResource("1_ldb6u")
+name = "i have children"
+number = 123
+color = Color(0.984314, 0.321569, 0.615686, 1)
+_data = [SubResource("Resource_whgiw"), SubResource("Resource_oae7x"), SubResource("Resource_vgeqt")]

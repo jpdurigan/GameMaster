@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmegvget07u3s"]
+
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/theme/inspector_plugin/theme_colors.gd" id="1_acena"]
+
+[node name="theme_colors" type="HBoxContainer"]
+script = ExtResource("1_acena")
+
+[node name="property" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Presets"
+
+[node name="options" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 3
+selected = 0
+allow_reselect = true
+popup/item_0/text = "Default"
+popup/item_0/id = 0
+popup/item_1/text = "Dark"
+popup/item_1/id = 1
+popup/item_2/text = "Godot"
+popup/item_2/id = 2
