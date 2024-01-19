@@ -1,10 +1,11 @@
 extends GutTest
 
-const SAVE_DESERIALIZED_TO = "res://.godot/game_master/debug_serialized.json"
-const SAVE_TO_JSON_PATH = "res://.godot/game_master/debug_serialized.json"
+const DEBUG_FOLDER_PATH = "res://.godot/game_master/tests"
+const DEBUG_DATA_PATH = "%s/debug_data.json" % DEBUG_FOLDER_PATH
+const SAVE_TO_JSON_PATH = "%s/test_serialize_database.json" % DEBUG_FOLDER_PATH
 
-const CustomResource = preload("res://addons/jp_gamemaster/tests/database/custom_resource.gd")
-const CustomObject = preload("res://addons/jp_gamemaster/tests/database/custom_object.gd")
+const CustomResource = preload("res://addons/jp_gamemaster/tests/assets/custom_resource.gd")
+const CustomObject = preload("res://addons/jp_gamemaster/tests/assets/custom_object.gd")
 
 const VALUE_BOOL = true
 const VALUE_INT = 1234567890
@@ -27,8 +28,8 @@ var VALUE_RESOURCE = CircleShape2D.new()
 var VALUE_CUSTOM_OBJECT = CustomObject.new(VALUE_STRING, VALUE_INT, VALUE_COLOR)
 var VALUE_CUSTOM_RESOURCE = CustomResource.new(VALUE_STRING, VALUE_INT, VALUE_COLOR)
 var VALUE_CUSTOM_SUBCLASS = CustomObject.SubClass.new(VALUE_STRING, VALUE_INT, VALUE_COLOR)
-var VALUE_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/database/test.svg")
-var VALUE_CUSTOM_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/database/test_resource.tres")
+var VALUE_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/assets/test.svg")
+var VALUE_CUSTOM_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/assets/test_resource.tres")
 var VALUE_ARRAY_OBJECT = [
 	CustomObject.new("Leonardo", 13, Color.BLUE),
 	CustomObject.new("Michelangelo", 13, Color.ORANGE),
@@ -112,7 +113,7 @@ var VALUE_RECURSIVE_RESOURCE = CustomResource.new(
 		CustomResource.new("resource3"),
 	]
 )
-var VALUE_RECURSIVE_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/database/test_resource_recursive.tres")
+var VALUE_RECURSIVE_EXTERNAL_RESOURCE = load("res://addons/jp_gamemaster/tests/assets/test_resource_recursive.tres")
 
 
 var VALUE_SAVE_TO_JSON: Dictionary = {
@@ -143,6 +144,12 @@ var VALUE_SAVE_TO_JSON: Dictionary = {
 
 
 var _debug_data: Dictionary = {}
+
+
+func before_all():
+	# create debug folder
+	if not DirAccess.dir_exists_absolute(DEBUG_FOLDER_PATH):
+		DirAccess.make_dir_recursive_absolute(DEBUG_FOLDER_PATH)
 
 
 func test_expects_var_to_str_to_fail() -> void:
@@ -464,9 +471,9 @@ func _is_equal_by_value_object(value: Object, compare: Object) -> bool:
 
 
 func _handle_debug_data(type: String, value: Variant, serialized: String) -> void:
-	if SAVE_DESERIALIZED_TO:
+	if DEBUG_DATA_PATH:
 		_debug_data[type] = DebugData.new(type, value, serialized).to_dict()
-		var file := FileAccess.open(SAVE_DESERIALIZED_TO, FileAccess.WRITE_READ)
+		var file := FileAccess.open(DEBUG_DATA_PATH, FileAccess.WRITE_READ)
 		if file:
 			file.store_string(JSON.stringify(_debug_data, "\t"))
 			file.close()

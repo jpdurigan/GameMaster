@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://dltooueenrldc"]
 
-[ext_resource type="Script" path="res://addons/jp_gamemaster/tests/database/custom_resource.gd" id="1_x608c"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/tests/assets/custom_resource.gd" id="1_x608c"]
 
 [resource]
 script = ExtResource("1_x608c")
