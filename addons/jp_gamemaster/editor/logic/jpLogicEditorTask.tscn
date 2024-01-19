@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cpcqoejxneicb"]
+[gd_scene load_steps=7 format=3 uid="uid://cpcqoejxneicb"]
 
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/draggable_node.gd" id="1_5yfca"]
 [ext_resource type="StyleBox" uid="uid://c24ca8bwu5byt" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_task_editor_bg.tres" id="2_my02g"]
 [ext_resource type="StyleBox" uid="uid://u3ynclhkh3mc" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_task_editor_title.tres" id="3_mt5p8"]
 [ext_resource type="Texture2D" uid="uid://c7hl0323ovgrs" path="res://addons/jp_gamemaster/editor/gamemaster.png" id="3_r206f"]
 [ext_resource type="FontFile" uid="uid://yp7el8rip83e" path="res://addons/jp_gamemaster/editor/theme/fonts/archivo/Archivo-SemiBold.ttf" id="4_0u2hk"]
+[ext_resource type="PackedScene" uid="uid://c0nqgk4housk" path="res://addons/jp_gamemaster/editor/components/button.tscn" id="6_2fiwj"]
 
 [node name="jpLogicEditorTask" type="Control"]
 z_index = 5
@@ -74,7 +75,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("4_0u2hk")
 theme_override_font_sizes/font_size = 16
-text = "Title"
+text = "Show choices "
 
 [node name="buttons" type="HBoxContainer" parent="bg/content/header"]
 layout_mode = 2
@@ -91,6 +92,10 @@ placeholder_text = "something"
 [node name="LineEdit2" type="LineEdit" parent="bg/content/body"]
 layout_mode = 2
 placeholder_text = "something"
+
+[node name="button" parent="bg/content/body" instance=ExtResource("6_2fiwj")]
+layout_mode = 2
+label_text = "Delete"
 
 [node name="footer" type="HBoxContainer" parent="bg/content"]
 layout_mode = 2

@@ -1,4 +1,5 @@
 @tool
+class_name GridControl
 extends Control
 
 @export var grid_input: Control

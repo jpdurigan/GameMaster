@@ -34,6 +34,7 @@ const PRESET_COLORS = {
 const CONTROL_TYPES = {
 	INVALID = &"",
 	PANEL = &"PANEL",
+	BUTTON = &"BUTTON",
 	BUTTON_AUTO_MODULATE = &"BUTTON_AUTO_MODULATE",
 	TREE_EDITOR_GRID = &"TREE_EDITOR_GRID",
 	TREE_EDITOR_GRID_INPUT = &"TREE_EDITOR_GRID_INPUT",
@@ -57,6 +58,18 @@ const META_APPLIED_SCALE = &"_gmt_applied_scale"
 const _PROPERTY_LIST: Dictionary = {
 	CONTROL_TYPES.PANEL: [
 		^"self_modulate",
+	],
+	CONTROL_TYPES.BUTTON: [
+		^"modulate_normal",
+		^"modulate_pressed",
+		^"modulate_hover",
+		^"modulate_disabled",
+		^"modulate_hover_pressed",
+		^"label_modulate_normal",
+		^"label_modulate_pressed",
+		^"label_modulate_hover",
+		^"label_modulate_disabled",
+		^"label_modulate_hover_pressed",
 	],
 	CONTROL_TYPES.BUTTON_AUTO_MODULATE: [
 		^"modulate_normal",
