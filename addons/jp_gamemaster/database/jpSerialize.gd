@@ -47,7 +47,7 @@ static func to_str(value: Variant) -> String:
 		TYPE_VECTOR3I:
 			string = var_to_str(value)
 		TYPE_TRANSFORM2D:
-			_push_warning_unsupported_type(value)
+			_push_warning_float_precision(value)
 			string = var_to_str(value)
 		TYPE_VECTOR4:
 			var dict: Dictionary = _vec4_to_dict(value)
@@ -55,22 +55,22 @@ static func to_str(value: Variant) -> String:
 		TYPE_VECTOR4I:
 			string = var_to_str(value)
 		TYPE_PLANE:
-			_push_warning_unsupported_type(value)
+			_push_warning_float_precision(value)
 			string = var_to_str(value)
 		TYPE_QUATERNION:
-			_push_warning_unsupported_type(value)
+			_push_warning_float_precision(value)
 			string = var_to_str(value)
 		TYPE_AABB:
-			_push_warning_unsupported_type(value)
+			_push_warning_float_precision(value)
 			string = var_to_str(value)
 		TYPE_BASIS:
-			_push_warning_unsupported_type(value)
+			_push_warning_float_precision(value)
 			string = var_to_str(value)
 		TYPE_TRANSFORM3D:
-			_push_warning_unsupported_type(value)
+			_push_warning_float_precision(value)
 			string = var_to_str(value)
 		TYPE_PROJECTION:
-			_push_warning_unsupported_type(value)
+			_push_warning_float_precision(value)
 			string = var_to_str(value)
 		TYPE_COLOR:
 			var dict: Dictionary = _color_to_dict(value)
