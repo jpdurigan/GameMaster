@@ -13,15 +13,15 @@ const META_EDITOR_POSITION = "editor_position"
 ## Emitted when a jpLogicTask has just started execution.
 signal task_started
 ## Emmitted when a jpLogicTask has executed and evaluated the next task.
-signal task_ended(out_id: int)
+signal task_ended(out_id: StringName)
 
 ## Unique id from [jpUID].
-@export var id : StringName:
+@export var id : StringName = jpUID.INVALID_ID:
 	get:
 		return jpUID.get_uid(self)
 
 ## List of possible next task's ids.
-@export var outs : Array[int]
+@export var outs : Array[StringName]
 
 
 func _init() -> void:
@@ -45,7 +45,7 @@ func set_out_port(out_index: int, task: jpLogicTask) -> void:
 		)
 		return
 	
-	var task_id : int = task.id if task != null else -1
+	var task_id : StringName = task.id if task != null else jpUID.INVALID_ID
 	outs[out_index] = task_id
 
 
@@ -58,7 +58,7 @@ func set_out_ports_size(ports_count: int) -> void:
 		outs.resize(ports_count)
 	else:
 		while outs.size() < ports_count:
-			outs.append(-1)
+			outs.append(jpUID.INVALID_ID)
 
 
 ## Virtual function to be extended.[br]
@@ -68,7 +68,7 @@ func _execute() -> void:
 
 
 ## Virtual function to be extended.[br]
-## Must return a [member jpLogicTask.id]!
-func _evaluate_out() -> int:
-	var out : int = outs.front()
+## Must return a valid [member jpLogicTask.id].
+func _evaluate_out() -> StringName:
+	var out : StringName = outs.front() if not outs.is_empty() else jpUID.INVALID_ID
 	return out
