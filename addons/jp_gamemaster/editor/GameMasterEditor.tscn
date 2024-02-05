@@ -3,11 +3,11 @@
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/GameMasterEditor.gd" id="1_rpjfk"]
 [ext_resource type="StyleBox" uid="uid://br0kor1w6admh" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_main_panel.tres" id="2_tormf"]
 [ext_resource type="PackedScene" uid="uid://cmgo38vr3t5di" path="res://addons/jp_gamemaster/editor/components/tab_button.tscn" id="3_27npm"]
-[ext_resource type="ButtonGroup" uid="uid://u3e4qp87hv2w" path="res://addons/jp_gamemaster/editor/theme/resources/main_tab_button_group.tres" id="4_j2sfb"]
 [ext_resource type="StyleBox" uid="uid://cphs5ovukkyol" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tree_editor_mask.tres" id="5_n2nnr"]
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/grid.gd" id="6_ow0gs"]
 [ext_resource type="StyleBox" uid="uid://be1ep8ww6v55n" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tree_editor_border.tres" id="6_ypgwc"]
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/grid_input.gd" id="7_cj8f4"]
+[ext_resource type="PackedScene" uid="uid://cpcqoejxneicb" path="res://addons/jp_gamemaster/editor/logic/jpLogicEditorTask.tscn" id="7_oisva"]
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/draggable_node.gd" id="8_0kba6"]
 
 [node name="GameMasterEditor" type="Control"]
@@ -54,20 +54,17 @@ alignment = 1
 [node name="Button" parent="content/margins/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
 layout_mode = 2
 disabled = false
-button_group = ExtResource("4_j2sfb")
 tab_content = NodePath("../../content/app1")
 label_text = "App 1"
 
 [node name="Button2" parent="content/margins/list/tabs" node_paths=PackedStringArray("tab_content") instance=ExtResource("3_27npm")]
 layout_mode = 2
 disabled = false
-button_group = ExtResource("4_j2sfb")
 tab_content = NodePath("../../content/app2")
 label_text = "App 2"
 
 [node name="Button3" parent="content/margins/list/tabs" instance=ExtResource("3_27npm")]
 layout_mode = 2
-button_group = ExtResource("4_j2sfb")
 label_text = "TBD"
 
 [node name="content" type="Control" parent="content/margins/list"]
@@ -133,6 +130,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="grid" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root" node_paths=PackedStringArray("root")]
+modulate = Color(1, 1, 1, 0.2)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -157,33 +155,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="node" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root/nodes" node_paths=PackedStringArray("grid_input")]
-z_index = 5
-custom_minimum_size = Vector2(128, 192)
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-focus_mode = 1
-mouse_filter = 1
-script = ExtResource("8_0kba6")
+[node name="node" parent="content/margins/list/content/app1/split/tree_editor/root/nodes" node_paths=PackedStringArray("grid_input") instance=ExtResource("7_oisva")]
 grid_input = NodePath("../../../grid_input")
-
-[node name="bg" type="ColorRect" parent="content/margins/list/content/app1/split/tree_editor/root/nodes/node"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-color = Color(0, 1, 0, 1)
-
-[node name="LineEdit" type="LineEdit" parent="content/margins/list/content/app1/split/tree_editor/root/nodes/node"]
-custom_minimum_size = Vector2(128, 2.08165e-12)
-layout_mode = 2
-offset_right = 128.0
-offset_bottom = 40.0
-placeholder_text = "something"
 
 [node name="node2" type="Control" parent="content/margins/list/content/app1/split/tree_editor/root/nodes" node_paths=PackedStringArray("grid_input")]
 z_index = 5

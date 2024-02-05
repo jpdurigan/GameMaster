@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cmgo38vr3t5di"]
+[gd_scene load_steps=8 format=3 uid="uid://cmgo38vr3t5di"]
 
 [ext_resource type="StyleBox" uid="uid://7fhf6pqoyvlm" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_tab_button.tres" id="1_107kl"]
+[ext_resource type="ButtonGroup" uid="uid://u3e4qp87hv2w" path="res://addons/jp_gamemaster/editor/theme/resources/main_tab_button_group.tres" id="3_1tv5y"]
 [ext_resource type="FontFile" uid="uid://yp7el8rip83e" path="res://addons/jp_gamemaster/editor/theme/fonts/archivo/Archivo-SemiBold.ttf" id="4_ks0pe"]
 [ext_resource type="StyleBox" uid="uid://da1xk626iy6rr" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxempty.tres" id="5_wgejo"]
 [ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/tab_button.gd" id="6_lbqbv"]
@@ -18,6 +19,7 @@ theme_override_styles/disabled = ExtResource("1_107kl")
 theme_override_styles/focus = ExtResource("5_wgejo")
 disabled = true
 toggle_mode = true
+button_group = ExtResource("3_1tv5y")
 expand_icon = true
 script = ExtResource("6_lbqbv")
 button = NodePath(".")

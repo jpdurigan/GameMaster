@@ -4,8 +4,8 @@ extends Resource
 ## Resource for storing Variant entries in a database with StringName keys.
 ##
 ## Essentially, a Dictionary that can be saved - as a resource, as a JSON file
-## or string. It uses CRUD for data operations
-## and Dictionary methods if you need to iterate throught it.[br]
+## or string. It uses [StringName] keys, CRUD for data operations
+## and Dictionary methods if you need to iterate throught it.[br][br]
 ## This resource raises warnings when [method create]-ing an entry with an
 ## existing key or [method update]-ing a non-exiting key.
 ## You can use [method add] if you don't care about overwriting keys.

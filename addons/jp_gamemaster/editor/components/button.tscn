@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0nqgk4housk"]
+
+[ext_resource type="FontFile" uid="uid://ckas26sykci7k" path="res://addons/jp_gamemaster/editor/theme/fonts/archivo/Archivo-Light.ttf" id="1_3gqh5"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/button.gd" id="1_doeck"]
+[ext_resource type="StyleBox" uid="uid://br0231xp3g1l4" path="res://addons/jp_gamemaster/editor/theme/styleboxes/styleboxflat_button.tres" id="1_wvlig"]
+[ext_resource type="Script" path="res://addons/jp_gamemaster/editor/components/button_auto_modulate.gd" id="2_p80ys"]
+
+[node name="button" type="Button" node_paths=PackedStringArray("label")]
+self_modulate = Color(0.843137, 0.835294, 0.854902, 1)
+custom_minimum_size = Vector2(2.08165e-12, 28)
+theme_override_styles/normal = ExtResource("1_wvlig")
+theme_override_styles/hover = ExtResource("1_wvlig")
+theme_override_styles/pressed = ExtResource("1_wvlig")
+theme_override_styles/disabled = ExtResource("1_wvlig")
+theme_override_styles/focus = ExtResource("1_wvlig")
+script = ExtResource("1_doeck")
+label = NodePath("label")
+modulate_normal = Color(0.843137, 0.835294, 0.854902, 1)
+modulate_pressed = Color(0.333333, 0.286275, 0.345098, 1)
+modulate_hover = Color(0.333333, 0.286275, 0.345098, 1)
+modulate_disabled = Color(0.415686, 0.356863, 0.431373, 1)
+label_modulate_normal = Color(0.333333, 0.286275, 0.345098, 1)
+label_modulate_pressed = Color(0.333333, 0.286275, 0.345098, 1)
+label_modulate_hover = Color(0.333333, 0.286275, 0.345098, 1)
+label_modulate_disabled = Color(0.415686, 0.356863, 0.431373, 1)
+metadata/_gmt_control_type = &"BUTTON"
+metadata/_gmt_properties = {
+"DEFAULT:label_modulate_disabled": &"FOREGROUND",
+"DEFAULT:label_modulate_hover": &"BLACK",
+"DEFAULT:label_modulate_normal": &"BLACK",
+"DEFAULT:label_modulate_pressed": &"BLACK",
+"DEFAULT:modulate_disabled": &"FOREGROUND",
+"DEFAULT:modulate_hover": &"BLACK",
+"DEFAULT:modulate_normal": &"BACKGROUND",
+"DEFAULT:modulate_pressed": &"BLACK"
+}
+metadata/_gmt_preset = &"DEFAULT"
+
+[node name="label" type="Label" parent="."]
+self_modulate = Color(0.333333, 0.286275, 0.345098, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("1_3gqh5")
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_p80ys")
